@@ -1,14 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Nunito } from "next/font/google";
 import "./globals.css";
+import ReduxProvider from "./providers/ReduxProvider";
+import {
+  CartIcon,
+  HomeIcon,
+  ProductsIcon,
+  SearchIcon,
+  UserIcon,
+} from "./shared/icons";
+import Link from "next/link";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const nunito = Nunito({
+  variable: "--font-nunito",
   subsets: ["latin"],
 });
 
@@ -24,11 +28,84 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+      <ReduxProvider>
+        <body className={`${nunito.variable} `}>
+          {/* <div className="flex flex-col"> */}
+          <header>
+            <div className="w-full bg-white shadow-sm">
+              <div className="container">
+                <div className="w-full flex items-center justify-between py-4">
+                  <div className="hidden xl:block text-center">
+                    <Link
+                      href={"/"}
+                      className="font-bold tracking-tight leading-[100%] text-gray"
+                    >
+                      BUNYOD <br /> OPTOM
+                    </Link>
+                  </div>
+                  <div className="w-full flex flex-auto lg:flex-0">
+                    <form className="w-full">
+                      <div className="xl:w-100 flex flex-auto border border-primary/10 rounded-lg overflow-hidden focus-within:border-secondary transition-all ease-in-out duration-300">
+                        <div className="flex flex-auto px-3 py-2">
+                          <input
+                            placeholder="Shirinlik..."
+                            className="outline-none w-full"
+                            type="text"
+                          />
+                        </div>
+                        <button
+                          className="text-sm text-primary font-semibold px-2.5 bg-primary/10 rounded-md hover:bg-secondary transition-all ease-in-out duration-300"
+                          type="submit"
+                        >
+                          <span>
+                            <SearchIcon />
+                          </span>
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                  <div className="hidden xl:flex items-center gap-5">
+                    <Link
+                      href={"/signup"}
+                      className="text-xs flex flex-col items-center gap-1 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+                    >
+                      <UserIcon />
+                    </Link>
+                    <Link
+                      href={"/cart"}
+                      className="text-xs flex flex-col items-center gap-1 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+                    >
+                      <CartIcon />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </header>
+          <main className="flex flex-col flex-auto">{children}</main>
+          <footer>
+            <div className="w-full bg-[#ffffff] shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)] fixed bottom-0 lg:hidden">
+              <div className="container">
+                <div className="flex items-center justify-between ">
+                  <Link href={"/"} className="p-4">
+                    <HomeIcon />
+                  </Link>
+                  <Link href={"/"} className="p-4">
+                    <ProductsIcon />
+                  </Link>
+                  <Link href={"/"} className="p-4">
+                    <CartIcon />
+                  </Link>
+                  <Link href={"/signup"} className="p-4">
+                    <UserIcon />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </footer>
+          {/* </div> */}
+        </body>
+      </ReduxProvider>
     </html>
   );
 }

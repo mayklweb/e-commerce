@@ -1,0 +1,57 @@
+import {
+  Home04Icon,
+  MenuSquareIcon,
+  Search01Icon,
+  ShoppingBasket03Icon,
+  User,
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
+
+export const UserIcon = () => {
+  return (
+    <HugeiconsIcon icon={User} size={24} color="#2e3192" strokeWidth={1.5} />
+  );
+};
+
+export const CartIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={ShoppingBasket03Icon}
+      size={24}
+      color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const SearchIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={Search01Icon}
+      size={24}
+      color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const HomeIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={Home04Icon}
+      size={24}
+      color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const ProductsIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={MenuSquareIcon}
+      size={24}
+      color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};

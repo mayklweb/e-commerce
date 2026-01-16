@@ -1,0 +1,6 @@
+export { Logo } from './logo'
+export { UserIcon } from './Icons'
+export { CartIcon } from './Icons'
+export { SearchIcon } from './Icons'
+export { HomeIcon } from './Icons'
+export { ProductsIcon } from './Icons'
