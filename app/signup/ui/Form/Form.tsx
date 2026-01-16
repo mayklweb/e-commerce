@@ -61,7 +61,7 @@ const formatPhone = (value: string) => {
 };
 
 export const Form = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -84,8 +84,8 @@ export const Form = () => {
   const onSubmit = (data: any) => {
     console.log("Frontend:", data.phoneRaw); // +998 99 899 83 32
     console.log("Backend:", data.phone); // 998998332
-    localStorage.setItem("token", data.phone);
-    dispatch(setToken(data.phone));
+    // localStorage.setItem("token", data.phone);
+    // dispatch(setToken(data.phone));
   };
 
   return (

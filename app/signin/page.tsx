@@ -1,33 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import * as yup from "yup";
-import { setToken } from "./model/store/auth";
+// import { setToken } from "./model/store/auth";
 import Link from "next/link";
+import { loginSchema } from "./model/schema/schema";
 
 // --- Yup schema for backend (raw phone) ---
-export const loginSchema = yup.object().shape({
-  name: yup.string().required("Ism majburiy"),
 
-  phone: yup.string().required("Phone is required"), // UI formatted phone, faqat required bo‘lsa kifoya
-
-  phoneRaw: yup
-    .string()
-    .matches(/^[0-9]{9}$/, "Phone must be 9 digits")
-    .required("Phone is required"),
-
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-
-  rememberMe: yup.boolean(),
-});
 
 // --- Format phone for UI ---
 const formatPhone = (value: string) => {
@@ -63,7 +46,8 @@ const formatPhone = (value: string) => {
 };
 
 export default function SignIn() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+    const [token, setToken] = useState<string | null>(null);
 
   const {
     handleSubmit,
@@ -87,9 +71,14 @@ export default function SignIn() {
   const onSubmit = (data: any) => {
     console.log("Frontend:", data.phoneRaw); // +998 99 899 83 32
     console.log("Backend:", data.phone); // 998998332
-    localStorage.setItem("token", data.phone);
-    dispatch(setToken(data.phone));
+    // localStorage.setItem("token", data.phone);
+    // dispatch(setToken(data.phone));
   };
+
+    useEffect(() => {
+    const t = localStorage.getItem("token");
+    setToken(t);
+  }, []);
 
   return (
     <div className="w-full h-full flex flex-col justify-center max-w-md mx-auto p-6">

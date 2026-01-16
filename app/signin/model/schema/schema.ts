@@ -13,13 +13,19 @@ import * as yup from "yup";
 // });
 
 export const loginSchema = yup.object().shape({
-  phone: yup
+  name: yup.string().required("Ism majburiy"),
+
+  phone: yup.string().required("Phone is required"), // UI formatted phone, faqat required bo‘lsa kifoya
+
+  phoneRaw: yup
     .string()
     .matches(/^[0-9]{9}$/, "Phone must be 9 digits")
     .required("Phone is required"),
+
   password: yup
     .string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
+
   rememberMe: yup.boolean(),
-})
+});
