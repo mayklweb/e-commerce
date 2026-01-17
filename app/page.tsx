@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="mb-14">
+    <div className="mb-19">
       <section>
         <div className="mt-5">
           <div className="container">
@@ -111,7 +111,7 @@ export default function Home() {
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:items-center justify-between">
                   <h1 className="text-xl">Shirinlik</h1>
-                  <p className="text-sm">39 000 USZ</p>
+                  <p className="text-base">39 000 USZ</p>
                 </div>
               </div>
               <div>
