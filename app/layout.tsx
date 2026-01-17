@@ -86,7 +86,7 @@ export default function RootLayout({
           <footer>
             <div className="w-full bg-[#ffffff] shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)] fixed bottom-0 lg:hidden">
               <div className="container">
-                <div className="flex items-center justify-between ">
+                <div className="grid grid-cols-4 items-center justify-between ">
                   <Link
                     href={"/"}
                     className="p-4 flex flex-col items-center gap-1"
