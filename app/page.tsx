@@ -109,9 +109,9 @@ export default function Home() {
                     alt="Product Image"
                   />
                 </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
+                <div className="w-full mt-2 flex flex-col lg:items-center justify-between">
+                  <h1 className="text-xl">Shirinlik</h1>
+                  <p className="text-sm">39 000 USZ</p>
                 </div>
               </div>
               <div>
