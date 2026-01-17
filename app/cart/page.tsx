@@ -117,10 +117,10 @@ function CartIcon() {
                       <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
                         АЛПИНА КАРАМЕЛ КРМ 0.5 КГ
                       </h3>
-                      <p className="text-sm">27000.00 USZ</p>
+                      <p className="text-sm text-end">27000.00 USZ</p>
                     </div>
                     <div className="flex items-center justify-between ">
-                      <div className="flex items-center gap-3 border border-[#cccccc] border-solid rounded-xl ">
+                      <div className="flex items-center gap-3 border border-[#cccccc] border-solid rounded-lg ">
                         <button
                           className="p-1 cursor-pointer"
                           aria-label="Decrease quantity"
