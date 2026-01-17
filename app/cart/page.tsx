@@ -203,7 +203,7 @@ function CartIcon() {
                       <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
                         АЛПИНА КАРАМЕЛ КРМ 0.5 КГ
                       </h3>
-                      <p className="text-sm md:text-xl lg:text-2xl font-semibold tracking-tight text-end">
+                      <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end">
                         39 000 USZ
                       </p>
                     </div>
