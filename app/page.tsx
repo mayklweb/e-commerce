@@ -43,7 +43,7 @@ export default function Home() {
                 PRODUCTS
               </h1>
             </div>
-            <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+            <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
               <div className="w-full">
                 <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
                   <Image
@@ -95,9 +95,9 @@ export default function Home() {
                     alt="Product Image"
                   />
                 </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
+                <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
+                  <h1 className="text-base">ЛУИЗА ФАЙЗ 3 КГ</h1>
+                  <p className="text-base">39 000 USZ</p>
                 </div>
               </div>
               <div>
@@ -109,8 +109,8 @@ export default function Home() {
                     alt="Product Image"
                   />
                 </div>
-                <div className="w-full mt-2 flex flex-col lg:items-center justify-between">
-                  <h1 className="text-lg">МИНИС ВАФЛИ КРМ 2 КГ</h1>
+                <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
+                  <h1 className="text-base">МИНИС ВАФЛИ КРМ 2 КГ</h1>
                   <p className="text-base">39 000 USZ</p>
                 </div>
               </div>
