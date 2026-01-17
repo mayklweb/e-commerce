@@ -110,7 +110,7 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:items-center justify-between">
-                  <h1 className="text-xl">МИНИС ВАФЛИ КРМ 2 КГ</h1>
+                  <h1 className="text-lg">МИНИС ВАФЛИ КРМ 2 КГ</h1>
                   <p className="text-base">39 000 USZ</p>
                 </div>
               </div>
