@@ -37,7 +37,7 @@ function CartIcon() {
                       <div className="flex items-center justify-between ">
                         <div className="flex items-center gap-2.5 border border-[#cccccc] border-solid rounded-lg">
                           <button
-                            className="p-0.5 cursor-pointer"
+                            className="p-1 cursor-pointer"
                             aria-label="Decrease quantity"
                           >
                             <svg
@@ -57,7 +57,7 @@ function CartIcon() {
                             </svg>
                           </button>
                           <p className="text-sm">1</p>
-                          <button className="p-0.5 cursor-pointer">
+                          <button className="p-1 cursor-pointer">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="20"
@@ -77,7 +77,7 @@ function CartIcon() {
                           </button>
                         </div>
                         <div>
-                          <button className="p-0.5 cursor-pointer">
+                          <button className="p-1 cursor-pointer">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="24"
