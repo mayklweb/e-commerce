@@ -96,8 +96,8 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base">ЛУИЗА ФАЙЗ 3 КГ</h1>
-                  <p className="text-base">39 000 USZ</p>
+                  <h1 className="text-base lg:text-lg tracking-tight">ЛУИЗА ФАЙЗ 3 КГ</h1>
+                  <p className="text-base tracking-tight">39 000 USZ</p>
                 </div>
               </div>
               <div>
@@ -110,8 +110,8 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base">МИНИС ВАФЛИ КРМ 2 КГ</h1>
-                  <p className="text-base">39 000 USZ</p>
+                  <h1 className="text-base lg:text-lg tracking-tight">МИНИС ВАФЛИ КРМ 2 КГ</h1>
+                  <p className="text-base tracking-tight">39 000 USZ</p>
                 </div>
               </div>
               <div>
