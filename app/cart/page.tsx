@@ -33,72 +33,70 @@ function CartIcon() {
                         39 000 USZ
                       </p>
                     </div>
-                    <div>
-                      <div className="flex items-center justify-between ">
-                        <div className="flex items-center gap-2.5 border border-[#cccccc] border-solid rounded-lg">
-                          <button
-                            className="p-1 cursor-pointer"
-                            aria-label="Decrease quantity"
+                    <div className="flex items-center justify-between ">
+                      <div className="flex items-center gap-3 border border-[#cccccc] border-solid rounded-lg ">
+                        <button
+                          className="p-1 cursor-pointer"
+                          aria-label="Decrease quantity"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-minus"
+                            aria-hidden="true"
                           >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="lucide lucide-minus"
-                              aria-hidden="true"
-                            >
-                              <path d="M5 12h14"></path>
-                            </svg>
-                          </button>
-                          <p className="text-sm">1</p>
-                          <button className="p-1 cursor-pointer">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="20"
-                              height="20"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="lucide lucide-plus"
-                              aria-hidden="true"
-                            >
-                              <path d="M5 12h14"></path>
-                              <path d="M12 5v14"></path>
-                            </svg>
-                          </button>
-                        </div>
-                        <div>
-                          <button className="p-1 cursor-pointer">
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="24"
-                              height="24"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="1.5"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              className="lucide lucide-trash2 lucide-trash-2"
-                              aria-hidden="true"
-                            >
-                              <path d="M10 11v6"></path>
-                              <path d="M14 11v6"></path>
-                              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
-                              <path d="M3 6h18"></path>
-                              <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                            </svg>
-                          </button>
-                        </div>
+                            <path d="M5 12h14"></path>
+                          </svg>
+                        </button>
+                        <p>1</p>
+                        <button className="p-1 cursor-pointer">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="22"
+                            height="22"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-plus"
+                            aria-hidden="true"
+                          >
+                            <path d="M5 12h14"></path>
+                            <path d="M12 5v14"></path>
+                          </svg>
+                        </button>
+                      </div>
+                      <div>
+                        <button className="p-1 cursor-pointer">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="lucide lucide-trash2 lucide-trash-2"
+                            aria-hidden="true"
+                          >
+                            <path d="M10 11v6"></path>
+                            <path d="M14 11v6"></path>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"></path>
+                            <path d="M3 6h18"></path>
+                            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          </svg>
+                        </button>
                       </div>
                     </div>
                   </div>
