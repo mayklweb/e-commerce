@@ -1,6 +1,9 @@
 import {
+  Add01Icon,
+  Delete02Icon,
   Home04Icon,
   MenuSquareIcon,
+  Remove01Icon,
   Search01Icon,
   ShoppingBasket03Icon,
   User,
@@ -51,6 +54,36 @@ export const ProductsIcon = () => {
       icon={MenuSquareIcon}
       size={24}
       color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const PlusIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={Add01Icon}
+      size={24}
+      color="#000000"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const MinusIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={Remove01Icon}
+      size={24}
+      color="#000000"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const DeleteIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={Delete02Icon}
+      size={24}
+      color="#e7000b"
       strokeWidth={1.5}
     />
   );
