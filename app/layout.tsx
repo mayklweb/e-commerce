@@ -87,17 +87,41 @@ export default function RootLayout({
             <div className="w-full bg-[#ffffff] shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)] fixed bottom-0 lg:hidden">
               <div className="container">
                 <div className="flex items-center justify-between ">
-                  <Link href={"/"} className="p-4">
+                  <Link
+                    href={"/"}
+                    className="p-4 flex flex-col items-center gap-1"
+                  >
                     <HomeIcon />
+                    <span className="text-xs text-primary font-semibold">
+                      ASOSIY
+                    </span>
                   </Link>
-                  <Link href={"/"} className="p-4">
+                  <Link
+                    href={"/products"}
+                    className="p-4 flex flex-col items-center gap-1"
+                  >
                     <ProductsIcon />
+                    <span className="text-xs text-primary font-semibold">
+                      KATALOG
+                    </span>
                   </Link>
-                  <Link href={"/"} className="p-4">
+                  <Link
+                    href={"/cart"}
+                    className="p-4 flex flex-col items-center gap-1"
+                  >
                     <CartIcon />
+                    <span className="text-xs text-primary font-semibold">
+                      SAVAT
+                    </span>
                   </Link>
-                  <Link href={"/signup"} className="p-4">
+                  <Link
+                    href={"/signup"}
+                    className="p-4 flex flex-col items-center gap-1"
+                  >
                     <UserIcon />
+                    <span className="text-xs text-primary font-semibold">
+                      MUHAMMAD
+                    </span>
                   </Link>
                 </div>
               </div>
