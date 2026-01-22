@@ -30,7 +30,7 @@ function FilterDrawer({ categories, brands }: Props) {
           Open Drawer
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="min-h-1/2">
+      <DrawerContent className="min-h-full">
         {/* <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle>Move Goal</DrawerTitle>
@@ -66,7 +66,7 @@ function FilterDrawer({ categories, brands }: Props) {
           className="w-full"
         >
           <AccordionItem className="px-4" value="shipping">
-            <AccordionTrigger>Categories</AccordionTrigger>
+            <AccordionTrigger className="text-lg py-2">Categories</AccordionTrigger>
             <AccordionContent>
               <div className="">
                 {categories.map(({ name }) => (
@@ -76,9 +76,9 @@ function FilterDrawer({ categories, brands }: Props) {
             </AccordionContent>
           </AccordionItem>
           <AccordionItem className="px-4" value="returns">
-            <AccordionTrigger>Brands</AccordionTrigger>
+            <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-2">
+              <div className="grid grid-cols-2 gap-1 text-xs">
                 {brands.map(({ name }) => (
                   <p>{name}</p>
                 ))}
@@ -86,7 +86,7 @@ function FilterDrawer({ categories, brands }: Props) {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="px-4 text-xs flex gap-5"></div>
+        {/* <div className="px-4 text-xs flex gap-5"></div> */}
       </DrawerContent>
     </Drawer>
   );
