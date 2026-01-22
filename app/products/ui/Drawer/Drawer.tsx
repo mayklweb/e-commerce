@@ -1,4 +1,10 @@
 import { CloseIcon } from "@/app/shared/icons";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import {
   Drawer,
@@ -24,7 +30,7 @@ function FilterDrawer({ categories, brands }: Props) {
           Open Drawer
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="min-h-1/2">
         {/* <div className="mx-auto w-full max-w-sm">
           <DrawerHeader>
             <DrawerTitle>Move Goal</DrawerTitle>
@@ -40,23 +46,47 @@ function FilterDrawer({ categories, brands }: Props) {
             </DrawerClose>
           </DrawerFooter>
         </div> */}
-        <DrawerHeader style={{display: "flex", flexDirection: "row", justifyContent: "space-between"}}>
+        <DrawerHeader
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <DrawerTitle>Filter</DrawerTitle>
-          <DrawerClose><CloseIcon/></DrawerClose>
+          <DrawerClose>
+            <CloseIcon />
+          </DrawerClose>
         </DrawerHeader>
-        <div className="px-4 text-xs flex gap-5">
-        <div >
-          {categories.map(({ name }) => (
-            <h1>{name}</h1>
-          ))}
-        </div>
-        <div className="">
-          {brands.map(({ name }) => (
-            <h1>{name}</h1>
-          ))}
-        </div>
 
-        </div>
+        <Accordion
+          type="single"
+          collapsible
+          defaultValue="shipping"
+          className="w-full"
+        >
+          <AccordionItem className="px-4" value="shipping">
+            <AccordionTrigger>Categories</AccordionTrigger>
+            <AccordionContent>
+              <div className="">
+                {categories.map(({ name }) => (
+                  <h1>{name}</h1>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem className="px-4" value="returns">
+            <AccordionTrigger>Brands</AccordionTrigger>
+            <AccordionContent>
+              <div className="grid grid-cols-2">
+                {brands.map(({ name }) => (
+                  <p>{name}</p>
+                ))}
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+        <div className="px-4 text-xs flex gap-5"></div>
       </DrawerContent>
     </Drawer>
   );

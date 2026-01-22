@@ -1,5 +1,6 @@
 import {
   Add01Icon,
+  ArrowDown01Icon,
   Cancel01Icon,
   Delete02Icon,
   FilterHorizontalIcon,
@@ -106,6 +107,22 @@ export const CloseIcon = () => {
   return (
     <HugeiconsIcon
       icon={Cancel01Icon}
+      size={24}
+      color="#000000"
+      strokeWidth={1.5}
+    />
+  );
+};
+
+interface IconProps {
+  className?: string;
+}
+
+export const DownIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={ArrowDown01Icon}
       size={24}
       color="#000000"
       strokeWidth={1.5}
