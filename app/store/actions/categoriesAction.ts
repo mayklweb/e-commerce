@@ -5,5 +5,5 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getCategories = createAsyncThunk("categories/list", async () => {
   let response = await $api.get(categoriesList);
   
-  return response.data;
+  return response.data.data;
 });

@@ -2,22 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getCategories } from "../actions/categoriesAction";
 
 interface Categories {
-  id?: number;
-  title?: string;
-  price?: number;
-  // add fields based on your API
+  id: number;
+  name: string;
 }
 
 interface CategoriesState {
-  categories: Categories | null;
+  categories: Categories[];
   loading: boolean;
-
 }
 
 const initialState: CategoriesState = {
-  categories: null,
+  categories: [],
   loading: false,
-
 };
 
 const categoriesSlice = createSlice({
@@ -31,16 +27,16 @@ const categoriesSlice = createSlice({
       })
       .addCase(
         getCategories.fulfilled,
-        (state, action: PayloadAction<Categories | Categories[]>) => {
+        (state, action: PayloadAction<Categories[]>) => {
           state.loading = false;
 
           // ✅ handle both array or single object safely
           if (Array.isArray(action.payload)) {
-            state.categories = action.payload[0] ?? null;
+            state.categories = action.payload;
           } else {
             state.categories = action.payload;
           }
-        }
+        },
       )
       .addCase(getCategories.rejected, (state) => {
         state.loading = false;

@@ -5,5 +5,5 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 export const getBrands = createAsyncThunk("brands/list", async () => {
   let response = await $api.get(brandsList);
   
-  return response.data;
+  return response.data.data;
 });

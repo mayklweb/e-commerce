@@ -24,7 +24,6 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
     setItem(product as ProductType);
   }, [products]);
 
-
   return (
     <div>
       <section>
@@ -45,7 +44,9 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                   <h1 className="text-xl lg:text-4xl font-semibold tracking-tight">
                     {item?.name}
                   </h1>
-                  <p className="text-lg lg:text-2xl tracking-tight">{item?.price} USZ</p>
+                  <p className="text-lg lg:text-2xl tracking-tight">
+                    {item?.price} USZ
+                  </p>
                 </div>
               </div>
             </div>
