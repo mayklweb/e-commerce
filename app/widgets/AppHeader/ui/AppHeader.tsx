@@ -40,7 +40,7 @@ export const AppHeader = () => {
                 </div>
               </form>
               {path.split("/")[1] === "products" && (
-                <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 p-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
+                <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
                   <FilterIcon />
                 </button>
               )}
