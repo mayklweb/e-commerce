@@ -41,7 +41,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="w-full lg:w-1/2 mt-2.5 lg:mt-0 flex flex-col gap-2">
+                <div className="w-full lg:w-1/2 flex flex-col gap-2">
                   <h1 className="text-xl lg:text-4xl font-semibold tracking-tight">
                     {item?.name}
                   </h1>
