@@ -2,19 +2,16 @@
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./store";
-import {
-  getBrands,
-  getCategories,
-  getProducts,
-} from "./store/actions/productsAction";
+import { getProducts } from "./store/actions/productsAction";
 import { useEffect } from "react";
+import { getCategories } from "./store/actions/categoriesAction";
+import { getBrands } from "./store/actions/brandsAction";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const { products, categories } = useSelector(
-    (state: RootState) => state.products,
-  );
+  const { products } = useSelector((state: RootState) => state.products);
   const { brands } = useSelector((state: RootState) => state.brands);
+  const { categories } = useSelector((state: RootState) => state.categories);
 
   console.log(brands, products, categories);
 
@@ -34,7 +31,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section>  
       <section>
         <div className="mt-10">
           <div className="container">

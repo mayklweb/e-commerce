@@ -21,7 +21,7 @@ const initialState: BrandsState = {
 };
 
 const brandsSlice = createSlice({
-  name: "brnads",
+  name: "brands",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

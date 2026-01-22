@@ -1,31 +1,49 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { buildBuilder } from "@/app/utils/helpers";
-import { getBrands, getCategories, getProducts } from "../actions/productsAction";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getProducts } from "../actions/productsAction";
 
-const initialState = {
-  products: {
-    list: [],
-    loading: false
-  },
-  categories: {
-    list: [],
-    loading: false
-  },
-  brands: {
-    list: [],
-    loading: false
-  }
+interface Products {
+  id?: number;
+  title?: string;
+  price?: number;
+  // add fields based on your API
 }
 
+interface ProductsState {
+  products: Products | null;
+  loading: boolean;
+}
+
+const initialState: ProductsState = {
+  products: null,
+  loading: false,
+};
+
 const productsSlice = createSlice({
-  name: 'products',
+  name: "products",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    buildBuilder(builder, getProducts, "products")
-    buildBuilder(builder, getCategories, 'categories')
-    buildBuilder(builder, getBrands, 'brands')
-  }
-})
+    builder
+      .addCase(getProducts.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(
+        getProducts.fulfilled,
+        (state, action: PayloadAction<Products | Products[]>) => {
+          state.loading = false;
 
-export default productsSlice.reducer
+          // ✅ handle both array or single object safely
+          if (Array.isArray(action.payload)) {
+            state.products = action.payload[0] ?? null;
+          } else {
+            state.products = action.payload;
+          }
+        },
+      )
+      .addCase(getProducts.rejected, (state) => {
+        state.loading = false;
+      });
+  },
+});
+
+export default productsSlice.reducer;

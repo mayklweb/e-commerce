@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   Delete02Icon,
+  FilterHorizontalIcon,
   Home04Icon,
   MenuSquareIcon,
   Remove01Icon,
@@ -84,6 +85,16 @@ export const DeleteIcon = () => {
       icon={Delete02Icon}
       size={24}
       color="#e7000b"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const FilterIcon = () => {
+  return (
+    <HugeiconsIcon
+      icon={FilterHorizontalIcon}
+      size={24}
+      color="#2e3192"
       strokeWidth={1.5}
     />
   );

@@ -1,8 +1,11 @@
 "use client";
 import Link from "next/link.js";
-import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
+import { SearchIcon, UserIcon, CartIcon, FilterIcon } from "@/app/shared/icons";
+import { usePathname } from "next/navigation";
 
 export const AppHeader = () => {
+  const path = usePathname();
+
   return (
     <header>
       <div className="w-full bg-white shadow-sm">
@@ -16,7 +19,7 @@ export const AppHeader = () => {
                 BUNYOD <br /> OPTOM
               </Link>
             </div>
-            <div className="w-full flex flex-auto lg:flex-0">
+            <div className="w-full flex flex-auto lg:flex-0 gap-3">
               <form className="w-full">
                 <div className="xl:w-100 flex flex-auto border border-primary/10 rounded-lg overflow-hidden focus-within:border-secondary transition-all ease-in-out duration-300">
                   <div className="flex flex-auto px-3 py-2">
@@ -36,6 +39,11 @@ export const AppHeader = () => {
                   </button>
                 </div>
               </form>
+              {path.split("/")[1] === "products" && (
+                <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 p-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
+                  <FilterIcon />
+                </button>
+              )}
             </div>
             <div className="hidden xl:flex items-center gap-5">
               <Link
