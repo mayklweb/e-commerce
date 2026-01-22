@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { getProducts } from "../store/actions/productsAction";
 import { getCategories } from "../store/actions/categoriesAction";
 import { getBrands } from "../store/actions/brandsAction";
+import ProductsList from "./ui/ProductsList/ProductsList";
 
 function Products() {
   const dispatch = useDispatch<AppDispatch>();
@@ -32,12 +33,11 @@ function Products() {
 
             <FilterDrawer categories={categories} brands={brands} />
           </div>
-          <div className="flex gap-5">
+          <div className="gap-5">
             <div className="flex">
-              <div className="text-sm">{brands.map((brand) => (<div key={brand.id}>{brand.name}</div>))}</div>
-              <div className="text-sm">{categories.map((brand) => (<div key={brand.id}>{brand.name}</div>))}</div>
               <div></div>
             </div>
+            <ProductsList products={products.map(product => ({ ...product, images: product.images || [] }))}/>
             {/* <div>{products.map((product) => (<div key={product.id}>{product.name}</div>))}</div> */}
           </div>
         </div>
