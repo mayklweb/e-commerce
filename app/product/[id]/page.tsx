@@ -1,7 +1,31 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { use, useEffect, useState } from "react";
+import { ProductType } from "../types";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/app/store";
+import { getProducts } from "@/app/store/actions/productsAction";
 
-function Product() {
+function Product({ params }: { params: Promise<{ id: string }> }) {
+  const dispatch = useDispatch<AppDispatch>();
+  const [item, setItem] = useState<ProductType>();
+  const { products } = useSelector((state: RootState) => state.products);
+
+  const { id } = use(params);
+  const Id = parseInt(id);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, [Id]);
+
+  useEffect(() => {
+    const product = products?.find((p) => p.id === Id);
+
+    setItem(product as ProductType);
+  }, [products]);
+
+  console.log(item);
+
   return (
     <div>
       <section>
@@ -18,8 +42,10 @@ function Product() {
                   />
                 </div>
                 <div className="mt-2.5 flex items-center justify-between">
-                    <h1 className="text-xl font-semibold tracking-tight">Product Name</h1>
-                    <p className="text-lg tracking-tight">39 000 USZ</p>
+                  <h1 className="text-xl font-semibold tracking-tight">
+                    {item?.name}
+                  </h1>
+                  <p className="text-lg tracking-tight">{item?.price} USZ</p>
                 </div>
               </div>
             </div>

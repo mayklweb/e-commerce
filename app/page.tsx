@@ -6,6 +6,7 @@ import { getProducts } from "./store/actions/productsAction";
 import { useEffect, useMemo, useState } from "react";
 import { getCategories } from "./store/actions/categoriesAction";
 import { getBrands } from "./store/actions/brandsAction";
+import Link from "next/link";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -76,7 +77,7 @@ export default function Home() {
             </div>
             <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
               {homeProducts.map((product, i) => (
-                <div key={i} className="w-full">
+                <Link href={`/product/${product.id}`} key={i} className="w-full">
                   <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
                     <Image
                       // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
@@ -98,7 +99,7 @@ export default function Home() {
                       {product.price} USZ
                     </p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

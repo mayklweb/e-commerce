@@ -15,6 +15,10 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  allowedDevOrigins: [
+    "http://192.168.0.105:3000", // sizning lokal IP + port
+    "http://localhost:3000", // lokalhost
+  ],
 };
 
 export default nextConfig;
