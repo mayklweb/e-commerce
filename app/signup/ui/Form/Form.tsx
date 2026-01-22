@@ -5,10 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import Link from "next/link";
 import { loginSchema } from "../../model/schema/schema";
-import { setAuth } from "@/app/store/slices/authSlice";
 import { useState } from "react";
 import { $api } from "@/app/shared/api/api";
 import { signupUrl } from "@/app/utils/urls";
+import { setAuth } from "@/app/store/slices/authSlice";
 
 // --- Format phone for UI ---
 const formatPhone = (value: string) => {
