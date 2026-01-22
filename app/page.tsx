@@ -3,23 +3,34 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, AppDispatch } from "./store";
 import { getProducts } from "./store/actions/productsAction";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { getCategories } from "./store/actions/categoriesAction";
 import { getBrands } from "./store/actions/brandsAction";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const { products } = useSelector((state: RootState) => state.products);
   const { brands } = useSelector((state: RootState) => state.brands);
   const { categories } = useSelector((state: RootState) => state.categories);
-
-  console.log(brands, products, categories);
+  const { products } = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(getProducts());
     dispatch(getCategories());
     dispatch(getBrands());
   }, []);
+
+  function shuffleArray<T>(array: T[]) {
+    return [...array].sort(() => Math.random() - 0.5);
+  }
+
+  const homeProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+
+    const shuffled = shuffleArray(products);
+    return shuffled.slice(0, 10);
+  }, [products]);
+
+  console.log(homeProducts);
 
   return (
     <div className="mb-19">
@@ -31,7 +42,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>  
+      </section>
       <section>
         <div className="mt-10">
           <div className="container">
@@ -64,122 +75,31 @@ export default function Home() {
               </h1>
             </div>
             <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-              <div className="w-full">
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
+              {homeProducts.map((product, i) => (
+                <div key={i} className="w-full">
+                  <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
+                    <Image
+                      // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
+                      src={
+                        product.images[0]
+                          ? `https://api.bunyodoptom.uz/${product.images[0]?.url}`
+                          : "/product.webp" // fallback
+                      }
+                      width={400}
+                      height={360}
+                      alt="Product Image"
+                    />
+                  </div>
+                  <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
+                    <h1 className="text-base lg:text-lg tracking-tight">
+                      {product.name}
+                    </h1>
+                    <p className="text-base tracking-tight">
+                      {product.price} USZ
+                    </p>
+                  </div>
                 </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base lg:text-lg tracking-tight">
-                    ЛУИЗА ФАЙЗ 3 КГ
-                  </h1>
-                  <p className="text-base tracking-tight">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base lg:text-lg tracking-tight">
-                    МИНИС ВАФЛИ КРМ 2 КГ
-                  </h1>
-                  <p className="text-base tracking-tight">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
-              <div>
-                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
-                  <Image
-                    src={"/product.webp"}
-                    width={400}
-                    height={360}
-                    alt="Product Image"
-                  />
-                </div>
-                <div className="w-full mt-2 flex items-center justify-between">
-                  <h1 className="text-2xl">Shirinlik</h1>
-                  <p className="text-lg">39 000 USZ</p>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
