@@ -24,7 +24,6 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
     setItem(product as ProductType);
   }, [products]);
 
-  console.log(item);
 
   return (
     <div>
@@ -32,20 +31,21 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
         <div className="mt-5">
           <div className="container">
             <div>
-              <div>
-                <div className="rounded-3xl overflow-hidden">
+              <div className="w-full flex flex-col lg:flex-row gap-5">
+                <div className="w-full lg:w-1/2 rounded-3xl overflow-hidden">
                   <Image
                     src={"/product.webp"}
                     width={600}
                     height={540}
                     alt="Product Image"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="mt-2.5 flex items-center justify-between">
-                  <h1 className="text-xl font-semibold tracking-tight">
+                <div className="w-full lg:w-1/2 mt-2.5 lg:mt-0 flex flex-col gap-2">
+                  <h1 className="text-xl lg:text-4xl font-semibold tracking-tight">
                     {item?.name}
                   </h1>
-                  <p className="text-lg tracking-tight">{item?.price} USZ</p>
+                  <p className="text-lg lg:text-2xl tracking-tight">{item?.price} USZ</p>
                 </div>
               </div>
             </div>
