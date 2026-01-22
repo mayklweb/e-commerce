@@ -1,6 +1,29 @@
+"use client";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState, AppDispatch } from "./store";
+import {
+  getBrands,
+  getCategories,
+  getProducts,
+} from "./store/actions/productsAction";
+import { useEffect } from "react";
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { products, categories } = useSelector(
+    (state: RootState) => state.products,
+  );
+  const { brands } = useSelector((state: RootState) => state.brands);
+
+  console.log(brands, products, categories);
+
+  useEffect(() => {
+    dispatch(getProducts());
+    dispatch(getCategories());
+    dispatch(getBrands());
+  }, []);
+
   return (
     <div className="mb-19">
       <section>
@@ -96,7 +119,9 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base lg:text-lg tracking-tight">ЛУИЗА ФАЙЗ 3 КГ</h1>
+                  <h1 className="text-base lg:text-lg tracking-tight">
+                    ЛУИЗА ФАЙЗ 3 КГ
+                  </h1>
                   <p className="text-base tracking-tight">39 000 USZ</p>
                 </div>
               </div>
@@ -110,7 +135,9 @@ export default function Home() {
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-                  <h1 className="text-base lg:text-lg tracking-tight">МИНИС ВАФЛИ КРМ 2 КГ</h1>
+                  <h1 className="text-base lg:text-lg tracking-tight">
+                    МИНИС ВАФЛИ КРМ 2 КГ
+                  </h1>
                   <p className="text-base tracking-tight">39 000 USZ</p>
                 </div>
               </div>

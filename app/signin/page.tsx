@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { loginSchema } from "./model/schema/schema";
+import { setAuth } from "../store/slices/authSlice";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
-import * as yup from "yup";
-// import { setToken } from "./model/store/auth";
-import Link from "next/link";
-import { loginSchema } from "./model/schema/schema";
+import { $api } from "../shared/api/api";
+import { signinUrl } from "../utils/urls";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
-// --- Yup schema for backend (raw phone) ---
-
-
-// --- Format phone for UI ---
-const formatPhone = (value: string) => {
+// --- Format phone for display (with +998 prefix and spaces) ---
+const formatPhoneDisplay = (value: string) => {
   // Extract only digits
   const allDigits = value.replace(/\D/g, "");
 
@@ -45,40 +44,105 @@ const formatPhone = (value: string) => {
   return formatted;
 };
 
-export default function SignIn() {
-  // const dispatch = useDispatch();
-    const [token, setToken] = useState<string | null>(null);
+// --- Extract raw phone (9 digits only) for API submission ---
+const extractRawPhone = (value: string) => {
+  const allDigits = value.replace(/\D/g, "");
 
-  const {
-    handleSubmit,
-    control,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm({
-    resolver: yupResolver(loginSchema),
+  if (allDigits.startsWith("998")) {
+    return allDigits.slice(3, 12);
+  } else {
+    return allDigits.slice(0, 9);
+  }
+};
+
+export default function SignIn() {
+  const dispatch = useDispatch();
+  const [displayPhone, setDisplayPhone] = useState("");
+
+  // const {
+  //   handleSubmit,
+  //   control,
+  //   register,
+  //   setValue,
+  //   formState: { errors },
+  // } = useForm({
+  //   resolver: yupResolver(loginSchema),
+  //   defaultValues: {
+  //     phone: "",
+  //     password: "",
+  //   },
+  // });
+
+  // const onSubmit = async (data: any) => {
+  //   console.log("Frontend phone (raw):", data.phone);
+  //   console.log("Password:", data.password);
+
+  //   try {
+  //     const res = await $api.post(signinUrl, data);
+
+  //     // Save user + token to Redux + localStorage
+  //     // DO NOT store password - only token and user info
+  //     dispatch(
+  //       setAuth({
+  //         user: {
+  //           phone: res.data.phone,
+  //           name: res.data.name,
+  //           password: data.password,
+  //         },
+  //         token: res.data.token,
+  //       }),
+  //     );
+  //     localStorage.setItem("token", res.data.token);
+  //     localStorage.setItem(
+  //       "user",
+  //       JSON.stringify({ name: res.data.name, phone: res.data.phone }),
+  //     );
+  //   } catch (err: any) {
+  //     if (err?.response?.status === 401) {
+  //       alert("Bunday user mavjud emas yoki password xato!");
+  //     } else {
+  //       alert("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
+  //     }
+  //   }
+  // };
+
+  const { register, handleSubmit, setValue, formState } = useForm({
     defaultValues: {
-      name: "",
       phone: "",
-      phoneRaw: "",
       password: "",
-      rememberMe: true,
     },
   });
 
-  const rememberMe = watch("rememberMe");
+  const router = useRouter();
 
-  const onSubmit = (data: any) => {
-    console.log("Frontend:", data.phoneRaw); // +998 99 899 83 32
-    console.log("Backend:", data.phone); // 998998332
-    // localStorage.setItem("token", data.phone);
-    // dispatch(setToken(data.phone));
+  const onSubmit = async (data: any) => {
+    try {
+      const res = await $api.post(signinUrl, {
+        phone: extractRawPhone(data.phone),
+        password: data.password,
+      });
+
+      const { token, data: user } = res.data;
+
+      // Save to localStorage
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Save to Redux
+      dispatch(
+        setAuth({
+          user,
+          token,
+        }),
+      );
+
+      router.replace("/profile");
+    } catch (err: any) {
+      if (err?.response?.status === 401) {
+        alert("Telefon yoki parol noto‘g‘ri");
+      }
+    }
   };
-
-    useEffect(() => {
-    const t = localStorage.getItem("token");
-    setToken(t);
-  }, []);
 
   return (
     <div className="w-full h-full flex flex-col justify-center max-w-md mx-auto p-6">
@@ -87,69 +151,37 @@ export default function SignIn() {
         <p className="text-gray-600">Login to your account</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        {/* --- Phone --- */}
-        <Controller
-          name="phoneRaw"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input
-                {...field}
-                value={(field.value as string) || ""}
-                type="text"
-                placeholder="+998 __ ___ __ __"
-                className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
-                onChange={(e) => {
-                  const formatted = formatPhone(e.target.value);
-                  field.onChange(formatted);
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>Phone Number</label>
+          <input
+            type="text"
+            {...register("phone")}
+            placeholder="+998 __ ___ __ __"
+            className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
+            onChange={(e) => {
+              // Format for display
+              const formatted = formatPhoneDisplay(e.target.value);
+              setDisplayPhone(formatted);
 
-                  // Extract raw phone (9 digits only, without 998)
-                  const allDigits = e.target.value.replace(/\D/g, "");
-                  let Phone = allDigits;
-                  if (allDigits.startsWith("998")) {
-                    Phone = allDigits.slice(3, 12);
-                  } else {
-                    Phone = allDigits.slice(0, 9);
-                  }
-
-                  setValue("phone", Phone);
-                }}
-              />
-              {errors.phone?.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
-
-        {/* --- Password --- */}
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input
-                {...field}
-                type="password"
-                placeholder="Password"
-                className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
-              />
-              {errors.password?.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
-
-        <button className="w-full mt-5 uppercase bg-primary text-white py-2 px-4 rounded-lg hover:text-primary hover:bg-secondary transition-all ease-in-out duration-300">
-          KIRISH
-        </button>
+              // Extract raw phone and update form value
+              const Phone = extractRawPhone(e.target.value);
+              setValue("phone", Phone);
+            }}
+          />
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            {...register("password")}
+            type="password"
+            placeholder="Password"
+            className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
+          />
+        </div>
+        <input type="submit" />
       </form>
+
       <div>
         <div className="mt-5 flex flex-col items-center justify-center">
           <div className="w-full flex items-center gap-2 uppercase text-sm">
@@ -157,7 +189,10 @@ export default function SignIn() {
             <p>Akkaunt yaratish</p>
             <span className="h-px flex flex-auto bg-primary"></span>
           </div>
-          <Link href={'/signup'} className="w-full mt-5 text-center uppercase bg-primary/10 text-primary py-2 px-4 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
+          <Link
+            href={"/signup"}
+            className="w-full mt-5 text-center uppercase bg-primary/10 text-primary py-2 px-4 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+          >
             Yaratish
           </Link>
         </div>

@@ -3,29 +3,12 @@
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
-import { Button } from "@/components/ui/button";
-import { setToken } from "../../model/store/auth";
 import Link from "next/link";
-import * as yup from "yup";
-
-// --- Yup schema for backend (raw phone) ---
-export const loginSchema = yup.object().shape({
-  name: yup.string().required("Ism majburiy"),
-
-  phone: yup.string().required("Phone is required"), // UI formatted phone, faqat required bo‘lsa kifoya
-
-  phoneRaw: yup
-    .string()
-    .matches(/^[0-9]{9}$/, "Phone must be 9 digits")
-    .required("Phone is required"),
-
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-
-  rememberMe: yup.boolean(),
-});
+import { loginSchema } from "../../model/schema/schema";
+import { setAuth } from "@/app/store/slices/authSlice";
+import { useState } from "react";
+import { $api } from "@/app/shared/api/api";
+import { signupUrl } from "@/app/utils/urls";
 
 // --- Format phone for UI ---
 const formatPhone = (value: string) => {
@@ -61,12 +44,14 @@ const formatPhone = (value: string) => {
 };
 
 export const Form = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const [phoneDisplay, setPhoneDisplay] = useState<string>("");
 
   const {
     handleSubmit,
     control,
     setValue,
+    register,
     watch,
     formState: { errors },
   } = useForm({
@@ -74,18 +59,42 @@ export const Form = () => {
     defaultValues: {
       name: "",
       phone: "",
-      phoneRaw: "",
       password: "",
     },
   });
 
-  const rememberMe = watch("rememberMe");
-
   const onSubmit = (data: any) => {
-    console.log("Frontend:", data.phoneRaw); // +998 99 899 83 32
-    console.log("Backend:", data.phone); // 998998332
-    // localStorage.setItem("token", data.phone);
-    // dispatch(setToken(data.phone));
+    localStorage.setItem("token", data.phone);
+    dispatch(
+      setAuth({
+        user: { name: data.name, phone: data.phone, password: data.password },
+        token: data.token,
+      }),
+    );
+  };
+
+  const handleFinish = async (data: any) => {
+    try {
+      $api
+        .post(signupUrl, data)
+        .then((res) => {
+          dispatch(
+            setAuth({
+              user: {
+                name: data.name,
+                phone: data.phone,
+                password: data.password,
+              },
+              token: data.token,
+            }),
+          );
+        })
+        .catch((err) => {
+          if (err?.response?.status === 401) {
+            alert("Bunday user bor!!!");
+          }
+        });
+    } catch (error) {}
   };
 
   return (
@@ -95,87 +104,56 @@ export const Form = () => {
         <p className="text-gray-600">Login to your account</p>
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={handleSubmit(handleFinish)} className="space-y-4">
         {/* --- Name --- */}
-        <Controller
-          name="name"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input
-                {...field}
-                type="text"
-                placeholder="Ismingiz"
-                className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
-              />
-              {errors.name?.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.name.message}
-                </p>
-              )}
-            </div>
+
+        <div>
+          <input
+            {...register("name")}
+            type="text"
+            placeholder="Ismingiz"
+            className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
+          />
+          {errors.name?.message && (
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
           )}
-        />
+        </div>
 
         {/* --- Phone --- */}
-        <Controller
-          name="phoneRaw"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input
-                {...field}
-                value={(field.value as string) || ""}
-                type="text"
-                placeholder="+998 __ ___ __ __"
-                className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
-                onChange={(e) => {
-                  const formatted = formatPhone(e.target.value);
-                  field.onChange(formatted);
 
-                  // Extract raw phone (9 digits only, without 998)
-                  const allDigits = e.target.value.replace(/\D/g, "");
-                  let Phone = allDigits;
-                  if (allDigits.startsWith("998")) {
-                    Phone = allDigits.slice(3, 12);
-                  } else {
-                    Phone = allDigits.slice(0, 9);
-                  }
-
-                  setValue("phone", Phone);
-                }}
-              />
-              {errors.phone?.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.phone.message}
-                </p>
-              )}
-            </div>
+        <div>
+          <input
+            {...register("phone")}
+            value={phoneDisplay}
+            type="text"
+            placeholder="+998 __ ___ __ __"
+            className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
+          />
+          {errors.phone?.message && (
+            <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
           )}
-        />
+        </div>
 
         {/* --- Password --- */}
-        <Controller
-          name="password"
-          control={control}
-          render={({ field }) => (
-            <div>
-              <input
-                {...field}
-                type="password"
-                placeholder="Password"
-                className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
-              />
-              {errors.password?.message && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message}
-                </p>
-              )}
-            </div>
-          )}
-        />
 
-        <button className="w-full mt-5 uppercase bg-primary text-white py-2 px-4 rounded-lg hover:text-primary hover:bg-secondary transition-all ease-in-out duration-300">
+        <div>
+          <input
+            {...register("password")}
+            type="password"
+            placeholder="Password"
+            className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full "
+          />
+          {errors.password?.message && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.password.message}
+            </p>
+          )}
+        </div>
+
+        <button
+          type="submit"
+          className="w-full mt-5 uppercase bg-primary text-white py-2 px-4 rounded-lg hover:text-primary hover:bg-secondary transition-all ease-in-out duration-300"
+        >
           Yaratish
         </button>
       </form>

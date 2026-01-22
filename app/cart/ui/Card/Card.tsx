@@ -1,9 +1,18 @@
+"use client";
 import { DeleteIcon, MinusIcon, PlusIcon } from "@/app/shared/icons";
+import { RootState } from "@/app/store";
 import Image from "next/image";
+import { useSelector } from "react-redux";
 
 function Card() {
+
+  const {items} = useSelector((state: RootState) => state.cart) 
+
+  console.log(items);
+  
+
   return (
-    <div className="flex gap-3 lg:gap-5 border-b border-gray py-2.5">
+    <div className="w-full flex gap-3 lg:gap-5 border-b border-gray py-2.5">
       <div className="w-37.5 h-[calc(225px/2)] md:w-50 md:h-37.5 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden">
         <Image
           src={"/product.webp"}
@@ -13,12 +22,12 @@ function Card() {
           className="w-full h-full object-cover"
         />
       </div>
-      <div>
+      <div className=" flex flex-col justify-between">
         <div>
           <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
             АЛПИНА КАРАМЕЛ КРМ 0.5 КГ
           </h3>
-          <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end">
+          <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end md:text-start md:mt-2">
             39 000 USZ
           </p>
         </div>
