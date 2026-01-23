@@ -27,7 +27,7 @@ function FilterDrawer({ categories, brands }: Props) {
           <FilterIcon />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="min-h-[90%]">
+      <DrawerContent className="min-h-[100%] overflow-scroll">
         {/* <DrawerHeader
           style={{
             display: "flex",
@@ -62,10 +62,10 @@ function FilterDrawer({ categories, brands }: Props) {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem className="px-4" value="returns">
+          <AccordionItem className="px-4 h-full" value="returns">
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
-            <AccordionContent className=" overflow-x-scroll">
-              <div className="">
+            <AccordionContent className="h-full overflow-x-scroll">
+              <div className="h-full">
                 {brands.map(({ name }) => (
                   <div className="py-1 text-base flex items-center justify-between">
                     <p>{name}</p>

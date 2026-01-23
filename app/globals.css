@@ -102,3 +102,11 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
 }
+
+[data-vaul-drawer][data-vaul-drawer-direction=bottom]::after{
+  top: 0;
+    bottom: initial;
+    left: 0;
+    right: 0;
+     height: 0%;
+}
