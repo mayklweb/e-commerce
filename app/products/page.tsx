@@ -35,7 +35,7 @@ function Products() {
           </div>
           <div className="overflow-y-scroll flex py-2 gap-3">
             {categories.map((cat) => (
-              <button className="py-2 px-4 bg-secondary rounded-lg text-nowrap text-sm">
+              <button className="py-2 px-4 bg-secondary rounded-md text-nowrap text-sm">
                 {cat.name}
               </button>
             ))}
