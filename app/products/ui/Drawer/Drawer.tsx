@@ -31,21 +31,6 @@ function FilterDrawer({ categories, brands }: Props) {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="min-h-full">
-        {/* <div className="mx-auto w-full max-w-sm">
-          <DrawerHeader>
-            <DrawerTitle>Move Goal</DrawerTitle>
-            <DrawerDescription>Set your daily activity goal.</DrawerDescription>
-          </DrawerHeader>
-
-          <div className="p-4 pb-0">content</div>
-
-          <DrawerFooter>
-            <Button>Submit</Button>
-            <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
-            </DrawerClose>
-          </DrawerFooter>
-        </div> */}
         <DrawerHeader
           style={{
             display: "flex",
@@ -66,11 +51,16 @@ function FilterDrawer({ categories, brands }: Props) {
           className="w-full"
         >
           <AccordionItem className="px-4" value="shipping">
-            <AccordionTrigger className="text-lg py-2">Categories</AccordionTrigger>
+            <AccordionTrigger className="text-lg py-2">
+              Categories
+            </AccordionTrigger>
             <AccordionContent>
-              <div className="">
+              <div className="grid grid-cols-2 gap-2">
                 {categories.map(({ name }) => (
-                  <h1>{name}</h1>
+                  <div className="flex gap-2 items-center">
+                  <input type="checkbox" name="" id="" />
+                  <p className="block tracking-tight">{name}</p>
+                  </div>
                 ))}
               </div>
             </AccordionContent>
