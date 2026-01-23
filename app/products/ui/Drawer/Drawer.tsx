@@ -27,8 +27,8 @@ function FilterDrawer({ categories, brands }: Props) {
           <FilterIcon />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="min-h-full">
-        <DrawerHeader
+      <DrawerContent className="min-h-[90%]">
+        {/* <DrawerHeader
           style={{
             display: "flex",
             flexDirection: "row",
@@ -39,7 +39,7 @@ function FilterDrawer({ categories, brands }: Props) {
           <DrawerClose>
             <CloseIcon />
           </DrawerClose>
-        </DrawerHeader>
+        </DrawerHeader> */}
 
         <Accordion
           type="single"
