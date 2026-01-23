@@ -1,17 +1,14 @@
-import { CloseIcon, FilterIcon } from "@/app/shared/icons";
+import { CloseIcon, FilterIcon, RightIcon } from "@/app/shared/icons";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerClose,
   DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -70,7 +67,12 @@ function FilterDrawer({ categories, brands }: Props) {
             <AccordionContent>
               <div className="grid grid-cols-1 gap-1.5 text-base">
                 {brands.map(({ name }) => (
-                  <p>{name}</p>
+                  <div className="flex items-center justify-between">
+                    <p>{name}</p>
+                    <span>
+                      <RightIcon className="size-5" />
+                    </span>
+                  </div>
                 ))}
               </div>
             </AccordionContent>
@@ -83,4 +85,3 @@ function FilterDrawer({ categories, brands }: Props) {
 }
 
 export default FilterDrawer;
-

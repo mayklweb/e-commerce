@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   ArrowDown01Icon,
+  ArrowRight01Icon,
   Cancel01Icon,
   Delete02Icon,
   FilterHorizontalIcon,
@@ -123,6 +124,18 @@ export const DownIcon = ({ className }: IconProps) => {
     <HugeiconsIcon
       className={className}
       icon={ArrowDown01Icon}
+      size={24}
+      color="#000000"
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const RightIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={ArrowRight01Icon}
       size={24}
       color="#000000"
       strokeWidth={1.5}
