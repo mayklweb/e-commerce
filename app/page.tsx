@@ -34,7 +34,7 @@ export default function Home() {
   console.log(homeProducts);
 
   return (
-    <div className="mb-19">
+    <div className="mb-20">
       <section>
         <div className="mt-5">
           <div className="container">
@@ -101,6 +101,9 @@ export default function Home() {
                   </div>
                 </Link>
               ))}
+            </div>
+            <div>
+              <button className="w-full mt-5 py-3 text-accent bg-primary rounded-lg font-semibold">YANA KO'RISH</button>
             </div>
           </div>
         </div>

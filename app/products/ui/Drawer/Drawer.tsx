@@ -27,7 +27,7 @@ function FilterDrawer({ categories, brands }: Props) {
     <Drawer>
       <DrawerTrigger asChild>
         <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
-          <FilterIcon/>
+          <FilterIcon />
         </button>
       </DrawerTrigger>
       <DrawerContent className="min-h-full">
@@ -55,11 +55,11 @@ function FilterDrawer({ categories, brands }: Props) {
               Categories
             </AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 ">
                 {categories.map(({ name }) => (
                   <div className="flex gap-2 items-center">
-                  <input type="checkbox" name="" id="" />
-                  <p className="block tracking-tight">{name}</p>
+                    <input type="checkbox" name="" id="" />
+                    <p className="block tracking-tight">{name}</p>
                   </div>
                 ))}
               </div>
@@ -68,7 +68,7 @@ function FilterDrawer({ categories, brands }: Props) {
           <AccordionItem className="px-4" value="returns">
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-2 gap-1 text-xs">
+              <div className="grid grid-cols-1 gap-1 text-sm">
                 {brands.map(({ name }) => (
                   <p>{name}</p>
                 ))}
@@ -83,3 +83,4 @@ function FilterDrawer({ categories, brands }: Props) {
 }
 
 export default FilterDrawer;
+
