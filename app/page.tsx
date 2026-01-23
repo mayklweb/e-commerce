@@ -103,7 +103,7 @@ export default function Home() {
               ))}
             </div>
             <div>
-              <button className="w-full mt-5 py-3 text-accent bg-primary rounded-lg font-semibold">YANA KO'RISH</button>
+              <button className="w-full mt-5 py-3 text-accent bg-primary rounded-xl font-semibold">YANA KO'RISH</button>
             </div>
           </div>
         </div>
