@@ -137,7 +137,7 @@ export const RightIcon = ({ className }: IconProps) => {
       className={className}
       icon={ArrowRight01Icon}
       size={24}
-      color="#000000"
+      color="#2e3192"
       strokeWidth={1.5}
     />
   );

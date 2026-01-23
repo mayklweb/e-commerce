@@ -47,7 +47,7 @@ function FilterDrawer({ categories, brands }: Props) {
           defaultValue="shipping"
           className="w-full"
         >
-          <AccordionItem className="px-4" value="shipping">
+          {/* <AccordionItem className="px-4" value="shipping">
             <AccordionTrigger className="text-lg py-2">
               Categories
             </AccordionTrigger>
@@ -61,11 +61,11 @@ function FilterDrawer({ categories, brands }: Props) {
                 ))}
               </div>
             </AccordionContent>
-          </AccordionItem>
+          </AccordionItem> */}
           <AccordionItem className="px-4" value="returns">
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
-            <AccordionContent>
-              <div className="grid grid-cols-1 gap-1.5 text-base">
+            <AccordionContent className=" overflow-x-scroll">
+              <div className=" gap-1.5 text-base">
                 {brands.map(({ name }) => (
                   <div className="flex items-center justify-between">
                     <p>{name}</p>
