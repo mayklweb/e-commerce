@@ -33,7 +33,7 @@ function ProductsList({ products }: Props) {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-5 mt-5">
+      <div className="grid grid-cols-2 gap-4 mt-5">
         {paginatedProducts.map((product, i) => (
           <Link href={`/product/${product.id}`} key={i} className="w-full">
             <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
