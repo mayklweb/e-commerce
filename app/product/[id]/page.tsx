@@ -32,13 +32,37 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
             <div>
               <div className="w-full flex flex-col lg:flex-row gap-5">
                 <div className="w-full lg:w-1/2 rounded-3xl overflow-hidden">
-                  <Image
+                  {/* <Image
                     src={"/product.webp"}
                     width={600}
                     height={540}
                     alt="Product Image"
                     className="w-full h-full object-cover"
-                  />
+                  /> */}
+                  <div className="w-full h-full rounded-3xl overflow-hidden flex flex-col gap-5">
+                    {item?.images.map((image: any, i) => (
+                      <Image
+                        key={image.id}
+                        src={`https://api.bunyodoptom.uz${image.url}`}
+                        alt={item.name}
+                        width={300}
+                        height={200}
+                        className="w-full h-full object-cover rounded-3xl"
+                        priority
+                      />
+                    ))}
+                  </div>
+                  {/* <Image
+                    // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
+                    src={
+                      item?.images?.length && item.images[1]?.url
+                        ? `https://api.bunyodoptom.uz${item.images[1].url}`
+                        : "/product.webp" // fallback
+                    }
+                    width={400}
+                    height={360}
+                    alt="Product Image"
+                  /> */}
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col gap-2">
                   <h1 className="text-xl lg:text-4xl font-semibold tracking-tight">

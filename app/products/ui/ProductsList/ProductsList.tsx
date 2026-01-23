@@ -41,7 +41,7 @@ function ProductsList({ products }: Props) {
                 // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
                 src={
                   product.images?.length && product.images[0]?.url
-                    ? `https://api.bunyodoptom.uz/${product.images[0].url}`
+                    ? `https://api.bunyodoptom.uz${product.images[0].url}`
                     : "/product.webp" // fallback
                 }
                 width={400}
