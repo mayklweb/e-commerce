@@ -52,7 +52,7 @@ function FilterDrawer({ categories, brands }: Props) {
               Categories
             </AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-2 gap-2 ">
+              <div className="grid grid-cols-1 gap-2 ">
                 {categories.map(({ name }) => (
                   <div className="flex gap-2 items-center">
                     <input type="checkbox" name="" id="" />
