@@ -65,9 +65,9 @@ function FilterDrawer({ categories, brands }: Props) {
           <AccordionItem className="px-4" value="returns">
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent className=" overflow-x-scroll">
-              <div className=" gap-1.5 text-base">
+              <div className="">
                 {brands.map(({ name }) => (
-                  <div className="flex items-center justify-between">
+                  <div className="py-1 text-base flex items-center justify-between">
                     <p>{name}</p>
                     <span>
                       <RightIcon className="size-5" />
