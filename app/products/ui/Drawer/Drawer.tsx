@@ -1,4 +1,4 @@
-import { CloseIcon } from "@/app/shared/icons";
+import { CloseIcon, FilterIcon } from "@/app/shared/icons";
 import {
   Accordion,
   AccordionContent,
@@ -26,9 +26,9 @@ function FilterDrawer({ categories, brands }: Props) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button size={"sm"} variant="outline">
-          Open Drawer
-        </Button>
+        <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
+          <FilterIcon/>
+        </button>
       </DrawerTrigger>
       <DrawerContent className="min-h-full">
         <DrawerHeader
