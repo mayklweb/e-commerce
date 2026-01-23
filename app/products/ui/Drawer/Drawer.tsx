@@ -68,7 +68,7 @@ function FilterDrawer({ categories, brands }: Props) {
           <AccordionItem className="px-4" value="returns">
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent>
-              <div className="grid grid-cols-1 gap-1 text-sm">
+              <div className="grid grid-cols-1 gap-1.5 text-base">
                 {brands.map(({ name }) => (
                   <p>{name}</p>
                 ))}
