@@ -67,7 +67,7 @@ function FilterDrawer({ categories, brands }: Props) {
             <AccordionContent className="h-full overflow-x-scroll">
               <div className="h-full">
                 {brands.map(({ name }) => (
-                  <div className="py-1 text-base flex items-center justify-between">
+                  <div className="py-1 text-base flex items-center justify-between border-b">
                     <p>{name}</p>
                     <span>
                       <RightIcon className="size-5" />
