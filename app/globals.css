@@ -104,5 +104,6 @@ body {
 }
 
 [data-vaul-drawer][data-vaul-drawer-direction="bottom"]::after {
-  height: 0px;
+  content: "";
+  max-height: 0;
 }

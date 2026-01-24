@@ -27,7 +27,7 @@ function FilterDrawer({ categories, brands }: Props) {
           <FilterIcon />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="min-h-[100%] overflow-scroll">
+      <DrawerContent className="min-h-[90%] overflow-scroll">
         {/* <DrawerHeader
           style={{
             display: "flex",
