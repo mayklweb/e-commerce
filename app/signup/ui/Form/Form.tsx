@@ -9,6 +9,7 @@ import { useState } from "react";
 import { $api } from "@/app/shared/api/api";
 import { signupUrl } from "@/app/utils/urls";
 import { setAuth } from "@/app/store/slices/authSlice";
+import { SignUpType } from "../../model/types/signIn";
 
 // --- Format phone for UI ---
 const formatPhone = (value: string) => {
@@ -63,15 +64,15 @@ export const Form = () => {
     },
   });
 
-  const onSubmit = (data: any) => {
-    localStorage.setItem("token", data.phone);
-    dispatch(
-      setAuth({
-        user: { name: data.name, phone: data.phone, password: data.password },
-        token: data.token,
-      }),
-    );
-  };
+  // const onSubmit = (data: SignUpType) => {
+  //   localStorage.setItem("token", data.phone);
+  //   dispatch(
+  //     setAuth({
+  //       user: { name: data.name, phone: data.phone, password: data.password },
+  //       token: data.token,
+  //     }),
+  //   );
+  // };
 
   const handleFinish = async (data: any) => {
     try {
@@ -81,6 +82,7 @@ export const Form = () => {
           dispatch(
             setAuth({
               user: {
+                id: 1,git 
                 name: data.name,
                 phone: data.phone,
                 password: data.password,

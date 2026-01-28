@@ -41,7 +41,7 @@ const initialState: CartState = {
 
 // Update totalPrice after initialization
 initialState.totalPrice = calculateTotalPrice(initialState.items);
-
+  
 function setCart(arr: Product[]): Product[] {
   if (typeof window !== "undefined") {
     try {

@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { updateProfile } from "../actions/updateProfileAction";
 
 interface User {
+  id: number;
   name: string;
   phone: string;
   password: string;
@@ -24,10 +26,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setAuth(
-      state,
-      action: PayloadAction<{ user: User; token: string }>
-    ) {
+    setAuth(state, action: PayloadAction<{ user: User; token: string }>) {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuth = true;
@@ -38,10 +37,7 @@ const authSlice = createSlice({
       }
     },
 
-    hydrateAuth(
-      state,
-      action: PayloadAction<{ user: User; token: string }>
-    ) {
+    hydrateAuth(state, action: PayloadAction<{ user: User; token: string }>) {
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuth = true;
@@ -57,6 +53,11 @@ const authSlice = createSlice({
         localStorage.removeItem("token");
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(updateProfile.fulfilled, (state, action) => {
+      state.user = action.payload;
+    });
   },
 });
 

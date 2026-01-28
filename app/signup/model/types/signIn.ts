@@ -1,5 +1,5 @@
-export interface ISignInState {
-    email: string;
+export interface SignUpType {
+    name: string;
     password: string;
-    rememberMe: boolean
+    phone: string
 }
