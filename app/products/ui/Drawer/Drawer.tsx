@@ -13,6 +13,8 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
+import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 type Props = {
   categories: CategoryType[];
@@ -23,12 +25,13 @@ function FilterDrawer({ categories, brands }: Props) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
+        <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg">
           <FilterIcon />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="min-h-[90%] overflow-scroll">
-        {/* <DrawerHeader
+      <DrawerContent className=" min-h-[90%] overflow-scroll">
+        <DrawerHeader
+          className="sr-only"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -36,10 +39,11 @@ function FilterDrawer({ categories, brands }: Props) {
           }}
         >
           <DrawerTitle>Filter</DrawerTitle>
+          <DialogDescription className="sr-only"></DialogDescription>
           <DrawerClose>
             <CloseIcon />
           </DrawerClose>
-        </DrawerHeader> */}
+        </DrawerHeader>
 
         <Accordion
           type="single"
@@ -53,8 +57,8 @@ function FilterDrawer({ categories, brands }: Props) {
             </AccordionTrigger>
             <AccordionContent>
               <div className="grid grid-cols-1 gap-2 ">
-                {categories.map(({ name }) => (
-                  <div className="flex gap-2 items-center">
+                {categories.map(({ name }, i) => (
+                  <div key={i} className="flex gap-2 items-center">
                     <input type="checkbox" name="" id="" />
                     <p className="block tracking-tight">{name}</p>
                   </div>
@@ -66,8 +70,11 @@ function FilterDrawer({ categories, brands }: Props) {
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent className="h-full overflow-x-scroll">
               <div className="h-full">
-                {brands.map(({ name }) => (
-                  <div className="py-1 text-base flex items-center justify-between border-b">
+                {brands.map(({ name }, i) => (
+                  <div
+                    key={i}
+                    className="py-1 text-base flex items-center justify-between border-b"
+                  >
                     <p>{name}</p>
                     <span>
                       <RightIcon className="size-5" />

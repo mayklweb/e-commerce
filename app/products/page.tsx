@@ -14,10 +14,6 @@ function Products() {
   const { categories } = useSelector((state: RootState) => state.categories);
   const { products } = useSelector((state: RootState) => state.products);
 
-  console.log(brands);
-  console.log(categories);
-  console.log(products);
-
   useEffect(() => {
     dispatch(getProducts());
     dispatch(getCategories());
@@ -34,9 +30,12 @@ function Products() {
             <FilterDrawer categories={categories} brands={brands} />
           </div>
           <div className="overflow-y-scroll flex py-2 gap-3 mt-2">
-            {categories.map((cat) => (
-              <button className="py-2 px-4 bg-secondary rounded-md text-nowrap text-sm text-primary">
-                {cat.name}
+            {categories.map(({ name }, i) => (
+              <button
+                key={i}
+                className="py-2 px-4 bg-secondary rounded-md text-nowrap text-sm text-primary"
+              >
+                {name}
               </button>
             ))}
           </div>
