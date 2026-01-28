@@ -82,7 +82,7 @@ export const Form = () => {
           dispatch(
             setAuth({
               user: {
-                id: 1,git 
+                id: 1,
                 name: data.name,
                 phone: data.phone,
                 password: data.password,
