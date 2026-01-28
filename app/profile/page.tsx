@@ -67,7 +67,7 @@ function Profile() {
                       Telefon
                     </label>
                     <input
-                      value={phone}
+                      value={`+998 ${phone}`}
                       disabled={!isEditing}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Telefon raqamingiz"
