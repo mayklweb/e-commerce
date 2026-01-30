@@ -31,6 +31,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
   const currentQty = cartItem?.qty || 0;
   const stockQty = item?.stock_qty ?? 0;
 
+
   return (
     <div>
       <section>
@@ -82,8 +83,8 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                 <div className="w-full lg:w-1/2">
                   {!cartItem ? (
                     <button
-                      onClick={() => addCart(item)}
-                      disabled={stockQty <= 0}
+                      onClick={() => dispatch(addCart(item))}
+                      // disabled={stockQty <= 0}
                       className="text-white w-full h-10 bg-[#2e3192] rounded-lg cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {stockQty <= 0 ? "OUT OF STOCK" : "SAVATGA"}
@@ -91,7 +92,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                   ) : (
                     <div className="w-max flex items-center gap-3 border border-solid border-black px-3 py-1 rounded-lg">
                       <button
-                        onClick={() => decrement(Id)}
+                        onClick={() => dispatch(decrement(Id))}
                         disabled={currentQty <= 1}
                         className="disabled:opacity-50"
                       >
@@ -101,7 +102,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                       <span>{currentQty}</span>
 
                       <button
-                        onClick={() => increment(Id)}
+                        onClick={() => dispatch(increment(Id))}
                         disabled={currentQty >= stockQty}
                         className="disabled:opacity-50"
                       >
