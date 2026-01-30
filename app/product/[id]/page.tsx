@@ -85,7 +85,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                     <button
                       onClick={() => dispatch(addCart(item))}
                       // disabled={stockQty <= 0}
-                      className="text-white w-full h-10 bg-[#2e3192] rounded-lg cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="text-white w-full h-12 bg-[#2e3192] rounded-lg cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
                       {stockQty <= 0 ? "OUT OF STOCK" : "SAVATGA"}
                     </button>
