@@ -29,6 +29,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
 
   const cartItem = items?.find((product) => product.id === Id);
   const currentQty = cartItem?.qty || 0;
+  const stockQty = item?.stock_qty ?? 0;
 
   return (
     <div>
@@ -46,7 +47,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                     className="w-full h-full object-cover"
                   /> */}
                   <div className="w-full h-full rounded-3xl overflow-hidden flex flex-col gap-5">
-                    {item?.images?.map((image: any, i) => (
+                    {/* {item?.images?.map((image: any, i) => (
                       <Image
                         key={image.id}
                         src={`https://api.bunyodoptom.uz${image.url}`}
@@ -56,9 +57,9 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                         className="w-full h-full object-cover rounded-3xl"
                         priority
                       />
-                    ))}
+                    ))} */}
                   </div>
-                  {/* <Image
+                  <Image
                     // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
                     src={
                       item?.images?.length && item.images[1]?.url
@@ -68,7 +69,7 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                     width={400}
                     height={360}
                     alt="Product Image"
-                  /> */}
+                  />
                 </div>
                 <div className="w-full lg:w-1/2 flex flex-col gap-2">
                   <h1 className="text-xl lg:text-4xl font-semibold tracking-tight">
@@ -79,44 +80,33 @@ function Product({ params }: { params: Promise<{ id: string }> }) {
                   </p>
                 </div>
                 <div className="w-full lg:w-1/2">
-                  <h1 className="text-xl lg:text-4xl">{item?.name}</h1>
-                  <p className="text-base lg:text-xl mt-2.5 lg:mt-5">
-                    {item?.description}
-                  </p>
-                  <p className="text-lg lg:text-2xl mt-2.5 lg:mt-5">
-                    {item?.price?.toLocaleString()} USZ
-                  </p>
-
-                  {/* Add to cart / quantity controls */}
-                  {!items ? (
+                  {!cartItem ? (
                     <button
                       onClick={() => addCart(item)}
-                      disabled={item?.stock_qty <= 0}
-                      className="text-white w-full h-10 bg-[#2e3192] rounded-lg cursor-pointer mt-5 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      disabled={stockQty <= 0}
+                      className="text-white w-full h-10 bg-[#2e3192] rounded-lg cursor-pointer disabled:bg-gray-400 disabled:cursor-not-allowed"
                     >
-                      {item?.stock_qty <= 0 ? "OUT OF STOCK" : "SAVATGA"}
+                      {stockQty <= 0 ? "OUT OF STOCK" : "SAVATGA"}
                     </button>
                   ) : (
-                    <div className="mt-5">
-                      <div className="w-max flex items-center gap-3 border border-solid border-black px-3 py-1 rounded-lg">
-                        <button
-                          onClick={() => decrement(Id)}
-                          disabled={currentQty <= 1}
-                          className="disabled:opacity-50"
-                        >
-                          <MinusIcon />
-                        </button>
+                    <div className="w-max flex items-center gap-3 border border-solid border-black px-3 py-1 rounded-lg">
+                      <button
+                        onClick={() => decrement(Id)}
+                        disabled={currentQty <= 1}
+                        className="disabled:opacity-50"
+                      >
+                        <MinusIcon />
+                      </button>
 
-                        <span>{currentQty}</span>
+                      <span>{currentQty}</span>
 
-                        <button
-                          onClick={() => increment(Id)}
-                          disabled={currentQty >= item?.stock_qty}
-                          className="disabled:opacity-50"
-                        >
-                          <PlusIcon />
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => increment(Id)}
+                        disabled={currentQty >= stockQty}
+                        className="disabled:opacity-50"
+                      >
+                        <PlusIcon />
+                      </button>
                     </div>
                   )}
                 </div>

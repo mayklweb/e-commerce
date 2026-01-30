@@ -10,9 +10,9 @@ export interface ProductsType {
   images?: ProductImageType[];
   category_id?: number;
   brand_id?: number;
-  description: string;
+  description?: string;
   status: string;
-  stock_qty?: number;
+  stock_qty: number;
 }
 
 export interface CategoriesType {
