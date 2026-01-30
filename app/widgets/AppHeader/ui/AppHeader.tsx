@@ -53,7 +53,7 @@ export const AppHeader = () => {
                   </button>
                 </div>
               </form>
-              <FilterDrawer categories={categories} brands={brands}/>
+              {/* <FilterDrawer categories={categories} brands={brands}/> */}
               {/* {path.split("/")[1] === "products" && (
                 <button className="text-xs flex flex-col items-center gap-1 bg-primary/10 px-2.5 py-2 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300">
                   <FilterIcon />

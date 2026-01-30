@@ -1,17 +1,22 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getProducts } from "../actions/productsAction";
+import { ProductsType } from "@/app/utils/types";
 
-interface Products {
-  id: number;
-  name: string;
-  price: number;
-  images: { url: string }[];
+// interface Products {
+//   id: number;
+//   name: string;
+//   price: string;
+//   brand_id?: number;
+//   category_id?: number;
+//   description: string;
+//   images?: string[];
+//   status: string;
+//   stock_qty: number;
+// }
 
-  // add fields based on your API
-}
 
 interface ProductsState {
-  products: Products[];
+  products: ProductsType[];
   loading: boolean;
 }
 
@@ -31,7 +36,7 @@ const productsSlice = createSlice({
       })
       .addCase(
         getProducts.fulfilled,
-        (state, action: PayloadAction<Products[]>) => {
+        (state, action: PayloadAction<ProductsType[]>) => {
           state.loading = false;
           state.products = action.payload;
         },

@@ -1,19 +1,9 @@
+import { ProductsType } from "@/app/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 const ITEMS_PER_PAGE = 100;
-
-type ImageType = {
-  url: string;
-};
-
-type ProductsType = {
-  id: string | number;
-  name: string;
-  price: number | string;
-  images: ImageType[];
-};
 
 type Props = {
   products: ProductsType[];

@@ -77,18 +77,21 @@ export default function Home() {
             </div>
             <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
               {homeProducts.map((product, i) => (
-                <Link href={`/product/${product.id}`} key={i} className="w-full">
+                <Link
+                  href={`/product/${product.id}`}
+                  key={i}
+                  className="w-full"
+                >
                   <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
                     <Image
-                      // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
                       src={
-                        product.images[0]
-                          ? `https://api.bunyodoptom.uz/${product.images[0]?.url}`
-                          : "/product.webp" // fallback
+                        product.images?.[0]?.url
+                          ? `https://api.bunyodoptom.uz/${product.images[0].url}`
+                          : "/product.webp"
                       }
                       width={400}
                       height={360}
-                      alt="Product Image"
+                      alt={product.name}
                     />
                   </div>
                   <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
@@ -103,7 +106,9 @@ export default function Home() {
               ))}
             </div>
             <div>
-              <button className="w-full mt-5 py-3 text-accent bg-primary rounded-xl font-semibold">YANA KO'RISH</button>
+              <button className="w-full mt-5 py-3 text-accent bg-primary rounded-xl font-semibold">
+                YANA KO'RISH
+              </button>
             </div>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { CloseIcon, FilterIcon, RightIcon } from "@/app/shared/icons";
+import { BrandsType, CategoriesType } from "@/app/utils/types";
 import {
   Accordion,
   AccordionContent,
@@ -13,15 +14,21 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
 type Props = {
-  categories: CategoryType[];
+  categories: CategoriesType[];
   brands: BrandsType[];
+  activeBrand: number | null;
+  setActiveBrand: (id: number | null) => void;
 };
 
-function FilterDrawer({ categories, brands }: Props) {
+function FilterDrawer({
+  categories,
+  brands,
+  activeBrand,
+  setActiveBrand,
+}: Props) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -70,17 +77,16 @@ function FilterDrawer({ categories, brands }: Props) {
             <AccordionTrigger className="text-lg">Brands</AccordionTrigger>
             <AccordionContent className="h-full overflow-x-scroll">
               <div className="h-full">
-                {brands.map(({ name }, i) => (
-                  <div
-                    key={i}
-                    className="py-1 text-base flex items-center justify-between border-b"
+                {brands.map((brand) => (
+                  <button
+                    key={brand.id}
+                    onClick={() => setActiveBrand(brand.id)}
+                    className={activeBrand === brand.id ? "font-bold" : ""}
                   >
-                    <p>{name}</p>
-                    <span>
-                      <RightIcon className="size-5" />
-                    </span>
-                  </div>
+                    {brand.name}
+                  </button>
                 ))}
+                А
               </div>
             </AccordionContent>
           </AccordionItem>
