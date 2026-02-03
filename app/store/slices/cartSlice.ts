@@ -1,101 +1,84 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { ProductsType } from "@/app/utils/types";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Product {
-  id: number;
-  name: string;
-  price: number;
-  categoryId: number;
-  images: string[];
-  qty: number;
-}
+export type CartItem = ProductsType & { qty: number };
 
 interface CartState {
-  items: Product[];
-  totalPrice: number;
+  cart: CartItem[];
 }
 
-// Helper function to safely get cart from localStorage
-function getInitialCart(): Product[] {
-  if (typeof window === "undefined") {
-    return []; // Return empty array during SSR
-  }
-  
-  try {
-    const stored = localStorage.getItem("cart");
-    return stored ? JSON.parse(stored) : [];
-  } catch (error) {
-    console.error("Error reading cart from localStorage:", error);
-    return [];
-  }
-}
-
-// Helper function to calculate total price
-function calculateTotalPrice(items: Product[]): number {
-  return items.reduce((total, item) => total + item.price * item.qty, 0);
-}
-
-const initialState: CartState = {
-  items: getInitialCart(),
-  totalPrice: 0,
+const loadCart = (): CartItem[] => {
+  if (typeof window === "undefined") return [];
+  const saved = localStorage.getItem("cart");
+  return saved ? JSON.parse(saved) : [];
 };
 
-// Update totalPrice after initialization
-initialState.totalPrice = calculateTotalPrice(initialState.items);
-  
-function setCart(arr: Product[]): Product[] {
+const saveCart = (cart: CartItem[]) => {
   if (typeof window !== "undefined") {
-    try {
-      localStorage.setItem("cart", JSON.stringify(arr));
-    } catch (error) {
-      console.error("Error saving cart to localStorage:", error);
-    }
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
-  return arr;
-}
+};
+
+const initialState: CartState = {
+  cart: loadCart(),
+};
 
 const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-    addCart: (state, { payload }) => {
-      const isContain = state.items.some((item) => item.id === payload.id);
-      const newItems = isContain
-        ? state.items.map((item) =>
-            item.id === payload.id ? { ...item, qty: item.qty + 1 } : item,
-          )
-        : [...state.items, { ...payload, qty: 1 }];
-      state.items = setCart(newItems);
-      state.totalPrice = calculateTotalPrice(newItems);
+    addToCart(state, action: PayloadAction<ProductsType>) {
+      const item = action.payload;
+      if (item.stock_qty <= 0) return;
+
+      const existing = state.cart.find((p) => p.id === item.id);
+
+      if (existing) {
+        existing.qty = Math.min(
+          existing.qty + (item.qty || 1),
+          item.stock_qty
+        );
+      } else {
+        state.cart.push({ ...item, qty: item.qty || 1 });
+      }
+
+      saveCart(state.cart);
     },
-    removeCart: (state, { payload }) => {
-      const newItems = state.items.filter((item) => item.id !== payload);
-      state.items = setCart(newItems);
-      state.totalPrice = calculateTotalPrice(newItems);
+
+    inc(state, action: PayloadAction<number>) {
+      const item = state.cart.find((p) => p.id === action.payload);
+      if (item) {
+        item.qty = Math.min(item.qty + 1, item.stock_qty);
+      }
+      saveCart(state.cart);
     },
-    increment: (state, { payload }) => {
-      const newItems = state.items.map((item) =>
-        item.id === payload ? { ...item, qty: item.qty + 1 } : item,
-      );
-      state.items = setCart(newItems);
-      state.totalPrice = calculateTotalPrice(newItems);
+
+    dec(state, action: PayloadAction<number>) {
+      const item = state.cart.find((p) => p.id === action.payload);
+      if (item && item.qty > 1) {
+        item.qty -= 1;
+      }
+      saveCart(state.cart);
     },
-    decrement: (state, { payload }) => {
-      const newItems = state.items.map((item) =>
-        item.id === payload
-          ? { ...item, qty: item.qty > 1 ? item.qty - 1 : 1 }
-          : item,
-      );
-      state.items = setCart(newItems);
-      state.totalPrice = calculateTotalPrice(newItems);
+
+    remove(state, action: PayloadAction<number>) {
+      state.cart = state.cart.filter((i) => i.id !== action.payload);
+      saveCart(state.cart);
     },
-    removeAllProducts: (state) => {
-      state.items = setCart([]);
-      state.totalPrice = 0;
+
+    clearCart(state) {
+      state.cart = [];
+      saveCart(state.cart);
     },
   },
 });
 
-export const { addCart, removeCart, increment, decrement, removeAllProducts } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  inc,
+  dec,
+  remove,
+  clearCart,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;

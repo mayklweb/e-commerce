@@ -2,19 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getProducts } from "../actions/productsAction";
 import { ProductsType } from "@/app/utils/types";
 
-// interface Products {
-//   id: number;
-//   name: string;
-//   price: string;
-//   brand_id?: number;
-//   category_id?: number;
-//   description: string;
-//   images?: string[];
-//   status: string;
-//   stock_qty: number;
-// }
-
-
 interface ProductsState {
   products: ProductsType[];
   loading: boolean;
@@ -48,3 +35,4 @@ const productsSlice = createSlice({
 });
 
 export default productsSlice.reducer;
+ 

@@ -1,15 +1,18 @@
 "use client";
 import { DeleteIcon, MinusIcon, PlusIcon } from "@/app/shared/icons";
 import { RootState } from "@/app/store";
+import { ProductsType } from "@/app/utils/types";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 
-function Card() {
+type Props = {
+  item: ProductsType;
+};
 
-  const {items} = useSelector((state: RootState) => state.cart) 
+function Card({ item }: Props) {
+  // const { items } = useSelector((state: RootState) => state.cart);
 
-  console.log(items);
-  
+  // console.log(items);
 
   return (
     <div className="w-full flex gap-3 lg:gap-5 border-b border-gray py-2.5">
@@ -26,8 +29,10 @@ function Card() {
         <div>
           <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
             АЛПИНА КАРАМЕЛ КРМ 0.5 КГ
+            {item.name}
           </h3>
           <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end md:text-start md:mt-2">
+            {item.price}
             39 000 USZ
           </p>
         </div>
@@ -39,7 +44,7 @@ function Card() {
             >
               <MinusIcon />
             </button>
-            <p>1</p>
+            <p>{}</p>
             <button className="p-1 cursor-pointer">
               <PlusIcon />
             </button>

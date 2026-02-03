@@ -13,6 +13,7 @@ export interface ProductsType {
   description?: string;
   status: string;
   stock_qty: number;
+  qty?: number | undefined
 }
 
 export interface CategoriesType {

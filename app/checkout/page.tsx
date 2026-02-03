@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../store";
-import { removeAllProducts } from "../store/slices/cartSlice";
+import { clearCart } from "../store/slices/cartSlice";
 import { getAddresses } from "../store/actions/addressesAction";
 
 interface CheckoutFormData {
@@ -17,7 +17,7 @@ interface CheckoutFormData {
 const Checkout = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { items } = useSelector((state: RootState) => state.cart);
+  const { cart } = useSelector((state: RootState) => state.cart);
   const { addresses, loading: addressLoading } = useSelector(
     (state: RootState) => state.addresses
   );
@@ -40,7 +40,7 @@ const Checkout = () => {
     dispatch(getAddresses());
   }, [dispatch]);
 
-  const totalAmount = items.reduce(
+  const totalAmount = cart.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
@@ -67,7 +67,7 @@ const Checkout = () => {
             payment_method: data.paymentMethod,
             notes: data.comment,
             idempotency_key: crypto.randomUUID(),
-            items: items.map((item) => ({
+            items: cart.map((item) => ({
               product_id: item.id,
               qty: item.qty,
             })),
@@ -82,7 +82,7 @@ const Checkout = () => {
         return alert("Buyurtma yaratishda xatolik");
       }
 
-      dispatch(removeAllProducts());
+      dispatch(clearCart());
       window.location.href = "/profile/orders";
     } catch (err) {
       console.error(err);
