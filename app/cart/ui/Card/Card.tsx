@@ -1,19 +1,17 @@
 "use client";
 import { DeleteIcon, MinusIcon, PlusIcon } from "@/app/shared/icons";
-import { RootState } from "@/app/store";
+import { AppDispatch } from "@/app/store";
+import { dec, inc, remove } from "@/app/store/slices/cartSlice";
 import { ProductsType } from "@/app/utils/types";
 import Image from "next/image";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 type Props = {
   item: ProductsType;
 };
 
 function Card({ item }: Props) {
-  // const { items } = useSelector((state: RootState) => state.cart);
-
-  // console.log(items);
-
+  const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="w-full flex gap-3 lg:gap-5 border-b border-gray py-2.5">
       <div className="w-37.5 h-[calc(225px/2)] md:w-50 md:h-37.5 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden">
@@ -28,12 +26,10 @@ function Card({ item }: Props) {
       <div className=" flex flex-col justify-between">
         <div>
           <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
-            АЛПИНА КАРАМЕЛ КРМ 0.5 КГ
             {item.name}
           </h3>
           <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end md:text-start md:mt-2">
-            {item.price}
-            39 000 USZ
+            {item.price} USZ
           </p>
         </div>
         <div className="flex items-center justify-between ">
@@ -41,16 +37,23 @@ function Card({ item }: Props) {
             <button
               className="p-1 cursor-pointer"
               aria-label="Decrease quantity"
+              onClick={() => dispatch(dec(item.id))}
             >
               <MinusIcon />
             </button>
-            <p>{}</p>
-            <button className="p-1 cursor-pointer">
+            <p>{item.qty}</p>
+            <button
+              className="p-1 cursor-pointer"
+              onClick={() => dispatch(inc(item.id))}
+            >
               <PlusIcon />
             </button>
           </div>
           <div>
-            <button className="p-1 cursor-pointer">
+            <button
+              className="p-1 cursor-pointer"
+              onClick={() => dispatch(remove(item.id))}
+            >
               <DeleteIcon />
             </button>
           </div>

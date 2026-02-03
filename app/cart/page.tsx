@@ -1,6 +1,4 @@
-import Image from "next/image";
-import React from "react";
-import { DeleteIcon } from "../shared/icons";
+"use client"
 import { List } from "./ui";
 
 function CartIcon() {
