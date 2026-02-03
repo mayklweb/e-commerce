@@ -19,7 +19,7 @@ const Checkout = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { cart } = useSelector((state: RootState) => state.cart);
   const { addresses, loading: addressLoading } = useSelector(
-    (state: RootState) => state.addresses
+    (state: RootState) => state.addresses,
   );
 
   const [loading, setLoading] = useState(false);
@@ -41,8 +41,8 @@ const Checkout = () => {
   }, [dispatch]);
 
   const totalAmount = cart.reduce(
-    (sum, item) => sum + item.price * item.qty,
-    0
+    (sum, item) => sum + Number(item.price ?? 0) * item.qty,
+    0,
   );
 
   const onSubmit = async (data: CheckoutFormData) => {
@@ -72,7 +72,7 @@ const Checkout = () => {
               qty: item.qty,
             })),
           }),
-        }
+        },
       );
 
       const result = await res.json();
@@ -118,14 +118,12 @@ const Checkout = () => {
           </select>
 
           {/* CART */}
-          {items.map((item) => (
+          {cart.map((item) => (
             <div key={item.id} className="flex justify-between py-1">
               <span>
                 {item.name} x {item.qty}
               </span>
-              <span>
-                {(item.price * item.qty).toLocaleString()} so'm
-              </span>
+              <span>{(Number(item.price) * item.qty).toLocaleString()} so'm</span>
             </div>
           ))}
 
@@ -142,11 +140,7 @@ const Checkout = () => {
 
           {/* PAYMENT */}
           <label className="flex gap-2 mt-4">
-            <input
-              type="radio"
-              value="cash"
-              {...register("paymentMethod")}
-            />
+            <input type="radio" value="cash" {...register("paymentMethod")} />
             Naqd pul
           </label>
 
