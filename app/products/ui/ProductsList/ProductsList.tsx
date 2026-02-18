@@ -37,6 +37,7 @@ function ProductsList({ products }: Props) {
                 width={400}
                 height={360}
                 alt="Product Image"
+                loading="lazy"
               />
             </div>
             <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">

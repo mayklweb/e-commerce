@@ -17,7 +17,7 @@ function Products() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [activeBrand, setActiveBrand] = useState<number | null>(null);
 
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = products?.filter((product) => {
     const categoryMatch =
       activeCategory === null || product.category_id === activeCategory;
 

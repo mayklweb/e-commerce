@@ -20,7 +20,8 @@ export default function Home() {
     dispatch(getBrands());
   }, []);
 
-  function shuffleArray<T>(array: T[]) {
+  function shuffleArray<T>(array?: T[] | null) {
+    if (!Array.isArray(array)) return []; // agar array bo‘lmasa bo‘sh array qaytar
     return [...array].sort(() => Math.random() - 0.5);
   }
 

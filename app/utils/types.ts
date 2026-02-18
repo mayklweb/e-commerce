@@ -16,6 +16,19 @@ export interface ProductsType {
   qty?: number | undefined
 }
 
+export interface ProductType {
+  id: number;
+  name: string;
+  price: string;
+  images?: ProductImageType[];
+  category_id?: number;
+  brand_id?: number;
+  description?: string;
+  status: string;
+  stock_qty: number;
+  qty?: number | undefined
+}
+
 export interface CategoriesType {
   id: number;
   name: string;
