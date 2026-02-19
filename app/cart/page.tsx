@@ -17,7 +17,7 @@ function CartIcon() {
                   <p className="text-lg">Sizning savatingiz bo'sh</p>
                 </div>
               ) : (
-                <div className="flex flex-colw2sw2">
+                <div className="flex flex-col">
                   <div>
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
                       SAVAT
