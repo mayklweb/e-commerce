@@ -59,53 +59,6 @@ export default function SignIn() {
   const dispatch = useDispatch();
   const [displayPhone, setDisplayPhone] = useState("");
 
-  // const {
-  //   handleSubmit,
-  //   control,
-  //   register,
-  //   setValue,
-  //   formState: { errors },
-  // } = useForm({
-  //   resolver: yupResolver(loginSchema),
-  //   defaultValues: {
-  //     phone: "",
-  //     password: "",
-  //   },
-  // });
-
-  // const onSubmit = async (data: any) => {
-  //   console.log("Frontend phone (raw):", data.phone);
-  //   console.log("Password:", data.password);
-
-  //   try {
-  //     const res = await $api.post(signinUrl, data);
-
-  //     // Save user + token to Redux + localStorage
-  //     // DO NOT store password - only token and user info
-  //     dispatch(
-  //       setAuth({
-  //         user: {
-  //           phone: res.data.phone,
-  //           name: res.data.name,
-  //           password: data.password,
-  //         },
-  //         token: res.data.token,
-  //       }),
-  //     );
-  //     localStorage.setItem("token", res.data.token);
-  //     localStorage.setItem(
-  //       "user",
-  //       JSON.stringify({ name: res.data.name, phone: res.data.phone }),
-  //     );
-  //   } catch (err: any) {
-  //     if (err?.response?.status === 401) {
-  //       alert("Bunday user mavjud emas yoki password xato!");
-  //     } else {
-  //       alert("Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.");
-  //     }
-  //   }
-  // };
-
   const { register, handleSubmit, setValue, formState } = useForm({
     defaultValues: {
       phone: "",
@@ -116,6 +69,8 @@ export default function SignIn() {
   const router = useRouter();
 
   const onSubmit = async (data: any) => {
+    console.log(data);
+
     try {
       const res = await $api.post(signinUrl, {
         phone: extractRawPhone(data.phone),
@@ -155,11 +110,16 @@ export default function SignIn() {
         <div className="mt-6">
           <label>Telefon</label>
           <input
-            {...register("phone")}
-            value={displayPhone}
-            onChange={(e) => setDisplayPhone(formatPhone(e.target.value))}
             type="text"
             placeholder="+998 __ ___ __ __"
+            value={displayPhone}
+            onChange={(e) => {
+              const formatted = formatPhone(e.target.value);
+              setDisplayPhone(formatted);
+
+              // form state ga raw 9 digit beramiz
+              setValue("phone", extractRawPhone(e.target.value));
+            }}
             className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
           />
         </div>
