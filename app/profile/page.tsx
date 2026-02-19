@@ -37,7 +37,7 @@ function Profile() {
     <div className="mt-5">
       <section>
         <div className="container">
-          <div className="w-full flex flex-col gap-6">
+          <div className="w-full flex flex-col flex-auto h-full gap-6">
             <Tabs className="w-full" defaultValue="account">
               <TabsList className="w-full h-auto p-1 bg-primary/10">
                 <TabsTrigger className="text-primary p-2" value="account">
@@ -48,7 +48,7 @@ function Profile() {
                 </TabsTrigger>
               </TabsList>
               <TabsContent value="account">
-                <div className="flex flex-col gap-4 mt-4">
+                <div className="w-full h-full flex flex-col gap-4 mt-4">
                   <div>
                     <label htmlFor="name" className="text-sm text-black/50">
                       Ism
@@ -74,31 +74,37 @@ function Profile() {
                       className={`focus-within:border-secondary outline-none w-full bg-wihte/10 border-b`}
                     />
                   </div>
-
-                  {!isEditing ? (
-                    <button
-                      onClick={() => setIsEditing(true)}
-                      className="bg-primary text-white py-2.5 rounded-lg"
-                    >
-                      Edit Profile
+                  <div className="w-full">
+                    {!isEditing ? (
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="w-full bg-primary text-white py-2.5 rounded-lg"
+                      >
+                        Edit Profile
+                      </button>
+                    ) : (
+                      <div className="flex gap-3">
+                        <button
+                          onClick={handleCancel}
+                          className="border py-2.5 rounded-lg w-full"
+                        >
+                          Bekor qilish
+                        </button>
+                        <button
+                          onClick={handleSave}
+                          disabled={loading}
+                          className="bg-primary text-white py-2.5 rounded-lg w-full"
+                        >
+                          {loading ? "Saqlash..." : "Saqlash"}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="w-full flex flex-auto">
+                    <button className="w-full text-error py-2.5 bg-error/10 rounded-lg">
+                      Logout
                     </button>
-                  ) : (
-                    <div className="flex gap-3">
-                      <button
-                        onClick={handleCancel}
-                        className="border py-2.5 rounded-lg w-full"
-                      >
-                        Bekor qilish
-                      </button>
-                      <button
-                        onClick={handleSave}
-                        disabled={loading}
-                        className="bg-primary text-white py-2.5 rounded-lg w-full"
-                      >
-                        {loading ? "Saqlash..." : "Saqlash"}
-                      </button>
-                    </div>
-                  )}
+                  </div>
                 </div>
               </TabsContent>
               <TabsContent value="orders">Orders</TabsContent>

@@ -33,7 +33,7 @@ export default function RootLayout({
       <ReduxProvider>
         <body className={`${nunito.variable} `}>
           <AppHeader />
-          <main className="flex flex-col flex-auto">{children}</main>
+          <main className="w-full h-full flex flex-col flex-auto">{children}</main>
           <AppFooter />
         </body>
       </ReduxProvider>
