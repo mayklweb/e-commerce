@@ -12,7 +12,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 // --- Format phone for display (with +998 prefix and spaces) ---
-const formatPhoneDisplay = (value: string) => {
+const formatPhone = (value: string) => {
   // Extract only digits
   const allDigits = value.replace(/\D/g, "");
 
@@ -146,32 +146,25 @@ export default function SignIn() {
 
   return (
     <div className="w-full h-full flex flex-col justify-center max-w-md mx-auto p-6">
-      <div className="mb-6">
+      <div className="">
         <h1 className="text-2xl font-bold mb-2">Sign In</h1>
         <p className="text-gray-600">Login to your account</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Phone Number</label>
+        <div className="mt-6">
+          <label>Telefon</label>
           <input
-            type="text"
             {...register("phone")}
+            value={displayPhone}
+            onChange={(e) => setDisplayPhone(formatPhone(e.target.value))}
+            type="text"
             placeholder="+998 __ ___ __ __"
             className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
-            onChange={(e) => {
-              // Format for display
-              const formatted = formatPhoneDisplay(e.target.value);
-              setDisplayPhone(formatted);
-
-              // Extract raw phone and update form value
-              const Phone = extractRawPhone(e.target.value);
-              setValue("phone", Phone);
-            }}
           />
         </div>
-        <div>
-          <label>Password</label>
+        <div className="mt-5">
+          <label>Parol</label>
           <input
             {...register("password")}
             type="password"
@@ -179,12 +172,15 @@ export default function SignIn() {
             className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
           />
         </div>
-        <input type="submit" />
+        <input
+          className="w-full mt-5 uppercase bg-primary text-white py-2 px-4 rounded-lg hover:text-primary hover:bg-secondary transition-all ease-in-out duration-300"
+          type="submit"
+        />
       </form>
 
       <div>
         <div className="mt-5 flex flex-col items-center justify-center">
-          <div className="w-full flex items-center gap-2 uppercase text-sm">
+          <div className="w-full flex items-center gap-3 uppercase text-xs font-semibold">
             <span className="h-px flex flex-auto bg-primary"></span>
             <p>Akkaunt yaratish</p>
             <span className="h-px flex flex-auto bg-primary"></span>

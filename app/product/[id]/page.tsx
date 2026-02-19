@@ -29,3 +29,5 @@ export default async function ProductPage({
   const { id } = await params; // ✅ unwrap
   return <ProductClient id={id} />;
 }
+
+export const dynamic = "force-dynamic";

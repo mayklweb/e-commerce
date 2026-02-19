@@ -110,7 +110,9 @@ export const Form = () => {
         {/* --- Name --- */}
 
         <div>
+          <label htmlFor="name">Ismingiz</label>
           <input
+            id="name"
             {...register("name")}
             type="text"
             placeholder="Ismingiz"
@@ -124,9 +126,13 @@ export const Form = () => {
         {/* --- Phone --- */}
 
         <div>
+          <label htmlFor="phone">Telefon</label>
+
           <input
+            id="phone"
             {...register("phone")}
             value={phoneDisplay}
+            onChange={(e) => setPhoneDisplay(formatPhone(e.target.value))}
             type="text"
             placeholder="+998 __ ___ __ __"
             className="py-2 px-2.5 border-primary/10 focus-within:border-secondary border rounded-lg outline-none w-full"
@@ -139,7 +145,9 @@ export const Form = () => {
         {/* --- Password --- */}
 
         <div>
+          <label htmlFor="password">Parol</label>
           <input
+            id="password"
             {...register("password")}
             type="password"
             placeholder="Password"
