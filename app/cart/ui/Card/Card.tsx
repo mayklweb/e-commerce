@@ -23,12 +23,12 @@ function Card({ item }: Props) {
           className="w-full h-full object-cover"
         />
       </div>
-      <div className=" flex flex-col justify-between">
+      <div className="flex flex-auto flex-col justify-between">
         <div>
           <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
             {item.name}
           </h3>
-          <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight text-end md:text-start md:mt-2">
+          <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight md:text-start md:mt-2">
             {item.price} USZ
           </p>
         </div>
