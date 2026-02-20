@@ -9,6 +9,14 @@ import { clearCart } from "../store/slices/cartSlice";
 import { getAddresses } from "../store/actions/addressesAction";
 import { $api } from "../shared/api/api";
 import Image from "next/image";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CheckoutFormData {
   address_id: string;
@@ -24,10 +32,9 @@ const Checkout = () => {
     (state: RootState) => state.auth,
   );
   const { cart } = useSelector((state: RootState) => state.cart);
-  const {
-    addresses,
-    loading: addressLoading,
-  } = useSelector((state: RootState) => state.addresses);
+  const { addresses, loading: addressLoading } = useSelector(
+    (state: RootState) => state.addresses,
+  );
 
   const [loading, setLoading] = useState(false);
   console.log(user);
@@ -112,14 +119,14 @@ const Checkout = () => {
 
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* USER */}
-          <div className="bg-blue-50 rounded-lg p-4 mb-6">
+          <div className="bg-primary/10 rounded-lg p-4 mb-6">
             <h2 className="font-semibold text-gray-800 mb-2">Oluvchi:</h2>
             <p className="text-gray-700">{user?.name}</p>
             <p className="text-gray-700">+998 {user?.phone}</p>
           </div>
 
           {/* ADDRESS SELECT */}
-          <div className="mb-6">
+          <div className="w-full mb-6">
             <h2 className="font-semibold text-gray-800 mb-3">
               Yetkazib berish manzili:
             </h2>
@@ -127,22 +134,61 @@ const Checkout = () => {
             {addressLoading && <p>Manzillar yuklanmoqda...</p>}
 
             {!addressLoading && (
-              <select
-                {...register("address_id", {
-                  required: "Manzilni tanlang",
-                })}
-                className={`w-full px-4 py-3 border rounded-lg ${
-                  errors.address_id ? "border-red-500" : "border-gray-300"
-                }`}
-              >
-                <option value="">Manzilni tanlang</option>
+              // <select
+              //   {...register("address_id", {
+              //     required: "Manzilni tanlang",
+              //   })}
+              //   className={`w-full px-4 py-3 border rounded-lg ${
+              //     errors.address_id ? "border-red-500" : "border-gray-300"
+              //   }`}
+              // >
+              //   <option value="">Manzilni tanlang</option>
 
-                {addresses.map((a: any) => (
-                  <option key={a.id} value={a.id}>
-                    {a.city}, {a.street}
-                  </option>
-                ))}
-              </select>
+              //   {addresses.map((a: any) => (
+              //     <option key={a.id} value={a.id}>
+              //       {a.city}, {a.street}
+              //     </option>
+              //   ))}
+              // </select>
+              <Select defaultValue="banana">
+                <SelectTrigger size={"default"} className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="bg-white" position="popper">
+                  <SelectGroup>
+                    <SelectItem
+                      className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
+                      value="apple"
+                    >
+                      Apple
+                    </SelectItem>
+                    <SelectItem
+                      className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
+                      value="banana"
+                    >
+                      Banana
+                    </SelectItem>
+                    <SelectItem
+                      className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
+                      value="blueberry"
+                    >
+                      Blueberry
+                    </SelectItem>
+                    <SelectItem
+                      className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
+                      value="grapes"
+                    >
+                      Grapes
+                    </SelectItem>
+                    <SelectItem
+                      className="data-[state=checked]:bg-primary data-[state=checked]:text-white"
+                      value="pineapple"
+                    >
+                      Pineapple
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             )}
 
             {errors.address_id && (
