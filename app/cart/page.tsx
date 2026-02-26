@@ -8,7 +8,7 @@ function CartIcon() {
 
   return (
     <section>
-      <div className="w-full h-full mt-5">
+      <div className="w-full h-full mt-5 mb-36">
         <div className="container">
           <div>
             <div className="w-full h-full">

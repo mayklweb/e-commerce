@@ -36,7 +36,7 @@ function Products() {
   }, []);
 
   return (
-    <div className="mt-5 mb-20">
+    <div className="mt-5 pb-24">
       <div className="container">
         <div>
           <div className="flex items-center justify-between">

@@ -33,7 +33,7 @@ export default function Home() {
   }, [products]);
 
   return (
-    <div className="mb-20">
+    <div className="pb-24">
       <section>
         <div className="mt-5">
           <div className="container">
