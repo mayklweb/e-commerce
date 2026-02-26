@@ -17,14 +17,17 @@ function Products() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [activeBrand, setActiveBrand] = useState<number | null>(null);
 
-  const filteredProducts = products?.filter((product) => {
-    const categoryMatch =
-      activeCategory === null || product.category_id === activeCategory;
+  const filteredProducts = Array.isArray(products)
+    ? products?.filter((product) => {
+        const categoryMatch =
+          activeCategory === null || product.category_id === activeCategory;
 
-    const brandMatch = activeBrand === null || product.brand_id === activeBrand;
+        const brandMatch =
+          activeBrand === null || product.brand_id === activeBrand;
 
-    return categoryMatch && brandMatch;
-  });
+        return categoryMatch && brandMatch;
+      })
+    : [];
 
   useEffect(() => {
     dispatch(getProducts());
@@ -86,7 +89,7 @@ function Products() {
             <div className="w-80 flex">
               <div></div>
             </div>
-            
+
             <ProductsList
               products={filteredProducts.map((product) => ({
                 ...product,
