@@ -60,7 +60,7 @@ export const AppFooter = () => {
             <div className="grid grid-cols-4 gap-2 items-center justify-between ">
               <Link href={"/"} className="p-4 flex flex-col items-center gap-1">
                 <HomeIcon />
-                <span className="text-xs text-primary font-semibold">
+                <span className="text-xs text-ring font-semibold">
                   ASOSIY
                 </span>
               </Link>
@@ -69,7 +69,7 @@ export const AppFooter = () => {
                 className="p-4 flex flex-col items-center gap-1"
               >
                 <ProductsIcon />
-                <span className="text-xs text-primary font-semibold">
+                <span className="text-xs text-ring font-semibold">
                   KATALOG
                 </span>
               </Link>
@@ -78,7 +78,7 @@ export const AppFooter = () => {
                 className="p-4 flex flex-col items-center gap-1"
               >
                 <CartIcon />
-                <span className="text-xs text-primary font-semibold">
+                <span className="text-xs text-ring font-semibold">
                   SAVAT
                 </span>
               </Link>
@@ -87,7 +87,7 @@ export const AppFooter = () => {
                 className="p-4 flex flex-col items-center gap-1"
               >
                 <UserIcon />
-                <span className="text-xs text-primary font-semibold">
+                <span className="text-xs text-ring font-semibold">
                   {isAuth ? user?.name?.toLocaleUpperCase() : "KIRISH"}
                 </span>
               </Link>
