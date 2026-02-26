@@ -49,16 +49,6 @@ function Products() {
               setActiveBrand={setActiveBrand}
             />
           </div>
-          {/* <div className="overflow-y-scroll flex py-2 gap-3 mt-2">
-            {categories.map(({ name }, i) => (
-              <button
-                key={i}
-                className="py-2 px-4 bg-secondary rounded-md text-nowrap text-sm text-primary"
-              >
-                {name}
-              </button>
-            ))}
-          </div> */}
           <div className="overflow-y-scroll flex py-2 gap-3 mt-2">
             <button
               onClick={() => setActiveCategory(null)}
@@ -85,8 +75,8 @@ function Products() {
               </button>
             ))}
           </div>
-          <div className="flex gap-5">
-            <div className="w-80 flex">
+          <div className="flex lg:gap-5">
+            <div className="lg:w-80 flex">
               <div></div>
             </div>
 
@@ -95,8 +85,6 @@ function Products() {
                 ...product,
               }))}
             />
-
-            {/* <div>{products.map((product) => (<div key={product.id}>{product.name}</div>))}</div> */}
           </div>
         </div>
       </div>

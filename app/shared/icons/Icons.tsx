@@ -14,18 +14,18 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-export const UserIcon = () => {
+export const UserIcon = ({ color = "#2e3192" }) => {
   return (
-    <HugeiconsIcon icon={User} size={24} color="#2e3192" strokeWidth={1.5} />
+    <HugeiconsIcon icon={User} size={24} color={color} strokeWidth={1.5} />
   );
 };
 
-export const CartIcon = () => {
+export const CartIcon = ({ color = "#2e3192" }) => {
   return (
     <HugeiconsIcon
       icon={ShoppingBasket03Icon}
       size={24}
-      color="#2e3192"
+      color={color}
       strokeWidth={1.5}
     />
   );
@@ -41,23 +41,23 @@ export const SearchIcon = () => {
     />
   );
 };
-export const HomeIcon = () => {
+export const HomeIcon = ({ color = "#2e3192" }) => {
   return (
     <HugeiconsIcon
       icon={Home04Icon}
       size={24}
-      color="#2e3192"
+      color={color}
       strokeWidth={1.5}
     />
   );
 };
 
-export const ProductsIcon = () => {
+export const ProductsIcon = ({ color = "#2e3192" }) => {
   return (
     <HugeiconsIcon
       icon={MenuSquareIcon}
       size={24}
-      color="#2e3192"
+      color={color}
       strokeWidth={1.5}
     />
   );

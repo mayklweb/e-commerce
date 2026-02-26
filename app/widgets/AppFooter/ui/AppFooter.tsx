@@ -59,8 +59,8 @@ export const AppFooter = () => {
           <div className="container">
             <div className="grid grid-cols-4 gap-2 items-center justify-between ">
               <Link href={"/"} className="p-4 flex flex-col items-center gap-1">
-                <HomeIcon />
-                <span className="text-xs text-ring font-semibold">
+                <HomeIcon color="#4a5565" />
+                <span className="text-xs text-gray-600 font-bold">
                   ASOSIY
                 </span>
               </Link>
@@ -68,8 +68,8 @@ export const AppFooter = () => {
                 href={"/products"}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <ProductsIcon />
-                <span className="text-xs text-ring font-semibold">
+                <ProductsIcon color="#4a5565" />
+                <span className="text-xs text-gray-600 font-bold">
                   KATALOG
                 </span>
               </Link>
@@ -77,7 +77,7 @@ export const AppFooter = () => {
                 href={"/cart"}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <CartIcon />
+                <CartIcon color="#4a5565" />
                 <span className="text-xs text-gray-600 font-bold">
                   SAVAT
                 </span>
@@ -86,8 +86,8 @@ export const AppFooter = () => {
                 href={`${isAuth ? "/profile" : "signin"}`}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <UserIcon />
-                <span className="text-xs text-ring font-semibold">
+                <UserIcon color="#4a5565" />
+                <span className="text-xs text-gray-600 font-bold">
                   {isAuth ? user?.name?.toLocaleUpperCase() : "KIRISH"}
                 </span>
               </Link>
