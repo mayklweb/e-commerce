@@ -114,7 +114,7 @@ const Checkout = () => {
 
   return (
     <section>
-      <div className="mt-5">
+      <div className="mt-5 mb-20">
         <div className="container">
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* USER */}
@@ -290,7 +290,7 @@ const Checkout = () => {
             {/* SUBMIT */}
             <button
               disabled={loading}
-              className="w-full bg-[#2e3192] text-white py-4 mt-6 rounded-xl disabled:opacity-50"
+              className="w-full bg-[#2e3192] text-white py-4 rounded-xl disabled:opacity-50"
             >
               {loading ? "Kutilmoqda..." : "Buyurtma berish"}
             </button>

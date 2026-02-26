@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link.js";
-import { SearchIcon, UserIcon, CartIcon, FilterIcon } from "@/app/shared/icons";
+import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
 import { usePathname } from "next/navigation";
 
 export const AppHeader = () => {
   const path = usePathname();
   return (
     <header>
-      {path.split("/")[1] !== "signup" && path.split("/")[1] !== "signin" ? (
+      {path.split("/")[1] !== "signup" && path.split("/")[1] !== "signin" && path.split("/")[1] !== "checkout" && path.split("/")[1] !== "cart" ? (
         <div className="w-full bg-white shadow-sm">
           <div className="container">
             <div className="w-full flex items-center justify-between py-4">
