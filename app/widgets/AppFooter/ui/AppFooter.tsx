@@ -78,7 +78,7 @@ export const AppFooter = () => {
                 className="p-4 flex flex-col items-center gap-1"
               >
                 <CartIcon />
-                <span className="text-xs text-ring font-semibold">
+                <span className="text-xs text-gray-600 font-bold">
                   SAVAT
                 </span>
               </Link>
