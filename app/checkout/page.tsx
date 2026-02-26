@@ -150,7 +150,10 @@ const Checkout = () => {
                 //   ))}
                 // </select>
                 <Select defaultValue="Manzilni tanlang">
-                  <SelectTrigger size={"default"} className="w-full">
+                  <SelectTrigger
+                    className="w-full text-lg px-3 py-5"
+                    size={"default"}
+                  >
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent className="bg-white" position="popper">
