@@ -23,12 +23,11 @@ function ProductsList({ products }: Props) {
 
   return (
     <div>
-      <div className="grid grid-cols-2 gap-4 mt-5">
+      <div className="grid grid-cols-3 gap-4 mt-5">
         {paginatedProducts.map((product, i) => (
           <Link href={`/product/${product.id}`} key={i} className="w-full">
             <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
               <Image
-                // src={`https://api.bunyodoptom.uz/${product.images[0]?.url} ${}`}
                 src={
                   product.images?.length && product.images[0]?.url
                     ? `https://api.bunyodoptom.uz${product.images[0].url}`
@@ -36,8 +35,8 @@ function ProductsList({ products }: Props) {
                 }
                 width={400}
                 height={360}
-                alt="Product Image"
-                loading="lazy"
+                alt={product.name}
+                priority
               />
             </div>
             <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">

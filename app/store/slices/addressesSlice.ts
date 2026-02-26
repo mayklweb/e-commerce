@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { getAddresses } from "../actions/addressesAction";
-import { getBrands } from "../actions/brandsAction";
 
 interface Addresses {
   id: number;
@@ -22,8 +21,8 @@ const initialState: AddressesState = {
   loading: false,
 };
 
-const brandsSlice = createSlice({
-  name: "brands",
+const addressesSlice = createSlice({
+  name: "addresses",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -32,7 +31,7 @@ const brandsSlice = createSlice({
         state.loading = true;
       })
       .addCase(
-        getBrands.fulfilled,
+        getAddresses.fulfilled,
         (state, action: PayloadAction<Addresses[]>) => {
           state.loading = false;
           state.addresses = action.payload;
@@ -44,4 +43,4 @@ const brandsSlice = createSlice({
   },
 });
 
-export default brandsSlice.reducer;
+export default addressesSlice.reducer;

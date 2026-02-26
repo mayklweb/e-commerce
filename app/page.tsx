@@ -32,8 +32,6 @@ export default function Home() {
     return shuffled.slice(0, 10);
   }, [products]);
 
-  console.log(homeProducts);
-
   return (
     <div className="mb-20">
       <section>
@@ -55,14 +53,14 @@ export default function Home() {
                 </h1>
               </div>
               <div className="mt-5 grid grid-cols-4 gap-3 md:gap-4 lg:gap-5">
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
-                <div className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary"></div>
+                {categories.map(({ name }, i) => (
+                  <Link href={`/products/`}
+                    key={i}
+                    className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary flex items-center justify-center"
+                  >
+                    <p className="text-white text-xl">{name}</p>
+                  </Link>
+                ))}
               </div>
             </div>
           </div>

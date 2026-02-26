@@ -32,17 +32,21 @@ export default function ProductClient({ id }: { id: string }) {
           {/* IMAGE */}
           <div className="w-full lg:w-1/2 rounded-3xl overflow-hidden">
             <Image
+              // src={
+              //   product.images?.[0]?.url
+              //     ? `https://api.bunyodoptom.uz${product.images[0].url}`
+              //     : "/product.webp"
+              // }
               src={
-                product.images?.[0]?.url
+                product.images?.length && product.images[0]?.url
                   ? `https://api.bunyodoptom.uz${product.images[0].url}`
-                  : "/product.webp"
+                  : "/product.webp" // fallback
               }
               alt={product.name}
               width={500}
               height={400}
-            //   alt={product.name}
               className="w-full h-full object-cover"
-              loading="lazy"
+              priority
             />
           </div>
 

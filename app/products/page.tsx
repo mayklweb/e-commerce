@@ -65,7 +65,7 @@ function Products() {
                   : "bg-secondary text-primary"
               }`}
             >
-              All
+              БАРЧАСИ
             </button>
 
             {categories.map(({ id, name }) => (
@@ -82,16 +82,11 @@ function Products() {
               </button>
             ))}
           </div>
-          <div className="gap-5">
-            <div className="flex">
+          <div className="flex gap-5">
+            <div className="w-80 flex">
               <div></div>
             </div>
-            {/* <ProductsList
-              products={products.map((product) => ({
-                ...product,
-                images: product.images || [],
-              }))}
-            /> */}
+            
             <ProductsList
               products={filteredProducts.map((product) => ({
                 ...product,

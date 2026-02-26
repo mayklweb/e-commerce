@@ -1,33 +1,33 @@
 import ProductClient from "./ProductClient";
 
+type Props = {
+  params: Promise<{ id: string }>;
+};
+
 export async function generateStaticParams() {
   const res = await fetch("https://api.bunyodoptom.uz/api/v1/products");
-  const json = await res.json();
+  const data = await res.json();
 
-  // API response array ekanligini tekshir
-  const products = Array.isArray(json?.data?.data) ? json.data.data : [];
-
-  // ❗ Agar bo‘sh array bo‘lsa, static export ishlamaydi
-  if (!products.length) {
-    console.warn("No products found for static export");
-    return [];
-  }
-
-  // ✅ har doim string qaytarish
-  return products.map((product: { id: number | string }) => ({
+  return data.data.map((product: { id: string | number }) => ({
     id: String(product.id),
   }));
 }
 
-// 👇 async page function
+// export default async function ProductPage({
+//   params,
+// }: {
+//   params: Promise<{ id: string }>;
+// }) {
+//   const { id } = await params; // ✅ unwrap
+//   return <ProductClient id={id} />;
+// }
 
-export default async function ProductPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const { id } = await params; // ✅ unwrap
+// export default function ProductPage({ params }: { params: { id: string } }) {
+//   // your existing page code
+//   return <ProductClient id={params.id} />;
+// }
+
+export default async function ProductPage({ params }: Props) {
+  const { id } = await params;
   return <ProductClient id={id} />;
 }
-
-export const dynamic = "force-dynamic";
