@@ -26,11 +26,11 @@ export const AppFooter = () => {
           }`}
         >
           {/* <div className="container"> */}
-            <div className="flex items-center justify-between">
-              <button className="w-full p-3 bg-[#2e3192] text-white rounded-xl">
-                Rasmiylashtirish
-              </button>
-            </div>
+          <div className="flex items-center justify-between">
+            <button className="w-full p-3 bg-[#2e3192] text-white rounded-xl">
+              Rasmiylashtirish
+            </button>
+          </div>
           {/* </div> */}
         </div>
         <div
@@ -42,15 +42,15 @@ export const AppFooter = () => {
             <div className="flex items-center justify-between">
               <div className="">
                 <p className="text-xs">Ummumiy summa:</p>
-                <p className="font-semibold">
+                <p className="text-lg font-semibold">
                   {totalPrice.toLocaleString()} USZ
                 </p>
               </div>
               <Link
                 href={"/checkout"}
-                className="p-2 bg-[#2e3192] text-white rounded-lg"
+                className="px-4 py-2 bg-[#2e3192] text-white rounded-lg"
               >
-                Rasmiylashtirish
+                To‘lovga o‘tish
               </Link>
             </div>
           </div>
@@ -59,8 +59,10 @@ export const AppFooter = () => {
           <div className="container">
             <div className="grid grid-cols-4 gap-2 items-center justify-between ">
               <Link href={"/"} className="p-4 flex flex-col items-center gap-1">
-                <HomeIcon color="#4a5565" />
-                <span className="text-xs text-gray-600 font-bold">
+                <HomeIcon color={pathname === "/" ? "#2e3192" : "#4a5565"} />
+                <span
+                  className={`text-xs ${pathname === "/" ? "text-[#2e3192]" : "text-gray-600"} font-bold`}
+                >
                   ASOSIY
                 </span>
               </Link>
@@ -68,8 +70,12 @@ export const AppFooter = () => {
                 href={"/products"}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <ProductsIcon color="#4a5565" />
-                <span className="text-xs text-gray-600 font-bold">
+                <ProductsIcon
+                  color={pathname === "/products" ? "#2e3192" : "#4a5565"}
+                />
+                <span
+                  className={`text-xs ${pathname === "/products" ? "text-[#2e3192]" : "text-gray-600"} font-bold`}
+                >
                   KATALOG
                 </span>
               </Link>
@@ -77,8 +83,12 @@ export const AppFooter = () => {
                 href={"/cart"}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <CartIcon color="#4a5565" />
-                <span className="text-xs text-gray-600 font-bold">
+                <CartIcon
+                  color={pathname === "/cart" ? "#2e3192" : "#4a5565"}
+                />
+                <span
+                  className={`text-xs ${pathname === "/cart" ? "text-[#2e3192]" : "text-gray-600"} font-bold`}
+                >
                   SAVAT
                 </span>
               </Link>
@@ -86,8 +96,12 @@ export const AppFooter = () => {
                 href={`${isAuth ? "/profile" : "signin"}`}
                 className="p-4 flex flex-col items-center gap-1"
               >
-                <UserIcon color="#4a5565" />
-                <span className="text-xs text-gray-600 font-bold">
+                <UserIcon
+                  color={pathname === "/profile" ? "#2e3192" : "#4a5565"}
+                />
+                <span
+                  className={`text-xs ${pathname === "/profile" ? "text-[#2e3192]" : "text-gray-600"} font-bold`}
+                >
                   {isAuth ? user?.name?.toLocaleUpperCase() : "KIRISH"}
                 </span>
               </Link>
