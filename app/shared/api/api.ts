@@ -1,15 +1,22 @@
-import axios from 'axios'
-import { BASE_URL } from '../const/baseUrl'
-import { USER_LOCALSTORAGE_KEY } from '../const/localstorage'
+import axios from "axios";
+import { BASE_URL } from "../const/baseUrl";
+import { USER_LOCALSTORAGE_KEY } from "../const/localstorage";
 
 export const $api = axios.create({
   baseURL: BASE_URL,
-})
+});
 
 $api.interceptors.request.use((config) => {
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
   if (config.headers) {
     config.headers.Authorization =
-      localStorage.getItem(USER_LOCALSTORAGE_KEY) || ''
+      localStorage.getItem(USER_LOCALSTORAGE_KEY) || "";
   }
-  return config
-})
+  return config;
+});

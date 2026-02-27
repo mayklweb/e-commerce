@@ -4,28 +4,32 @@ import { Provider } from "react-redux";
 import { store } from "../store";
 import { useEffect } from "react";
 import { hydrateAuth, markInitialized } from "../store/slices/authSlice";
+import { StatusBar } from "@capacitor/status-bar";
 
 export default function ReduxProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-useEffect(() => {
-  const user = localStorage.getItem("user");
-  const token = localStorage.getItem("token");
+  useEffect(() => {
+    StatusBar.setOverlaysWebView({ overlay: false });
+  }, []);
 
-  if (user && token) {
-    store.dispatch(
-      hydrateAuth({
-        user: JSON.parse(user),
-        token,
-      }),
-    );
-  } else {
-    store.dispatch(markInitialized()); // MUHIM
-  }
-}, []);
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
+    if (user && token) {
+      store.dispatch(
+        hydrateAuth({
+          user: JSON.parse(user),
+          token,
+        }),
+      );
+    } else {
+      store.dispatch(markInitialized()); // MUHIM
+    }
+  }, []);
 
   return <Provider store={store}>{children}</Provider>;
 }

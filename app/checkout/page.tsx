@@ -36,7 +36,7 @@ const Checkout = () => {
     (state: RootState) => state.addresses,
   );
 
-  console.log(addresses);
+  console.log(token);
 
   const [loading, setLoading] = useState(false);
 
@@ -44,6 +44,7 @@ const Checkout = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<CheckoutFormData>({
     defaultValues: {
       address_id: "",
@@ -70,43 +71,94 @@ const Checkout = () => {
   }, [cart]);
 
   const onSubmit = async (data: CheckoutFormData) => {
-    if (!user || !token) {
-      alert("Avval tizimga kiring");
-      return;
-    }
-
-    if (cart.length === 0) {
-      alert("Savatingiz bo‘sh");
+    if (!user) {
+      console.log("User is not authenticated");
       return;
     }
 
     setLoading(true);
 
     try {
-      const res = await $api.post(
-        "/orders/checkout",
+      // Online Payments (click / payme)
+      if (data.paymentMethod === "click" || data.paymentMethod === "payme") {
+        const res = await fetch(
+          "https://api.bunyodoptom.uz/api/v1/click/create",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: user.id,
+              total_amount: Number(totalAmount),
+              address_id: data.address_id,
+              notes: data.comment,
+              payment_method: data.paymentMethod,
+              idempotency_key: crypto.randomUUID(),
+            }),
+          },
+        );
+
+        const responseData = await res.json();
+
+        if (!res.ok) {
+          console.log("Server error:", responseData);
+          alert("Xatolik yuz berdi. Qaytadan urinib ko'ring.");
+          return;
+        }
+
+        window.location.href = responseData.paymentUrl;
+        return;
+      }
+
+      // Cash Payment — Create Order Directly
+      if (!data.address_id) {
+        alert("Iltimos, yetkazib berish manzilini tanlang!");
+        return;
+      }
+      const token = localStorage.getItem("token"); // JSON.stringify kerak emas
+
+      const res = await fetch(
+        "https://api.bunyodoptom.uz/api/v1/orders/checkout",
+
         {
-          address_id: Number(data.address_id),
-          payment_method: data.paymentMethod,
-          notes: data.comment,
-          idempotency_key: crypto.randomUUID(),
-          items: cart.map((item) => ({
-            product_id: item.id,
-            qty: item.qty,
-          })),
-        },
-        {
+          method: "POST",
+
           headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
+
+          body: JSON.stringify({
+            user_id: user.id,
+            address_id: data.address_id,
+            idempotency_key: "",
+            notes: data.comment,
+            payment_method: data.paymentMethod,
+            items: cart.map((item) => ({
+              product_id: Number(item.id),
+              qty: Number(item.qty),
+            })),
+          }),
         },
       );
 
-      dispatch(clearCart());
-      router.replace("/profile/orders");
-    } catch (err: any) {
-      console.error(err?.response?.data || err);
-      alert("Buyurtma yaratishda xatolik yuz berdi");
+      const responseData = await res.json();
+
+      if (res.ok) {
+        alert("Buyurtma muvaffaqiyatli yaratildi!");
+        console.log(res);
+        clearCart();
+        window.location.href = "/profile/orders";
+
+        // TODO: clear cart / redirect success
+      } else {
+        console.log("Order creation error:", responseData);
+        alert("Buyurtma yaratishda xatolik yuz berdi");
+      }
+    } catch (error) {
+      console.log("Checkout error:", error);
+      alert("Xatolik yuz berdi. Qaytadan urinib ko'ring.");
     } finally {
       setLoading(false);
     }
@@ -134,26 +186,20 @@ const Checkout = () => {
                 {addressLoading && <p>Manzillar yuklanmoqda...</p>}
 
                 {!addressLoading && (
-                  <Select defaultValue="Manzilni tanlang">
-                    <SelectTrigger
-                      className="w-full text-lg px-3 py-5"
-                      size={"default"}
-                    >
-                      <SelectValue />
+                  <Select
+                    onValueChange={(value) => setValue("address_id", value)}
+                  >
+                    <SelectTrigger className="w-full text-lg px-3 py-5">
+                      <SelectValue placeholder="Manzilni tanlang" />
                     </SelectTrigger>
-                    <SelectContent className="bg-white" position="popper">
+
+                    <SelectContent className="bg-white">
                       <SelectGroup>
-                        <SelectItem
-                          className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
-                          value="Manzilni tanlang"
-                        >
-                          Manzilni tanlang
-                        </SelectItem>
                         {addresses.map((a: any) => (
                           <SelectItem
                             key={a.id}
-                            className="data-[state=checked]:bg-secondary data-[state=checked]:text-black"
-                            value={a.id.toString()}
+                            value={String(a.id)}
+                            className="text-lg px-2 py-2 data-[state=checked]:bg-secondary data-[state=checked]:text-black"
                           >
                             {a.city}, {a.street}
                           </SelectItem>
