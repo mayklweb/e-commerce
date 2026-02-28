@@ -41,3 +41,31 @@ export function buildBuilder<TState extends StateWithNamedSlice, TPayload>(
 // ===============================
 export const getIds = (arr?: string | null): number[] =>
   arr && arr.length ? arr.split(",").map((item) => Number(item)) : []
+
+
+export const latinToCyrillic = (text: string) => {
+  return text
+    .toLowerCase()
+    .replace(/sh/g, "ш")
+    .replace(/ch/g, "ч")
+    .replace(/ya/g, "я")
+    .replace(/yo/g, "ё")
+    .replace(/a/g, "а")
+    .replace(/b/g, "б")
+    .replace(/d/g, "д")
+    .replace(/e/g, "е")
+    .replace(/f/g, "ф")
+    .replace(/g/g, "г")
+    .replace(/i/g, "и")
+    .replace(/k/g, "к")
+    .replace(/l/g, "л")
+    .replace(/m/g, "м")
+    .replace(/n/g, "н")
+    .replace(/o/g, "о")
+    .replace(/p/g, "п")
+    .replace(/r/g, "р")
+    .replace(/s/g, "с")
+    .replace(/t/g, "т")
+    .replace(/u/g, "у")
+    .replace(/v/g, "в");
+};

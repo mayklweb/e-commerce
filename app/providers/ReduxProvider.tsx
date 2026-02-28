@@ -5,6 +5,7 @@ import { store } from "../store";
 import { useEffect } from "react";
 import { hydrateAuth, markInitialized } from "../store/slices/authSlice";
 import { StatusBar } from "@capacitor/status-bar";
+import { Capacitor } from "@capacitor/core";
 
 export default function ReduxProvider({
   children,
@@ -12,7 +13,13 @@ export default function ReduxProvider({
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    StatusBar.setOverlaysWebView({ overlay: false });
+    const setupStatusBar = async () => {
+      if (Capacitor.getPlatform() !== "web") {
+        await StatusBar.setOverlaysWebView({ overlay: false });
+      }
+    };
+
+    setupStatusBar();
   }, []);
 
   useEffect(() => {
