@@ -94,6 +94,8 @@ body {
   font-family: var(--font-nunito);
   display: flex;
   flex-direction: column;
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .container {
