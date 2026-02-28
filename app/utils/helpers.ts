@@ -67,5 +67,6 @@ export const latinToCyrillic = (text: string) => {
     .replace(/s/g, "с")
     .replace(/t/g, "т")
     .replace(/u/g, "у")
-    .replace(/v/g, "в");
+    .replace(/v/g, "в")
+    .replace(/w/g, "");
 };

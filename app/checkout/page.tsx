@@ -36,8 +36,6 @@ const Checkout = () => {
     (state: RootState) => state.addresses,
   );
 
-  console.log(token);
-
   const [loading, setLoading] = useState(false);
 
   const {
@@ -116,7 +114,6 @@ const Checkout = () => {
         alert("Iltimos, yetkazib berish manzilini tanlang!");
         return;
       }
-      const token = localStorage.getItem("token"); // JSON.stringify kerak emas
 
       const res = await fetch(
         "https://api.bunyodoptom.uz/api/v1/orders/checkout",
@@ -147,11 +144,8 @@ const Checkout = () => {
 
       if (res.ok) {
         alert("Buyurtma muvaffaqiyatli yaratildi!");
-        console.log(res);
-        clearCart();
+        dispatch(clearCart());
         window.location.href = "/profile/orders";
-
-        // TODO: clear cart / redirect success
       } else {
         console.log("Order creation error:", responseData);
         alert("Buyurtma yaratishda xatolik yuz berdi");

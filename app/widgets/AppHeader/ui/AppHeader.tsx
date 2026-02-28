@@ -28,7 +28,7 @@ export const AppHeader = () => {
 
     if (!query.trim()) return;
 
-    router.push(`/products?q=${encodeURIComponent(query)}`);
+    router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
   const hideHeader = ["signup", "signin", "checkout", "cart"].includes(
@@ -93,7 +93,7 @@ export const AppHeader = () => {
                   </Link>
                 </div>
               </div>
-              <div className="bg-white pyx`-4 absolute w-full left-0 top-20 z-10 flex flex-col gap-2">
+              {/* <div className="bg-white pyx`-4 absolute w-full left-0 top-20 z-10 flex flex-col gap-2">
                 <div className="flex gap-4 border-b">
                   <div className="rounded-xl overflow-hidden">
                     <Image
@@ -122,7 +122,7 @@ export const AppHeader = () => {
                     <p className="text-base text-gray-500">46500.00 USZ</p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
