@@ -195,7 +195,7 @@ const Checkout = () => {
                             value={String(a.id)}
                             className="text-lg px-2 py-2 data-[state=checked]:bg-secondary data-[state=checked]:text-black"
                           >
-                            {a.city}, {a.street}
+                            {a.region}, {a.city}
                           </SelectItem>
                         ))}
                       </SelectGroup>

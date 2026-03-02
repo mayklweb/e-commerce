@@ -12,6 +12,8 @@ export const AppFooter = () => {
   const { isAuth, user } = useSelector((state: RootState) => state.auth);
   const { cart } = useSelector((state: RootState) => state.cart);
 
+  const cartEmpty = cart.length === 0;
+
   const totalPrice = cart.reduce(
     (acc, item) => acc + Number(item.price) * item.qty,
     0,
@@ -24,7 +26,7 @@ export const AppFooter = () => {
       >
         <div
           className={`w-full bg-white rounded-t-2xl py-3 border-b ${
-            pathname === "/cart" ? "block" : "hidden"
+            pathname === "/cart" && !cartEmpty ? "block" : "hidden"
           }`}
         >
           <div className="container">
