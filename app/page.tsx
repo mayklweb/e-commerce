@@ -82,15 +82,15 @@ export default function Home() {
                 <Swiper
                   pagination={true}
                   spaceBetween={20}
-                  slidesPerView={5.4}
+                  slidesPerView={3.4}
                   className="mt-5"
                 >
                   {categories.map(({ name }, i) => (
-                    <SwiperSlide className="w-40 lg:w-60 rounded-2xl">
+                    <SwiperSlide className="w-full lg:w-60 rounded-2xl">
                       <Link
                         href={`/products/`}
                         key={i}
-                        className="w-40 lg:w-60 rounded-xl lg:rounded-2xl bg-primary/10 flex shrink-0"
+                        className="w-full lg:w-60 rounded-xl lg:rounded-2xl bg-primary/10 flex shrink-0"
                       >
                         <div className="w-full p-2 rounded-md lg:rounded-xl overflow-hidden shrink-0">
                           <div className="w-full rounded-xl lg:rounded-2xl overflow-hidden shrink-0">

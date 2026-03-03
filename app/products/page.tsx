@@ -79,7 +79,7 @@ function Products() {
           <div className="flex lg:gap-5">
             <div className="lg:w-80 flex">
               <div>
-                <div>
+                {/* <div>
                   {categories.map(({ id, name }) => (
                     <Link href={`/products/${name}`}
                       key={id}
@@ -93,7 +93,7 @@ function Products() {
                       {name}
                     </Link>
                   ))}
-                </div>
+                </div> */}
               </div>
             </div>
 
