@@ -1,6 +1,7 @@
 import {
   Add01Icon,
   ArrowDown01Icon,
+  ArrowLeft02Icon,
   ArrowRight01Icon,
   Cancel01Icon,
   Delete02Icon,
@@ -137,6 +138,17 @@ export const RightIcon = ({ className }: IconProps) => {
       className={className}
       icon={ArrowRight01Icon}
       size={24}
+      color="#2e3192"
+      strokeWidth={1.5}
+    />
+  );
+};
+export const LeftIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={ArrowLeft02Icon}
+      size={28}
       color="#2e3192"
       strokeWidth={1.5}
     />
