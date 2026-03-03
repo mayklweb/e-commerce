@@ -102,8 +102,8 @@ export const Form = () => {
   return (
     <div className="w-full max-w-md mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Sign Up</h1>
-        <p className="text-gray-600">Login to your account</p>
+        <h1 className="text-2xl font-bold mb-2">Ro'yhatdan o'tish</h1>
+        <p className="text-gray-600">Hisob qaydnomasini yaratish</p>
       </div>
 
       <form onSubmit={handleSubmit(handleFinish)} className="space-y-4">

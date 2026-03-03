@@ -102,8 +102,8 @@ export default function SignIn() {
   return (
     <div className="w-full h-full flex flex-col justify-center max-w-md mx-auto p-6">
       <div className="">
-        <h1 className="text-2xl font-bold mb-2">Sign In</h1>
-        <p className="text-gray-600">Login to your account</p>
+        <h1 className="text-2xl font-bold mb-2">Kirish</h1>
+        <p className="text-gray-600">Hisob qaydnomasiga kirish</p>
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)}>

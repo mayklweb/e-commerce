@@ -38,7 +38,7 @@ export default function Home() {
   }, [products]);
 
   return (
-    <div className="pb-24">
+    <div className="mt-20 pb-24">
       <section>
         <div className="mt-5">
           <div className="container">
