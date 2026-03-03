@@ -7,6 +7,11 @@ import { useEffect, useMemo, useState } from "react";
 import { getCategories } from "./store/actions/categoriesAction";
 import { getBrands } from "./store/actions/brandsAction";
 import Link from "next/link";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+
+import { Pagination } from "swiper/modules";
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
@@ -37,8 +42,29 @@ export default function Home() {
       <section>
         <div className="mt-5">
           <div className="container">
-            <div className="rounded-4xl overflow-hidden">
-              <div className="bg-primary pb-[45%]"></div>
+            <div className="rounded-2xl lg:rounded-4xl overflow-hidden">
+              <Swiper
+                pagination={true}
+                spaceBetween={20}
+                modules={[Pagination]}
+                className="w-full h-full ronuded-2xl lg:rounded-4xl overflow-hidden"
+              >
+                <SwiperSlide className=" rounded-2xl overflow-hidden">
+                  <Image width={1368} height={615} src="/banner-1.jpg" alt="" />
+                </SwiperSlide>
+                <SwiperSlide className=" rounded-2xl overflow-hidden">
+                  <Image width={1368} height={615} src="/banner-2.jpg" alt="" />
+                </SwiperSlide>
+                <SwiperSlide className=" rounded-2xl overflow-hidden">
+                  <Image width={1368} height={615} src="/banner-3.jpg" alt="" />
+                </SwiperSlide>
+                <SwiperSlide className=" rounded-2xl overflow-hidden">
+                  <Image width={1368} height={615} src="/banner-4.jpg" alt="" />
+                </SwiperSlide>
+                <SwiperSlide className=" rounded-2xl overflow-hidden">
+                  <Image width={1368} height={615} src="/banner-5.jpg" alt="" />
+                </SwiperSlide>
+              </Swiper>
             </div>
           </div>
         </div>
@@ -54,7 +80,8 @@ export default function Home() {
               </div>
               <div className="mt-5 grid grid-cols-4 gap-3 md:gap-4 lg:gap-5">
                 {categories.map(({ name }, i) => (
-                  <Link href={`/products/`}
+                  <Link
+                    href={`/products/`}
                     key={i}
                     className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary flex items-center justify-center"
                   >

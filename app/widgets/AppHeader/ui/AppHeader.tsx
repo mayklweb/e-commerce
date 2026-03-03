@@ -36,15 +36,17 @@ export const AppHeader = () => {
   );
 
   const filteredProducts = Array.isArray(products)
-    ? products.filter((p) => latinToCyrillic(p.name).includes(latinToCyrillic(query)))
+    ? products.filter((p) =>
+        latinToCyrillic(p.name).includes(latinToCyrillic(query)),
+      )
     : [];
 
-  console.log(filteredProducts);
+  console.log(filteredProducts.length);
 
   return (
     <header>
       {!hideHeader && (
-        <div className="w-full bg-white shadow-sm">
+        <div className="w-full bg-white shadow-sm fixed">
           <div className="container">
             <div className="relative">
               <div className="w-full flex items-center justify-between py-4">
@@ -93,38 +95,32 @@ export const AppHeader = () => {
                   </Link>
                 </div>
               </div>
-              {/* <div className="bg-white pyx`-4 absolute w-full left-0 top-20 z-10 flex flex-col gap-2">
-                <div className="flex gap-4 border-b">
-                  <div className="rounded-xl overflow-hidden">
-                    <Image
-                      src="/product.webp"
-                      alt="Logo"
-                      width={120}
-                      height={100}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">МЕХХИ ОДДИЙ 2КГ</h3>
-                    <p className="text-base text-gray-500">46500.00 USZ</p>
-                  </div>
-                </div>
-                <div className="flex gap-4">
-                  <div className="rounded-xl overflow-hidden">
-                    <Image
-                      src="/product.webp"
-                      alt="Logo"
-                      width={120}
-                      height={100}
-                    />
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-semibold">МЕХХИ ОДДИЙ 2КГ</h3>
-                    <p className="text-base text-gray-500">46500.00 USZ</p>
-                  </div>
-                </div>
-              </div> */}
             </div>
           </div>
+          {query && (
+            <div className="bg-white py-4 pb-4 absolute w-full h-64 overflow-x-scroll left-0 top-18 z-10 ">
+              <div className="container">
+                <div className="flex flex-col gap-2">
+                  {filteredProducts.map((p) => (
+                    <div className="flex gap-4 border-b pb-2">
+                      <div className="w-30 h-22 rounded-xl overflow-hidden">
+                        <Image
+                          src="/product.webp"
+                          alt="Logo"
+                          width={120}
+                          height={100}
+                        />
+                      </div>
+                      <div>
+                        <h3 className="text font-semibold text-ellipsis">{p.name}</h3>
+                        <p className="text-base text-gray-500">{p.price} USZ</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
     </header>
