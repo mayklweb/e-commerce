@@ -49,6 +49,7 @@ export default function Home() {
             <div className="rounded-2xl lg:rounded-4xl overflow-hidden relative">
               <Swiper
                 cssMode={true}
+                loop={true}
                 spaceBetween={20}
                 autoplay={{
                   delay: 2500,

@@ -118,11 +118,11 @@ body {
 }
 
 .swiper-pagination-bullet-active {
-  background: black !important;
-  width: 25px !important;
+  background: var(--primary) !important;
+  width: 20px !important;
   border-radius: 8px !important;
-  transition: 0.3s !important ;
+  transition: 0.5s ease-in-out !important ;
 }
 .swiper-pagination {
-  bottom: -8px !important;
+  bottom: -5px !important;
 }
