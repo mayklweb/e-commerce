@@ -215,25 +215,29 @@ const Checkout = () => {
               <div className="mb-6">
                 <h2 className="font-semibold text-black mb-3">Mahsulotlar:</h2>
 
-                {cart.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex justify-between items-center py-2 border-b border-gray-300"
-                  >
-                    <span className="text-gray-700">
-                      {item.name} x {item.qty}
+                <div>
+                  {cart.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex justify-between items-center mb-2 border-b border-gray-300"
+                    >
+                      <span className="text-gray-700">
+                        {item.name} x {item.qty}
+                      </span>
+                      <span className="font-semibold text-gray-800">
+                        {(Number(item.price) * item.qty).toLocaleString()} so'm
+                      </span>
+                    </div>
+                  ))}
+
+                  <div className="flex justify-between items-center pt-3 mt-3 border-t-2 border-gray-500">
+                    <span className="text-lg font-bold text-gray-800">
+                      Jami:
                     </span>
-                    <span className="font-semibold text-gray-800">
-                      {(Number(item.price) * item.qty).toLocaleString()} so'm
+                    <span className="text-lg font-bold text-[#2e3192]">
+                      {totalAmount.toLocaleString()} so'm
                     </span>
                   </div>
-                ))}
-
-                <div className="flex justify-between items-center pt-3 mt-3 border-t-2 border-gray-500">
-                  <span className="text-lg font-bold text-gray-800">Jami:</span>
-                  <span className="text-lg font-bold text-[#2e3192]">
-                    {totalAmount.toLocaleString()} so'm
-                  </span>
                 </div>
               </div>
 

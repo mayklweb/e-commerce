@@ -53,7 +53,7 @@ function Profile() {
               <div>
                 <Link href={"/profile"} className="text-2xl font-semibold flex items-center">
                   <span><LeftIcon className="mr-2" /></span>
-                  <span>Profil</span>
+                  <span>Akkaunt</span>
                 </Link>
               </div>
               <div className="w-full flex flex-col flex-auto h-full gap-6">
@@ -89,7 +89,7 @@ function Profile() {
                         onClick={() => setIsEditing(true)}
                         className="w-full bg-primary text-white py-2.5 rounded-lg"
                       >
-                         Profilni Tahrirlash
+                         Profilni tahrirlash
                       </button>
                     ) : (
                       <div className="flex gap-3">

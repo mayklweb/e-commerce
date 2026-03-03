@@ -149,7 +149,7 @@ export const LeftIcon = ({ className }: IconProps) => {
       className={className}
       icon={ArrowLeft02Icon}
       size={28}
-      color="#2e3192"
+      color="#000000"
       strokeWidth={1.5}
     />
   );
