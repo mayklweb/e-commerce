@@ -14,9 +14,9 @@ import {
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-export const UserIcon = ({ color = "#2e3192" }) => {
+export const UserIcon = ({ color = "#2e3192", size = 24 }) => {
   return (
-    <HugeiconsIcon icon={User} size={24} color={color} strokeWidth={1.5} />
+    <HugeiconsIcon icon={User} size={size} color={color} strokeWidth={1.5} />
   );
 };
 

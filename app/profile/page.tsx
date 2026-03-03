@@ -1,12 +1,14 @@
 "use client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, AppDispatch } from "../store";
 import { useEffect, useState } from "react";
-import { updateProfile } from "../store/actions/updateProfileAction";
-import { logout } from "../store/slices/authSlice";
 import { useRouter } from "next/navigation";
-import ProtectedRoute from "../providers/ProtectedRoute";
+import ProtectedRoute from "@/app/providers/ProtectedRoute";
+import { logout } from "@/app/store/slices/authSlice";
+import { updateProfile } from "@/app/store/actions/updateProfileAction";
+import { AppDispatch, RootState } from "@/app/store";
+import Link from "next/link";
+import { UserIcon } from "../shared/icons";
 
 function Profile() {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,80 +50,27 @@ function Profile() {
         <section>
           <div className="container">
             <div className="w-full flex flex-col flex-auto h-full gap-6">
-              <Tabs className="w-full" defaultValue="account">
-                <TabsList className="w-full h-auto p-1 bg-primary/10">
-                  <TabsTrigger className="text-primary p-2" value="account">
-                    Ma'lumotlarim
-                  </TabsTrigger>
-                  <TabsTrigger className="text-primary p-2" value="orders">
-                    Buyurtmalarim
-                  </TabsTrigger>
-                </TabsList>
-                <TabsContent value="account">
-                  <div className="w-full h-full flex flex-col gap-4 mt-4">
-                    <div>
-                      <label htmlFor="name" className="text-sm text-black/50">
-                        Ism
-                      </label>
-                      <input
-                        value={name}
-                        disabled={!isEditing}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="Ismingiz"
-                        className={`focus-within:border-secondary outline-none w-full bg-wihte/10 border-b`}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="phone" className="text-sm text-black/50">
-                        Telefon
-                      </label>
-                      <input
-                        value={`+998 ${phone}`}
-                        disabled={!isEditing}
-                        onChange={(e) => setPhone(e.target.value)}
-                        placeholder="Telefon raqamingiz"
-                        className={`focus-within:border-secondary outline-none w-full bg-wihte/10 border-b`}
-                      />
-                    </div>
-                    <div className="w-full">
-                      {!isEditing ? (
-                        <button
-                          onClick={() => setIsEditing(true)}
-                          className="w-full bg-primary text-white py-2.5 rounded-lg"
-                        >
-                          Edit Profile
-                        </button>
-                      ) : (
-                        <div className="flex gap-3">
-                          <button
-                            onClick={handleCancel}
-                            className="border py-2.5 rounded-lg w-full"
-                          >
-                            Bekor qilish
-                          </button>
-                          <button
-                            onClick={handleSave}
-                            disabled={loading}
-                            className="bg-primary text-white py-2.5 rounded-lg w-full"
-                          >
-                            {loading ? "Saqlash..." : "Saqlash"}
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <div className="w-full flex flex-auto">
-                      <button
-                        onClick={dispatchLogout}
-                        className="w-full text-error py-2.5 bg-error/10 rounded-lg"
-                      >
-                        Logout
-                      </button>
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value="orders">Orders</TabsContent>
-              </Tabs>
+              <div className="flex gap-3 items-center">
+                <div className="p-4 bg-accent inline-block rounded-full">
+                  <UserIcon size={32} />
+                </div>
+                <div className="">
+                  <h1 className="text-lg font-semibold leading-[140%]">{user?.name}</h1>
+                  <p className="leading-[140%]">+998 {user?.phone}</p>
+                </div>
+              </div>
+              <Link
+                href={"/profile/info"}
+                className="text-accent text-lg bg-primary p-4 rounded-xl text-center "
+              >
+                Ma'lumotlarim
+              </Link>
+              <Link
+                href={"/profile/orders"}
+                className="text-accent text-lg bg-primary p-4 rounded-xl text-center"
+              >
+                Buyurtmalarim
+              </Link>
             </div>
           </div>
         </section>

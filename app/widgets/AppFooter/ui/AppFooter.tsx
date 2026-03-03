@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { CartIcon, HomeIcon, ProductsIcon, UserIcon } from "@/app/shared/icons";
 // import { RootState } from "@/app/store";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/app/store";
 import { usePathname } from "next/navigation";
 
