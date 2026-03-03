@@ -55,8 +55,8 @@ function Profile() {
                   <UserIcon size={32} />
                 </div>
                 <div className="">
-                  <h1 className="text-lg font-semibold leading-[140%]">{user?.name}</h1>
-                  <p className="leading-[140%]">+998 {user?.phone}</p>
+                  <h1 className="text-2xl font-semibold leading-[130%]">{user?.name}</h1>
+                  <p className="text-lg leading-[130%]">+998 {user?.phone}</p>
                 </div>
               </div>
               <Link
