@@ -1,0 +1,77 @@
+"use client";
+import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useMemo } from "react";
+import { AppDispatch, RootState } from "@/app/store";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "@/app/store/actions/productsAction";
+
+function Products() {
+  const dispatch = useDispatch<AppDispatch>();
+  const { brands } = useSelector((state: RootState) => state.brands);
+  const { categories } = useSelector((state: RootState) => state.categories);
+  const { products } = useSelector((state: RootState) => state.products);
+
+  useEffect(() => {
+    dispatch(getProducts());
+  }, []);
+
+  function shuffleArray<T>(array?: T[] | null) {
+    if (!Array.isArray(array)) return [];
+    return [...array].sort(() => Math.random() - 0.5);
+  }
+
+  const homeProducts = useMemo(() => {
+    if (!products || products.length === 0) return [];
+
+    const shuffled = shuffleArray(products);
+    return shuffled.slice(0, 10);
+  }, [products]);
+
+  return (
+    <section>
+      <div className="mt-5 lg:mt-10">
+        <div className="container">
+          <div>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
+              Sizga yoqadiganlari
+            </h1>
+          </div>
+          <div className="mt-3 lg:mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+            {homeProducts.map((product, i) => (
+              <Link href={`/product/${product.id}`} key={i} className="w-full">
+                <div className="rounded-2xl md:rounded-3xl lg:rounded-4xl overflow-hidden">
+                  <Image
+                    src={
+                      product.images?.[0]?.url
+                        ? `https://api.bunyodoptom.uz/${product.images[0].url}`
+                        : "/product.webp"
+                    }
+                    width={400}
+                    height={360}
+                    alt={product.name}
+                  />
+                </div>
+                <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
+                  <h1 className="text-sm lg:text-base font-semibold tracking-tight">
+                    {product.name}
+                  </h1>
+                  <p className="text-sm lg:text-base tracking-tight">
+                    {product.price} USZ
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+          <div>
+            <button className="w-full mt-5 py-3 text-accent bg-primary rounded-xl font-semibold">
+              YANA KO'RISH
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default Products;
