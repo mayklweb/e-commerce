@@ -22,6 +22,7 @@ function Categories() {
   useEffect(() => {
     dispatch(getCategories());
   }, []);
+
   return (
     <section>
       <div className="mt-5 lg:mt-10">
@@ -60,8 +61,18 @@ function Categories() {
                   }
                 }}
                 spaceBetween={20}
-                slidesPerView={2.4}
                 modules={[Autoplay, Navigation]}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 2.4,
+                  },
+                  640: {
+                    slidesPerView: 5,
+                  },
+                  1024: {
+                    slidesPerView: 4.9,
+                  },
+                }}
                 className="w-full mt-3 lg:mt-5"
               >
                 {categories.slice(1).map(({ name }, i) => (
