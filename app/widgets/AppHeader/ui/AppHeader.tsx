@@ -53,7 +53,7 @@ export const AppHeader = () => {
                 <div className="hidden xl:block text-center">
                   <Link
                     href={"/"}
-                    className="font-bold tracking-tight leading-[100%] text-gray"
+                    className="text-2xl font-bold tracking-tight leading-[90%] text-primary"
                   >
                     BUNYOD <br /> OPTOM
                   </Link>
@@ -98,7 +98,7 @@ export const AppHeader = () => {
             </div>
           </div>
           {query && (
-            <div className="bg-white py-4 pb-4 absolute w-full h-64 overflow-x-scroll left-0 top-18 z-10 ">
+            <div className="bg-white py-4 pb-4 absolute max-w-100 w-full h-[60vh] overflow-y-scroll left-0 lg:left-1/2 lg:transform lg:-translate-x-1/2 top-18 z-10 ">
               <div className="container">
                 <div className="flex flex-col gap-2">
                   {filteredProducts.map((p) => (
