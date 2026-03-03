@@ -46,7 +46,7 @@ export const AppHeader = () => {
   return (
     <header>
       {!hideHeader && (
-        <div className="w-full bg-white shadow-sm fixed">
+        <div className="w-full bg-white shadow-sm fixed z-10">
           <div className="container">
             <div className="relative">
               <div className="w-full flex items-center justify-between py-4">

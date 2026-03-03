@@ -70,7 +70,7 @@ export default function Home() {
         </div>
       </section>
       <section>
-        <div className="mt-10">
+        <div className="mt-5 lg:mt-10">
           <div className="container">
             <div>
               <div>
@@ -97,7 +97,7 @@ export default function Home() {
         </div>
       </section>
       <section>
-        <div className="mt-10">
+        <div className="mt-5 lg:mt-10">
           <div className="container">
             <div>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
