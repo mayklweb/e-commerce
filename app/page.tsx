@@ -78,19 +78,37 @@ export default function Home() {
                   Kategoriya
                 </h1>
               </div>
-              <div className="mt-5 flex gap-3 md:gap-4 lg:gap-5 overflow-y-scroll scrollbar-hide">
-                {categories.map(({ name }, i) => (
-                  <Link
-                    href={`/products/`}
-                    key={i}
-                    className="w-30 h-30 rounded-xl lg:rounded-2xl bg-primary flex items-center justify-center"
-                  >
-                    <div>
-                      <div></div>
-                      <p className="text-white text-sm w-30">{name}</p>
-                    </div>
-                  </Link>
-                ))}
+              <div>
+                <Swiper
+                  pagination={true}
+                  spaceBetween={20}
+                  slidesPerView={5.4}
+                  className="mt-5"
+                >
+                  {categories.map(({ name }, i) => (
+                    <SwiperSlide className="w-40 lg:w-60 rounded-2xl">
+                      <Link
+                        href={`/products/`}
+                        key={i}
+                        className="w-40 lg:w-60 rounded-xl lg:rounded-2xl bg-primary/10 flex shrink-0"
+                      >
+                        <div className="w-full p-2 rounded-md lg:rounded-xl overflow-hidden shrink-0">
+                          <div className="w-full rounded-xl lg:rounded-2xl overflow-hidden shrink-0">
+                            <Image
+                              src={"/product.webp"}
+                              width={240}
+                              height={90}
+                              alt={name}
+                            />
+                          </div>
+                          <p className="w-full pt-2 text-sm lg:text-base text-primary text-center font-semibold">
+                            {name}
+                          </p>
+                        </div>
+                      </Link>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           </div>

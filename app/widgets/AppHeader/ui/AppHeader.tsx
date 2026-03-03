@@ -102,8 +102,8 @@ export const AppHeader = () => {
               <div className="container">
                 <div className="flex flex-col gap-2">
                   {filteredProducts.map((p) => (
-                    <div className="flex gap-4 border-b pb-2">
-                      <div className="w-30 h-22 rounded-xl overflow-hidden">
+                    <Link href={`/product/${p.id}`} className="flex gap-4 border-b pb-2">
+                      <div className="w-30 h-22 rounded-xl overflow-hidden shrink-0">
                         <Image
                           src="/product.webp"
                           alt="Logo"
@@ -115,7 +115,7 @@ export const AppHeader = () => {
                         <h3 className="text font-semibold text-ellipsis">{p.name}</h3>
                         <p className="text-base text-gray-500">{p.price} USZ</p>
                       </div>
-                    </div>
+                    </Link>
                   ))}
                 </div>
               </div>

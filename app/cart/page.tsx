@@ -27,8 +27,6 @@ function CartIcon() {
                   <div className="hidden md:block w-2/6 bg-primary/10 rounded-4xl"></div>
                 </div>
               )}
-              {/* <List cart={cart} /> */}
-              {/* <div className="hidden md:block w-2/6 bg-primary/10 rounded-4xl"></div> */}
             </div>
           </div>
         </div>

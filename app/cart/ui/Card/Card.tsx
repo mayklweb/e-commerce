@@ -14,7 +14,7 @@ function Card({ item }: Props) {
   const dispatch = useDispatch<AppDispatch>();
   return (
     <div className="w-full flex gap-3 lg:gap-5 border-b border-gray py-2.5">
-      <div className="w-37.5 h-[calc(225px/2)] md:w-50 md:h-37.5 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden">
+      <div className="w-37.5 h-[calc(225px/2)] md:w-50 md:h-37.5 rounded-xl md:rounded-2xl lg:rounded-3xl overflow-hidden shrink-0">
         <Image
           src={"/product.webp"}
           alt={""}
@@ -25,7 +25,7 @@ function Card({ item }: Props) {
       </div>
       <div className="flex flex-auto flex-col justify-between">
         <div>
-          <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight">
+          <h3 className="text-base md:text-2xl lg:text-3xl font-semibold tracking-tight text-wrap">
             {item.name}
           </h3>
           <p className="text-base md:text-xl lg:text-2xl font-semibold tracking-tight md:text-start md:mt-2">

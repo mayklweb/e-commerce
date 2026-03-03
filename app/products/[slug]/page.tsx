@@ -1,13 +1,13 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
-import { FilterDrawer } from "./ui";
-import { AppDispatch, RootState } from "../store";
-import { useEffect, useState } from "react";
-import { getProducts } from "../store/actions/productsAction";
-import { getCategories } from "../store/actions/categoriesAction";
-import { getBrands } from "../store/actions/brandsAction";
-import ProductsList from "./ui/ProductsList/ProductsList";
 import Link from "next/link";
+import { FilterDrawer } from "../ui";
+import { useEffect, useState } from "react";
+import { AppDispatch, RootState } from "@/app/store";
+import { useDispatch, useSelector } from "react-redux";
+import ProductsList from "../ui/ProductsList/ProductsList";
+import { getBrands } from "@/app/store/actions/brandsAction";
+import { getProducts } from "@/app/store/actions/productsAction";
+import { getCategories } from "@/app/store/actions/categoriesAction";
 
 function Products() {
   const dispatch = useDispatch<AppDispatch>();
@@ -81,7 +81,8 @@ function Products() {
               <div>
                 <div>
                   {categories.map(({ id, name }) => (
-                    <Link href={`/products/${name}`}
+                    <Link
+                      href={`/products/${name}`}
                       key={id}
                       onClick={() => setActiveBrand(id)}
                       className={`py-2 px-4 rounded-md text-sm ${
