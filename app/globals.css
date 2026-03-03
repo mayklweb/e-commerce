@@ -109,3 +109,11 @@ body {
   content: "";
   max-height: 0;
 }
+
+
+/* .swiper-pagination, .swiper-pagination-bullets, .swiper-pagination-horizontal {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+} */

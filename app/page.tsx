@@ -75,17 +75,20 @@ export default function Home() {
             <div>
               <div>
                 <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-                  CATEGORY
+                  Kategoriya
                 </h1>
               </div>
-              <div className="mt-5 grid grid-cols-4 gap-3 md:gap-4 lg:gap-5">
+              <div className="mt-5 flex gap-3 md:gap-4 lg:gap-5 overflow-y-scroll scrollbar-hide">
                 {categories.map(({ name }, i) => (
                   <Link
                     href={`/products/`}
                     key={i}
-                    className="w-full h-20 rounded-2xl lg:rounded-3xl bg-primary flex items-center justify-center"
+                    className="w-30 h-30 rounded-xl lg:rounded-2xl bg-primary flex items-center justify-center"
                   >
-                    <p className="text-white text-xl">{name}</p>
+                    <div>
+                      <div></div>
+                      <p className="text-white text-sm w-30">{name}</p>
+                    </div>
                   </Link>
                 ))}
               </div>
