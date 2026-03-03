@@ -36,11 +36,11 @@ function Products() {
   }, []);
 
   return (
-    <div className="mt-5 pb-24">
+    <div className="mt-22 pb-24">
       <div className="container">
         <div>
           <div className="flex items-center justify-between">
-            <h2>Products</h2>
+            <h2 className="text-2xl">Maxsulotlar</h2>
 
             <FilterDrawer
               categories={categories}

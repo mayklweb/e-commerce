@@ -31,7 +31,7 @@ export const AppHeader = () => {
     router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
-  const hideHeader = ["signup", "signin", "checkout", "cart"].includes(
+  const hideHeader = ["signup", "signin", "checkout", "cart", 'profile'].includes(
     path.split("/")[1],
   );
 
