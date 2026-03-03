@@ -101,7 +101,7 @@ export default function Home() {
           <div className="container">
             <div>
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-                PRODUCTS
+                Sizga yoqadiganlari
               </h1>
             </div>
             <div className="mt-5 grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
