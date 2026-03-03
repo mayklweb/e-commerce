@@ -110,10 +110,19 @@ body {
   max-height: 0;
 }
 
+.swiper-pagination-bullet {
+  width: 10px !important;
+  height: 10px !important;
+  background: gray !important;
+  opacity: 1 !important;
+}
 
-/* .swiper-pagination, .swiper-pagination-bullets, .swiper-pagination-horizontal {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-} */
+.swiper-pagination-bullet-active {
+  background: black !important;
+  width: 25px !important;
+  border-radius: 8px !important;
+  transition: 0.3s !important ;
+}
+.swiper-pagination {
+  bottom: -8px !important;
+}

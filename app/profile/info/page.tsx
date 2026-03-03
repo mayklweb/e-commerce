@@ -1,5 +1,4 @@
 "use client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -8,7 +7,7 @@ import { logout } from "@/app/store/slices/authSlice";
 import { updateProfile } from "@/app/store/actions/updateProfileAction";
 import { AppDispatch, RootState } from "@/app/store";
 import Link from "next/link";
-import { LeftIcon } from "@/app/shared/icons";
+import { LeftArrowIcon } from "@/app/shared/icons";
 
 function Profile() {
   const dispatch = useDispatch<AppDispatch>();
@@ -51,8 +50,13 @@ function Profile() {
           <div className="container">
             <div>
               <div>
-                <Link href={"/profile"} className="text-2xl font-semibold flex items-center">
-                  <span><LeftIcon className="mr-2" /></span>
+                <Link
+                  href={"/profile"}
+                  className="text-2xl font-semibold flex items-center"
+                >
+                  <span>
+                    <LeftArrowIcon className="mr-2" />
+                  </span>
                   <span>Akkaunt</span>
                 </Link>
               </div>
@@ -89,7 +93,7 @@ function Profile() {
                         onClick={() => setIsEditing(true)}
                         className="w-full bg-primary text-white py-2.5 rounded-lg"
                       >
-                         Profilni tahrirlash
+                        Profilni tahrirlash
                       </button>
                     ) : (
                       <div className="flex gap-3">
