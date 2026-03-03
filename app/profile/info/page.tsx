@@ -49,7 +49,7 @@ function Profile() {
           <div className="container">
             
             <div className="w-full flex flex-col flex-auto h-full gap-6">
-              <div><</div>
+              <div></div>
               <div className="w-full h-full flex flex-col gap-4 mt-4">
                 <div>
                   <label htmlFor="name" className="text-sm text-black/50">
