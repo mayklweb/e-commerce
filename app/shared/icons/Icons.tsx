@@ -43,11 +43,11 @@ export const SearchIcon = () => {
     />
   );
 };
-export const HomeIcon = ({ color = "#2e3192" }) => {
+export const HomeIcon = ({ color = "#2e3192", size = 24 }) => {
   return (
     <HugeiconsIcon
       icon={Home04Icon}
-      size={24}
+      size={size}
       color={color}
       strokeWidth={1.5}
     />
