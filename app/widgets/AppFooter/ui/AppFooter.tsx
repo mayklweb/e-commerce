@@ -22,7 +22,7 @@ export const AppFooter = () => {
   return (
     <footer>
       <div
-        className={`w-full bg-[#ffffff] shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)] rounded-2xl fixed bottom-0 lg:hidden ${pathname === "/checkout" && "shadow-none rounded-none"}`}
+        className={`w-full bg-[#ffffff] shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)] rounded-t-2xl fixed bottom-0 lg:hidden ${pathname === "/checkout" && "shadow-none rounded-none"}`}
       >
         <div
           className={`w-full bg-white rounded-t-2xl py-3 border-b ${

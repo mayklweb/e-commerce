@@ -9,7 +9,7 @@ function CartIcon() {
   return (
     <section>
       <div className="w-full h-full mt-5 mb-36">
-        {/* <div className="container"> */}
+        <div className="container">
           <div className="w-full h-full">
             <div className="w-full h-full">
               {cart.length === 0 ? (
@@ -19,7 +19,7 @@ function CartIcon() {
               ) : (
                 <div className="flex flex-col">
                   <div>
-                    <h1 className="text-2xl md:text-3xl lg:text-4xl text-center font-semibold tracking-tight">
+                    <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
                       SAVAT
                     </h1>
                   </div>
@@ -31,7 +31,7 @@ function CartIcon() {
               {/* <div className="hidden md:block w-2/6 bg-primary/10 rounded-4xl"></div> */}
             </div>
           </div>
-        {/* </div> */}
+        </div>
       </div>
     </section>
   );
