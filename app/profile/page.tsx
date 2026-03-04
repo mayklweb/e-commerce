@@ -13,7 +13,7 @@ import { UserIcon } from "../shared/icons";
 
 function Profile() {
   const dispatch = useDispatch<AppDispatch>();
-  const { user, loading, token } = useSelector(
+  const { user, loading } = useSelector(
     (state: RootState) => state.auth,
   );
   const { orders } = useSelector((state: RootState) => state.orders);
@@ -29,12 +29,6 @@ function Profile() {
       setPhone(user.phone || "");
     }
   }, [user]);
-
-  useEffect(() => {
-    dispatch(getOrders());
-  }, []);
-
-  console.log(orders);
 
   const handleSave = () => {
     dispatch(updateProfile({ name, phone }));

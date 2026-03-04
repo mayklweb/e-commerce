@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import {  useRef } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -10,19 +10,12 @@ import "swiper/css/navigation";
 
 import { Autoplay, Navigation } from "swiper/modules";
 import { LeftIcon, RightIcon } from "@/app/shared/icons";
-import { getCategories } from "@/app/store/actions/categoriesAction";
-import { AppDispatch, RootState } from "@/app/store";
-import { getBrands } from "@/app/store/actions/brandsAction";
+import { RootState } from "@/app/store";
 
 function Brands() {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
-  const dispatch = useDispatch<AppDispatch>();
   const { brands } = useSelector((state: RootState) => state.brands);
-
-  useEffect(() => {
-    dispatch(getBrands());
-  }, []);
 
   console.log(brands);
   
@@ -94,6 +87,7 @@ function Brands() {
                             height={90}
                             className="w-full h-full object-fill"
                             alt={name}
+                            priority
                           />
                         </div>
                         <p className="w-full pt-2 text-xs lg:text-sm text-primary text-center font-semibold">

@@ -26,19 +26,49 @@ function Banner() {
               className="w-full h-full ronuded-2xl lg:rounded-4xl overflow-hidden"
             >
               <SwiperSlide className=" rounded-2xl overflow-hidden">
-                <Image width={1368} height={615} src="/banner-1.jpg" alt="" />
+                <Image
+                  width={1368}
+                  height={615}
+                  src="/banner-1.jpg"
+                  alt=""
+                  priority
+                />
               </SwiperSlide>
               <SwiperSlide className=" rounded-2xl overflow-hidden">
-                <Image width={1368} height={615} src="/banner-2.jpg" alt="" />
+                <Image
+                  width={1368}
+                  height={615}
+                  src="/banner-2.jpg"
+                  alt=""
+                  priority
+                />
               </SwiperSlide>
               <SwiperSlide className=" rounded-2xl overflow-hidden">
-                <Image width={1368} height={615} src="/banner-3.jpg" alt="" />
+                <Image
+                  width={1368}
+                  height={615}
+                  src="/banner-3.jpg"
+                  alt=""
+                  priority
+                />
               </SwiperSlide>
               <SwiperSlide className=" rounded-2xl overflow-hidden">
-                <Image width={1368} height={615} src="/banner-4.jpg" alt="" />
+                <Image
+                  width={1368}
+                  height={615}
+                  src="/banner-4.jpg"
+                  alt=""
+                  priority
+                />
               </SwiperSlide>
               <SwiperSlide className=" rounded-2xl overflow-hidden">
-                <Image width={1368} height={615} src="/banner-5.jpg" alt="" />
+                <Image
+                  width={1368}
+                  height={615}
+                  src="/banner-5.jpg"
+                  alt=""
+                  priority
+                />
               </SwiperSlide>
             </Swiper>
           </div>

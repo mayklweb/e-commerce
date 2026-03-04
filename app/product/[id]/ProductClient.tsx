@@ -27,9 +27,6 @@ export default function ProductClient({ id }: { id: string }) {
   const dispatch = useDispatch<AppDispatch>();
   const { product, loading } = useSelector((state: RootState) => state.product);
   const { products } = useSelector((state: RootState) => state.products);
-  const { categories, loading: categoriesLoading } = useSelector(
-    (state: RootState) => state.categories,
-  );
 
   const { cart } = useSelector((state: RootState) => state.cart);
 
@@ -39,7 +36,6 @@ export default function ProductClient({ id }: { id: string }) {
 
   useEffect(() => {
     if (!products || products.length === 0) {
-      dispatch(getProducts());
     }
   }, [dispatch, products]);
 
@@ -165,7 +161,10 @@ export default function ProductClient({ id }: { id: string }) {
               }}
               onInit={(swiper) => {
                 // This ensures navigation works after initialization
-                if (swiper.params.navigation && typeof swiper.params.navigation === 'object') {
+                if (
+                  swiper.params.navigation &&
+                  typeof swiper.params.navigation === "object"
+                ) {
                   swiper.params.navigation.prevEl = prevRef.current;
                   swiper.params.navigation.nextEl = nextRef.current;
                 }

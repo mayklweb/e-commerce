@@ -2,9 +2,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useMemo } from "react";
-import { AppDispatch, RootState } from "@/app/store";
-import { useDispatch, useSelector } from "react-redux";
-import { getProducts } from "@/app/store/actions/productsAction";
+import { RootState } from "@/app/store";
+import { useSelector } from "react-redux";
 import { ProductImageType, ProductType } from "@/app/utils/types";
 
 function normalizeProducts(products: ProductType[]): ProductType[] {
@@ -21,7 +20,6 @@ function normalizeProducts(products: ProductType[]): ProductType[] {
 }
 
 function Products() {
-  const dispatch = useDispatch<AppDispatch>();
   const { products } = useSelector((state: RootState) => state.products);
   const normalizedProducts = useMemo(
     () => normalizeProducts(products),
@@ -29,21 +27,20 @@ function Products() {
   );
 
   useEffect(() => {
-    dispatch(getProducts());
     normalizeProducts(products);
   }, [products]);
 
-  function shuffleArray<T>(array?: T[] | null) {
-    if (!Array.isArray(array)) return [];
-    return [...array].sort(() => Math.random() - 0.5);
-  }
+  // function shuffleArray<T>(array?: T[] | null) {
+  //   if (!Array.isArray(array)) return [];
+  //   return [...array].sort(() => Math.random() - 0.5);
+  // }
 
-  const homeProducts = useMemo(() => {
-    if (!products || products.length === 0) return [];
+  // const homeProducts = useMemo(() => {
+  //   if (!products || products.length === 0) return [];
 
-    const shuffled = shuffleArray(products);
-    return shuffled.slice(0, 10);
-  }, [products]);
+  //   const shuffled = shuffleArray(products);
+  //   return shuffled.slice(0, 10);
+  // }, [products]);
 
   return (
     <section>
@@ -67,6 +64,7 @@ function Products() {
                     width={400}
                     height={360}
                     alt={product.name}
+                    priority
                   />
                 </div>
                 <div className="w-full mt-2 flex flex-col lg:flex-col justify-between">

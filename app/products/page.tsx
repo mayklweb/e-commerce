@@ -1,16 +1,11 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { FilterDrawer } from "./ui";
-import { AppDispatch, RootState } from "../store";
-import { useEffect, useState } from "react";
-import { getProducts } from "../store/actions/productsAction";
-import { getCategories } from "../store/actions/categoriesAction";
-import { getBrands } from "../store/actions/brandsAction";
+import { RootState } from "../store";
+import { useState } from "react";
 import ProductsList from "./ui/ProductsList/ProductsList";
-import Link from "next/link";
 
 function Products() {
-  const dispatch = useDispatch<AppDispatch>();
   const { brands } = useSelector((state: RootState) => state.brands);
   const { categories } = useSelector((state: RootState) => state.categories);
   const { products } = useSelector((state: RootState) => state.products);
@@ -29,12 +24,6 @@ function Products() {
         return categoryMatch && brandMatch;
       })
     : [];
-
-  useEffect(() => {
-    dispatch(getProducts());
-    dispatch(getCategories());
-    dispatch(getBrands());
-  }, []);
 
   return (
     <div className="mt-22 pb-24">

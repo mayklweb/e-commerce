@@ -1,18 +1,13 @@
 "use client";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { List } from "./ui";
-import { AppDispatch, RootState } from "../store";
+import { RootState } from "../store";
 import Link from "next/link";
-import { useEffect } from "react";
 
 function CartIcon() {
-  const dispatch = useDispatch<AppDispatch>();
   const { cart, totalPrice } = useSelector((state: RootState) => state.cart);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  useEffect(() => {
-    dispatch({ type: "cart/totalPrice" });
-  }, [cart]);
   return (
     <section>
       <div className="w-full h-full mt-22 mb-36">

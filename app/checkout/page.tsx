@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { AppDispatch, RootState } from "../store";
 import { clearCart } from "../store/slices/cartSlice";
-import { getAddresses } from "../store/actions/addressesAction";
-import { $api } from "../shared/api/api";
 import Image from "next/image";
 import {
   Select,
@@ -52,14 +50,13 @@ const Checkout = () => {
   });
 
   useEffect(() => {
-    dispatch(getAddresses());
     if (!initialized) return;
 
     if (!isAuth) {
       router.replace("/signin");
       return;
     }
-  }, [initialized, isAuth, dispatch, router]);
+  }, [initialized, isAuth, router]);
 
   const totalAmount = useMemo(() => {
     return cart.reduce(

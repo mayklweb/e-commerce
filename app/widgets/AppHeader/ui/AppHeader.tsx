@@ -4,7 +4,7 @@ import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/app/store";
 import { getProducts } from "@/app/store/actions/productsAction";
 import { latinToCyrillic } from "@/app/utils/helpers";
@@ -15,10 +15,6 @@ export const AppHeader = () => {
   const [query, setQuery] = useState<string>("");
   const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
   const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
-  const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {
-    dispatch(getProducts());
-  }, [dispatch]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(latinToCyrillic(e.target.value));

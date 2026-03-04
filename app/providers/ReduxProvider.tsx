@@ -1,11 +1,17 @@
 "use client";
 
-import { Provider } from "react-redux";
-import { store } from "../store";
+import { Provider, useDispatch } from "react-redux";
+import { AppDispatch, store } from "../store";
 import { useEffect } from "react";
 import { hydrateAuth, markInitialized } from "../store/slices/authSlice";
 import { StatusBar } from "@capacitor/status-bar";
 import { Capacitor } from "@capacitor/core";
+import { getBrands } from "../store/actions/brandsAction";
+import { getProducts } from "../store/actions/productsAction";
+import { getCategories } from "../store/actions/categoriesAction";
+import { getOrders } from "../store/actions/ordersAction";
+import { getAddresses } from "../store/actions/addressesAction";
+import { AppInit } from "./AppInit";
 
 export default function ReduxProvider({
   children,
@@ -38,5 +44,10 @@ export default function ReduxProvider({
     }
   }, []);
 
-  return <Provider store={store}>{children}</Provider>;
+  return (
+    <Provider store={store}>
+      <AppInit />
+      {children}
+    </Provider>
+  );
 }
