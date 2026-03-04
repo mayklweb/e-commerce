@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import {  useRef } from "react";
+import { useRef } from "react";
 import Link from "next/link";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -18,7 +18,6 @@ function Brands() {
   const { brands } = useSelector((state: RootState) => state.brands);
 
   console.log(brands);
-  
 
   return (
     <section>
@@ -77,7 +76,7 @@ function Brands() {
                     <Link
                       href={`/products`}
                       key={i}
-                      className="w-25 lg:w-35 h-full rounded-lg lg:rounded-2xl bg-primary/10 flex"
+                      className="w-25 lg:w-35 h-38 rounded-lg lg:rounded-2xl bg-primary/10 flex"
                     >
                       <div className="w-25 lg:w-35 h-full p-2 rounded-md lg:rounded-lg overflow-hidden shrink-0">
                         <div className="w-full h-14 lg:w-31 lg:h-22 rounded-sm lg:rounded-lg overflow-hidden shrink-0">
@@ -90,7 +89,7 @@ function Brands() {
                             priority
                           />
                         </div>
-                        <p className="w-full pt-2 text-xs lg:text-sm text-primary text-center font-semibold">
+                        <p className="w-full pt-2 text-xs lg:text-sm text-primary text-center font-semibold text-ellipsis">
                           {name}
                         </p>
                       </div>
