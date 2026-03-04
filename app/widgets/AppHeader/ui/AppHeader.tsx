@@ -44,7 +44,7 @@ export const AppHeader = () => {
 
   return (
     <header>
-      {window.innerWidth > 1024 && (
+      {hideHeader && (
         <div className="hidden lg:block w-full bg-white shadow-sm fixed z-10">
           <div className="container">
             <div className="relative">
