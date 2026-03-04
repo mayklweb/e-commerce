@@ -32,7 +32,7 @@ export const AppHeader = () => {
     router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
-  const hideHeader = ["signup", "signin", "checkout", "profile"].includes(
+  const hideHeader = ["signup", "signin", "checkout"].includes(
     path.split("/")[1],
   );
 
@@ -44,8 +44,8 @@ export const AppHeader = () => {
 
   return (
     <header>
-      {hideHeader && (
-        <div className="hidden lg:block w-full bg-white shadow-sm fixed z-10">
+      {!hideHeader && (
+        <div className=" w-full bg-white shadow-sm fixed z-10">
           <div className="container">
             <div className="relative">
               <div className="w-full flex items-center justify-between py-4">
