@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import ProductsList from "./ui/ProductsList/ProductsList";
 import { ProductImageType, ProductType } from "../utils/types";
 import Link from "next/link";
+import { cyrillicToLatin } from "../utils/helpers";
 
 function normalizeProducts(products: ProductType[]): ProductType[] {
   return products
@@ -21,33 +22,33 @@ function normalizeProducts(products: ProductType[]): ProductType[] {
 }
 
 function Products() {
-  const { brands } = useSelector((state: RootState) => state.brands);
-  const { categories } = useSelector((state: RootState) => state.categories);
-  const { products } = useSelector((state: RootState) => state.products);
+    const { brands } = useSelector((state: RootState) => state.brands);
+    const { categories } = useSelector((state: RootState) => state.categories);
+    const { products } = useSelector((state: RootState) => state.products);
 
-  const [activeCategory, setActiveCategory] = useState<number | null>(null);
-  const [activeBrand, setActiveBrand] = useState<number | null>(null);
+    const [activeCategory, setActiveCategory] = useState<number | null>(null);
+    const [activeBrand, setActiveBrand] = useState<number | null>(null);
 
-  const filteredProducts = Array.isArray(products)
-    ? products?.filter((product) => {
-        const categoryMatch =
-          activeCategory === null || product.category_id === activeCategory;
+    const filteredProducts = Array.isArray(products)
+      ? products?.filter((product) => {
+          const categoryMatch =
+            activeCategory === null || product.category_id === activeCategory;
 
-        const brandMatch =
-          activeBrand === null || product.brand_id === activeBrand;
+          const brandMatch =
+            activeBrand === null || product.brand_id === activeBrand;
 
-        return categoryMatch && brandMatch;
-      })
-    : [];
+          return categoryMatch && brandMatch;
+        })
+      : [];
 
-  const normalizedProducts = useMemo(
-    () => normalizeProducts(products),
-    [products],
-  );
+    const normalizedProducts = useMemo(
+      () => normalizeProducts(products),
+      [products],
+    );
 
-  useEffect(() => {
-    normalizeProducts(products);
-  }, [products]);
+    useEffect(() => {
+      normalizeProducts(products);
+    }, [products]);
 
   return (
     <div className="mt-22 pb-24">
@@ -97,8 +98,8 @@ function Products() {
                 </div>
                 <div className="mt-2 flex flex-col gap-2">
                   {categories.map(({ id, name }) => (
-                    <Link
-                      href={`/products/${name}`}
+                    <button
+                      // href={`/products/${cyrillicToLatin(name.toLocaleLowerCase())}`}
                       key={id}
                       onClick={() => setActiveBrand(id)}
                       className={`block py-2 px-4 rounded-md text-sm ${
@@ -108,7 +109,7 @@ function Products() {
                       }`}
                     >
                       {name}
-                    </Link>
+                    </button>
                   ))}
                 </div>
               </div>

@@ -70,3 +70,38 @@ export const latinToCyrillic = (text: string) => {
     .replace(/v/g, "в")
     .replace(/w/g, "");
 };
+
+export const cyrillicToLatin = (text: string): string => {
+  return text
+    .replace(/ш/g, "sh")
+    .replace(/ч/g, "ch")
+    .replace(/я/g, "ya")
+    .replace(/ё/g, "yo")
+    .replace(/ю/g, "yu")
+    .replace(/ж/g, "j")
+    .replace(/х/g, "x")
+    .replace(/қ/g, "q")
+    .replace(/ғ/g, "gh")
+    .replace(/а/g, "a")
+    .replace(/б/g, "b")
+    .replace(/д/g, "d")
+    .replace(/е/g, "e")
+    .replace(/ф/g, "f")
+    .replace(/г/g, "g")
+    .replace(/и/g, "i")
+    .replace(/к/g, "k")
+    .replace(/л/g, "l")
+    .replace(/м/g, "m")
+    .replace(/н/g, "n")
+    .replace(/о/g, "o")
+    .replace(/п/g, "p")
+    .replace(/р/g, "r")
+    .replace(/с/g, "s")
+    .replace(/т/g, "t")
+    .replace(/у/g, "u")
+    .replace(/в/g, "v")
+    .replace(/й/g, "y")
+    .replace(/з/g, "z")
+    .replace(/ъ/g, "'")
+    .replace(/ /g, "-");  
+};

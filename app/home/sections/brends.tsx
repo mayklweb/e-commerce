@@ -19,6 +19,12 @@ function Brands() {
 
   console.log(brands);
 
+  const excludeIndexes = [3, 4, 21, 24, 25];
+
+  const filteredBrands = brands.filter(
+    (_, index) => !excludeIndexes.includes(index),
+  );
+
   return (
     <section>
       <div className="mt-5 lg:mt-10">
@@ -71,20 +77,21 @@ function Brands() {
                 }}
                 className="w-full mt-3 lg:mt-5"
               >
-                {brands.slice(1).map(({ name, id }, i) => (
-                  <SwiperSlide className="w-35 rounded-2xl">
+                {filteredBrands.slice(1).map(({ name, id }, i) => (
+                  <SwiperSlide className="w-full grid grid-cols-3 rounded-2xl">
                     <Link
                       href={`/products`}
                       key={i}
-                      className="w-25 lg:w-35 h-38 rounded-lg lg:rounded-2xl bg-primary/10 flex"
+                      // className=""
+                      className="w-25 lg:w-35 h-38 rounded-lg lg:rounded-2xl bg-primary/10 flex shrink-0"
                     >
-                      <div className="w-25 lg:w-35 h-full p-2 rounded-md lg:rounded-lg overflow-hidden shrink-0">
-                        <div className="w-full h-14 lg:w-31 lg:h-22 rounded-sm lg:rounded-lg overflow-hidden shrink-0">
+                      <div className="w-full lg:w-35 h-full p-2 rounded-md lg:rounded-lg overflow-hidden ">
+                        <div className="w-full h-14 lg:w-31 lg:h-22 rounded-sm lg:rounded-lg overflow-hidden ">
                           <Image
                             src={`category-${id}.jpg`}
                             width={124}
                             height={90}
-                            className="w-full h-full object-fill"
+                            className="w-full h-full object-cover"
                             alt={name}
                             priority
                           />
