@@ -13,9 +13,7 @@ import { UserIcon } from "../shared/icons";
 
 function Profile() {
   const dispatch = useDispatch<AppDispatch>();
-  const { user, loading } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const { user, loading } = useSelector((state: RootState) => state.auth);
   const { orders } = useSelector((state: RootState) => state.orders);
   const router = useRouter();
 
@@ -110,6 +108,7 @@ function Profile() {
         data-[state=active]:text-white
         data-[state=active]:bg-primary
         data-[state=active]:font-semibold
+        cursor-pointer
       "
                   >
                     Malumotlarim
@@ -122,7 +121,7 @@ function Profile() {
         data-[state=active]:text-white
         data-[state=active]:bg-primary
         data-[state=active]:font-semibold
-      "
+      cursor-pointer "
                   >
                     Buyurtmalarim
                   </TabsTrigger>
