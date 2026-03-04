@@ -60,7 +60,7 @@ function Profile() {
         <section>
           <div className="container">
             <div>
-              <div className="w-full flex lg:hidden flex-row-reverse flex-auto h-full gap-4">
+              <div className="w-full flex lg:hidden flex-col flex-auto h-full gap-4">
                 <div className="flex gap-3 items-center">
                   <div className="p-4 bg-accent inline-block rounded-full">
                     <UserIcon size={32} />
