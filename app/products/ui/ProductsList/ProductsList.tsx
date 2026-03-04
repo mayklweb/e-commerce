@@ -39,11 +39,13 @@ function ProductsList({ products }: Props) {
                 priority
               />
             </div>
-            <div className="w-full mt-2 flex flex-col lg:flex-row lg:items-center justify-between">
-              <h1 className="text-base lg:text-lg tracking-tight">
+            <div className="w-full mt-2 flex flex-col lg:flex-col">
+              <h1 className="text-sm lg:text-base text-[#283745] font-bold tracking-tight">
                 {product.name}
               </h1>
-              <p className="text-base tracking-tight">{product.price} USZ</p>
+              <p className="text-sm lg:text-base text-[#283745] font-semibold tracking-tight">
+                {product.price} USZ
+              </p>
             </div>
           </Link>
         ))}

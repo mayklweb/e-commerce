@@ -80,17 +80,15 @@ export const AppHeader = () => {
                 </div>
                 <div className="hidden lg:flex items-center gap-5">
                   <Link
-                    title=""
                     href={user ? "/profile" : "/signin"}
                     className="text-xs flex flex-row items-center gap-1 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
                   >
                     <UserIcon />
                     <span className="text-[16px] text-primary font-semibold uppercase ">
-                      {user?.name}
+                      {user ? user?.name : "KIRISH"}
                     </span>
                   </Link>
                   <Link
-                    title="Savat"
                     href={"/cart"}
                     className="text-xs flex flex-row items-center gap-2 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
                   >

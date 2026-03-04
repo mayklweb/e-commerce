@@ -2,8 +2,23 @@
 import { useSelector } from "react-redux";
 import { FilterDrawer } from "./ui";
 import { RootState } from "../store";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ProductsList from "./ui/ProductsList/ProductsList";
+import { ProductImageType, ProductType } from "../utils/types";
+import Link from "next/link";
+
+function normalizeProducts(products: ProductType[]): ProductType[] {
+  return products
+    .filter(
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url,
+    )
+    .map((p) => ({
+      ...p,
+      mainImage:
+        `https://api.bunyodoptom.uz${(p?.images as ProductImageType[])[0]?.url}` &&
+        `https://api.bunyodoptom.uz${(p?.images as ProductImageType[])[1]?.url}`,
+    }));
+}
 
 function Products() {
   const { brands } = useSelector((state: RootState) => state.brands);
@@ -25,6 +40,15 @@ function Products() {
       })
     : [];
 
+  const normalizedProducts = useMemo(
+    () => normalizeProducts(products),
+    [products],
+  );
+
+  useEffect(() => {
+    normalizeProducts(products);
+  }, [products]);
+
   return (
     <div className="mt-22 pb-24">
       <div className="container">
@@ -39,7 +63,7 @@ function Products() {
               setActiveBrand={setActiveBrand}
             />
           </div>
-          <div className="overflow-x-scroll lg:overflow-x-auto flex py-2 gap-3 mt-2">
+          <div className="lg:hidden overflow-x-scroll lg:overflow-x-auto flex py-2 gap-3 mt-2">
             <button
               onClick={() => setActiveCategory(null)}
               className={`py-2 px-4 rounded-md text-sm ${
@@ -65,15 +89,19 @@ function Products() {
               </button>
             ))}
           </div>
-          <div className="flex lg:gap-5">
+          <div className="mt-5 flex lg:gap-5">
             <div className="lg:w-80 flex">
-              <div>
-                {/* <div>
+              <div className="hidden lg:block">
+                <div>
+                  <h3 className="text-2xl font-semibold">Kategoriyalar</h3>
+                </div>
+                <div className="mt-2 flex flex-col gap-2">
                   {categories.map(({ id, name }) => (
-                    <Link href={`/products/${name}`}
+                    <Link
+                      href={`/products/${name}`}
                       key={id}
                       onClick={() => setActiveBrand(id)}
-                      className={`py-2 px-4 rounded-md text-sm ${
+                      className={`block py-2 px-4 rounded-md text-sm ${
                         activeBrand === id
                           ? "bg-primary text-white"
                           : "bg-primary/10 text-primary"
@@ -82,12 +110,12 @@ function Products() {
                       {name}
                     </Link>
                   ))}
-                </div> */}
+                </div>
               </div>
             </div>
 
             <ProductsList
-              products={filteredProducts.map((product) => ({
+              products={normalizedProducts.map((product) => ({
                 ...product,
               }))}
             />
