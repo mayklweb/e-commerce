@@ -4,6 +4,8 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 
+export const dynamic = "force-dynamic"; // ← add this line
+
 export async function generateStaticParams() {
   const res = await fetch("https://api.bunyodoptom.uz/api/v1/products");
   const data = await res.json();
