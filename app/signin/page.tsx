@@ -2,10 +2,8 @@
 
 import Link from "next/link";
 import { useDispatch } from "react-redux";
-import { loginSchema } from "./model/schema/schema";
 import { setAuth } from "../store/slices/authSlice";
-import { useForm, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { $api } from "../shared/api/api";
 import { signinUrl } from "../utils/urls";
 import { useState } from "react";
@@ -135,7 +133,9 @@ export default function SignIn() {
         <input
           className="w-full mt-5 uppercase bg-primary text-white py-2 px-4 rounded-lg hover:text-primary hover:bg-secondary transition-all ease-in-out duration-300"
           type="submit"
+          value="Kirish"
         />
+     
       </form>
 
       <div>

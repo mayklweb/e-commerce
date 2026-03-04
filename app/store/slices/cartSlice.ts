@@ -5,6 +5,7 @@ export type CartItem = ProductsType & { qty: number };
 
 interface CartState {
   cart: CartItem[];
+  totalPrice: number;
 }
 
 const loadCart = (): CartItem[] => {
@@ -21,6 +22,7 @@ const saveCart = (cart: CartItem[]) => {
 
 const initialState: CartState = {
   cart: loadCart(),
+  totalPrice: 0,
 };
 
 const cartSlice = createSlice({
@@ -34,10 +36,7 @@ const cartSlice = createSlice({
       const existing = state.cart.find((p) => p.id === item.id);
 
       if (existing) {
-        existing.qty = Math.min(
-          existing.qty + (item.qty || 1),
-          item.stock_qty
-        );
+        existing.qty = Math.min(existing.qty + (item.qty || 1), item.stock_qty);
       } else {
         state.cart.push({ ...item, qty: item.qty || 1 });
       }
@@ -70,15 +69,17 @@ const cartSlice = createSlice({
       state.cart = [];
       saveCart(state.cart);
     },
+
+    totalPrice(state) {
+      state.totalPrice = state.cart.reduce(
+        (sum, item) => sum + Number(item.price) * item.qty,
+        0,
+      );
+    },
   },
 });
 
-export const {
-  addToCart,
-  inc,
-  dec,
-  remove,
-  clearCart,
-} = cartSlice.actions;
+export const { addToCart, inc, dec, remove, clearCart, totalPrice } =
+  cartSlice.actions;
 
 export default cartSlice.reducer;

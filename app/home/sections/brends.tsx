@@ -12,18 +12,20 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { LeftIcon, RightIcon } from "@/app/shared/icons";
 import { getCategories } from "@/app/store/actions/categoriesAction";
 import { AppDispatch, RootState } from "@/app/store";
+import { getBrands } from "@/app/store/actions/brandsAction";
 
-function Categories() {
+function Brands() {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const dispatch = useDispatch<AppDispatch>();
-  const { categories } = useSelector((state: RootState) => state.categories);
-
-  console.log(categories);
+  const { brands } = useSelector((state: RootState) => state.brands);
 
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(getBrands());
   }, []);
+
+  console.log(brands);
+  
 
   return (
     <section>
@@ -32,7 +34,7 @@ function Categories() {
           <div>
             <div className="flex items-center justify-between">
               <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-                Kategoriya
+                Brendlar
               </h1>
               <div className="">
                 <button
@@ -77,19 +79,20 @@ function Categories() {
                 }}
                 className="w-full mt-3 lg:mt-5"
               >
-                {categories.slice(1).map(({ name, id }, i) => (
+                {brands.slice(1).map(({ name, id }, i) => (
                   <SwiperSlide className="w-35 rounded-2xl">
                     <Link
                       href={`/products`}
                       key={i}
-                      className="w-25 lg:w-35 rounded-lg lg:rounded-2xl bg-primary/10 flex shrink-0"
+                      className="w-25 lg:w-35 h-full rounded-lg lg:rounded-2xl bg-primary/10 flex"
                     >
-                      <div className="w-25 lg:w-35 p-2 rounded-md lg:rounded-lg overflow-hidden shrink-0">
+                      <div className="w-25 lg:w-35 h-full p-2 rounded-md lg:rounded-lg overflow-hidden shrink-0">
                         <div className="w-full h-14 lg:w-31 lg:h-22 rounded-sm lg:rounded-lg overflow-hidden shrink-0">
                           <Image
-                            src={`${id}.jpg`}
+                            src={`category-${id}.jpg`}
                             width={124}
                             height={90}
+                            className="w-full h-full object-fill"
                             alt={name}
                           />
                         </div>
@@ -109,4 +112,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default Brands;

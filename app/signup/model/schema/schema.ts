@@ -12,15 +12,10 @@ import * as yup from "yup";
 //   rememberMe: yup.boolean(),
 // });
 
-export const loginSchema = yup.object().shape({
+export const signupSchema = yup.object().shape({
   name: yup.string().required("Ism majburiy"),
 
   phone: yup.string().required("Phone is required"), // UI formatted phone, faqat required bo‘lsa kifoya
-
-  phoneRaw: yup
-    .string()
-    .matches(/^[0-9]{9}$/, "Phone must be 9 digits")
-    .required("Phone is required"),
 
   password: yup
     .string()

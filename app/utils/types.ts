@@ -1,4 +1,4 @@
-interface ProductImageType {
+export interface ProductImageType {
   id?: number;
   url?: string;
 }
@@ -38,4 +38,18 @@ export interface CategoriesType {
 export interface BrandsType {
   id: number;
   name: string;
+}
+
+export interface OrderType {
+  id: number;
+  address_id: number;
+  user_id: number;
+  status: string;
+  payment_method: string;
+  payment_status: string;
+  total_amount: string;
+  notes: string | null;
+  idempotency_key: string | null;
+  created_at: string;
+  updated_at: string;
 }

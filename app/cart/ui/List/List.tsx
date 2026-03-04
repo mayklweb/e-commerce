@@ -4,7 +4,7 @@ import { RootState } from "@/app/store";
 
 function List({ cart }: { cart: RootState["cart"]["cart"] }) {
   return (
-    <div className="w-full lg:w-4/6">
+    <div className="w-full lg:w-5/6">
       {cart.map((item, i) => (
         <Card key={i} item={item} />
       ))}

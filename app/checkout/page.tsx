@@ -160,20 +160,20 @@ const Checkout = () => {
 
   return (
     <section>
-      <div className="mt-5 mb-40">
+      <div className="mt-24 mb-40">
         <div className="container">
           <div className="relative">
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* USER */}
               <div className="bg-primary/10 rounded-lg p-4 mb-6">
-                <h2 className="font-semibold text-black mb-2">Oluvchi:</h2>
-                <p className="text-black text-xl font-semibold">{user?.name}</p>
-                <p className="text-black">+998 {user?.phone}</p>
+                <h2 className="lg:text-xl font-semibold text-black mb-2">Oluvchi:</h2>
+                <p className="lg:text-2xl text-black text-xl font-semibold capitalize">{user?.name}</p>
+                <p className="lg:text-2xl text-black">+998 {user?.phone}</p>
               </div>
 
               {/* ADDRESS SELECT */}
               <div className="w-full mb-6">
-                <h2 className="font-semibold text-black mb-3">
+                <h2 className="lg:text-xl font-semibold text-black mb-3">
                   Yetkazib berish manzili:
                 </h2>
 
@@ -213,7 +213,7 @@ const Checkout = () => {
               {/* CART */}
               {/* CART ITEMS */}
               <div className="mb-6">
-                <h2 className="font-semibold text-black mb-3">Mahsulotlar:</h2>
+                <h2 className="lg:text-xl font-semibold text-black mb-3">Mahsulotlar:</h2>
 
                 <div>
                   {cart.map((item) => (
@@ -231,10 +231,10 @@ const Checkout = () => {
                   ))}
 
                   <div className="flex justify-between items-center pt-3 mt-3 border-t-2 border-gray-500">
-                    <span className="text-lg font-bold text-gray-800">
+                    <span className="text-lg lg:text-xl font-bold text-gray-800">
                       Jami:
                     </span>
-                    <span className="text-lg font-bold text-[#2e3192]">
+                    <span className="text-lg lg:text-xl font-bold text-[#2e3192]">
                       {totalAmount.toLocaleString()} so'm
                     </span>
                   </div>
@@ -249,7 +249,7 @@ const Checkout = () => {
               />
 
               <div className="mb-6">
-                <h2 className="font-semibold text-black mb-3">To'lov usuli:</h2>
+                <h2 className="lg:text-xl font-semibold text-black mb-3">To'lov usuli:</h2>
 
                 <div className="space-y-3">
                   {/* CASH */}
@@ -317,7 +317,7 @@ const Checkout = () => {
               </div>
 
               {/* SUBMIT */}
-              <div className="w-full bg-white px-4 py-3 rounded-t-2xl border-b fixed bottom-19 left-0 z-10 shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)]">
+              <div className="w-full lg:hidden bg-white px-4 py-3 rounded-t-2xl border-b fixed  bottom-19 left-0 z-10 shadow-[0px_-1px_6px_0px_rgba(0,0,0,0.1)]">
                 <button
                   disabled={loading}
                   className="w-full bg-[#2e3192] text-white py-3 rounded-xl disabled:opacity-50 "
