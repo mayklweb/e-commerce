@@ -11,7 +11,7 @@ function Products() {
   return (
     <section>
       <div className="container">
-        <div>
+        <div className="mt-5">
           <div>
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold">
               Sizga yoqadiganlar

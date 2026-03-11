@@ -12,7 +12,7 @@ function CategoryCard({ category }: Props) {
         <Image src="/candy.webp" alt="Candy" width={200} height={120} />
       </div>
       <div>
-        <h1 className="text-lg font-semibold text-center">{category.name}</h1>
+        <h1 className="text-sm font-semibold text-center">{category.name}</h1>
       </div>
     </div>
   );
