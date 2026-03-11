@@ -27,7 +27,7 @@
   --ring: oklch(0.708 0 0);
 }
 
-/* @theme inline {
+@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-Instrument-sans);
@@ -46,14 +46,7 @@
   --color-gray: var(--gray);
   --color-error: var(--error);
   --color-error-foreground: var(--error-foreground);
-} */
-
-/* @media (prefers-color-scheme: light) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-} */
+} 
 
 html{
   width: 100%;
