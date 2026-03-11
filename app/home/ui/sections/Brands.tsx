@@ -1,7 +1,5 @@
 "use client";
 import { CategoriesType } from "@/app/types";
-import { useCategories } from "@/app/shared/lib/hooks/useCategories";
-import { CategoryCard } from "@/app/components";
 import { useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -12,9 +10,10 @@ import { Autoplay, Navigation } from "swiper/modules";
 import { LeftIcon, RightIcon } from "@/app/shared/icons";
 import Link from "next/link";
 import Image from "next/image";
+import { useBrands } from "@/app/shared/lib/hooks/useBrands";
 
 function Brands() {
-  const { data: categories, isLoading, isError } = useCategories();
+  const { data: brands, isLoading, isError } = useBrands();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
@@ -71,7 +70,7 @@ function Brands() {
               }}
               className="w-full mt-3 lg:mt-5"
             >
-              {categories
+              {brands
                 .slice(1)
                 .map(({ name, id }: CategoriesType, i: number) => (
                   <SwiperSlide key={i}>
@@ -82,7 +81,7 @@ function Brands() {
                       <div className="w-full p-1.5">
                         <div className="relative w-full aspect-4/3 rounded-md overflow-hidden">
                           <Image
-                            src={`/${id}.jpg`}
+                            src={`/category-${id}.jpg`}
                             fill
                             sizes="(max-width: 640px) 30vw, (max-width: 1024px) 15vw, 10vw"
                             alt={name}

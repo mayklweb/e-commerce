@@ -78,7 +78,7 @@ function AppHeader  ()  {
                     </div>
                   </form>
                 </div>
-                <div className="hidden lg:flex items-center gap-5">
+                <div className="hidden lg:flex items-center gap-4">
                   <Link
                     href={"/profile"}
                     className="text-xs flex flex-row items-center gap-1 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
