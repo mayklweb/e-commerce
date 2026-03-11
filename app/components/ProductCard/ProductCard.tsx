@@ -27,12 +27,12 @@ function ProductCard({ product }: Props) {
         </div>
 
         <div className="flex flex-col items-start gap-0.5 w-full">
-          <h2 className="w-full font-semibold text-black text-[14px] tracking-tight leading-[100%] truncate ">
+          <h2 className="w-full font-semibold text-black text-base tracking-tight leading-[100%] truncate ">
             {product.name}
           </h2>
 
-          <p className="font-semibold text-[#000000cc] text-[14px] tracking-tight">
-            {product.price}
+          <p className="font-semibold text-[#000000cc] text-base tracking-tight">
+            {product.price} so'm
           </p>
         </div>
       </div>

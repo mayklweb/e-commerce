@@ -77,10 +77,10 @@ function Categories() {
                   <SwiperSlide key={i}>
                     <Link
                       href="/products"
-                      className="flex flex-col items-center rounded-2xl bg-primary/10 overflow-hidden"
+                      className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
                     >
-                      <div className="w-full p-2 sm:p-3">
-                        <div className="relative w-full aspect-4/3 rounded-xl overflow-hidden">
+                      <div className="w-full p-1 sm:p-2">
+                        <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden">
                           <Image
                             src={`/${id}.jpg`}
                             fill

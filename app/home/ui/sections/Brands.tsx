@@ -79,7 +79,7 @@ function Brands() {
                       href="/products"
                       className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
                     >
-                      <div className="w-full p-1.5 sm:p-2">
+                      <div className="w-full p-1.5">
                         <div className="relative w-full aspect-4/3 rounded-md overflow-hidden">
                           <Image
                             src={`/${id}.jpg`}
@@ -90,7 +90,7 @@ function Brands() {
                             priority
                           />
                         </div>
-                        <p className="w-full pt-1.5 text-[10px] sm:text-xs lg:text-sm text-primary text-center font-semibold line-clamp-2">
+                        <p className="w-full pt-1.5 text-xs lg:text-sm text-primary text-center font-semibold line-clamp-2">
                           {name}
                         </p>
                       </div>
