@@ -1,12 +1,14 @@
 "use client";
-import { Banner, Categories, Products } from "./ui/sections";
+import { Banner, Brands, Categories, FavoriteProducts, RecomendedProducts } from "./ui/sections";
 
 function Home() {
   return (
-    <div className="mt-5">
+    <div className="mt-5 pb-5">
       <Banner />
       <Categories />
-      <Products />
+      <FavoriteProducts />
+      <Brands />
+      <RecomendedProducts />
     </div>
   );
 }

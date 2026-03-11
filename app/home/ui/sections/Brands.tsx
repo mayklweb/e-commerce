@@ -13,7 +13,7 @@ import { LeftIcon, RightIcon } from "@/app/shared/icons";
 import Link from "next/link";
 import Image from "next/image";
 
-function Categories() {
+function Brands() {
   const { data: categories, isLoading, isError } = useCategories();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -60,14 +60,14 @@ function Categories() {
               spaceBetween={12}
               modules={[Autoplay, Navigation]}
               breakpoints={{
-                0: { slidesPerView: 2, spaceBetween: 8 },
-                375: { slidesPerView: 2.5, spaceBetween: 10 },
-                425: { slidesPerView: 3, spaceBetween: 10 },
-                640: { slidesPerView: 3.5, spaceBetween: 12 },
-                768: { slidesPerView: 4.5, spaceBetween: 14 },
-                1024: { slidesPerView: 5, spaceBetween: 16 },
-                1280: { slidesPerView: 6, spaceBetween: 20 },
-                1536: { slidesPerView: 8, spaceBetween: 20 },
+                0: { slidesPerView: 2.5, spaceBetween: 8 },
+                375: { slidesPerView: 3.2, spaceBetween: 10 },
+                425: { slidesPerView: 3.5, spaceBetween: 10 },
+                640: { slidesPerView: 4.5, spaceBetween: 12 },
+                768: { slidesPerView: 5.5, spaceBetween: 14 },
+                1024: { slidesPerView: 7, spaceBetween: 16 },
+                1280: { slidesPerView: 8, spaceBetween: 20 },
+                1536: { slidesPerView: 10, spaceBetween: 20 },
               }}
               className="w-full mt-3 lg:mt-5"
             >
@@ -77,20 +77,20 @@ function Categories() {
                   <SwiperSlide key={i}>
                     <Link
                       href="/products"
-                      className="flex flex-col items-center rounded-2xl bg-primary/10 overflow-hidden"
+                      className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
                     >
-                      <div className="w-full p-2 sm:p-3">
-                        <div className="relative w-full aspect-4/3 rounded-xl overflow-hidden">
+                      <div className="w-full p-1.5 sm:p-2">
+                        <div className="relative w-full aspect-4/3 rounded-md overflow-hidden">
                           <Image
                             src={`/${id}.jpg`}
                             fill
-                            sizes="(max-width: 640px) 35vw, (max-width: 1024px) 18vw, 12vw"
+                            sizes="(max-width: 640px) 30vw, (max-width: 1024px) 15vw, 10vw"
                             alt={name}
                             className="object-cover"
                             priority
                           />
                         </div>
-                        <p className="w-full pt-2 text-sm sm:text-base lg:text-lg text-primary text-center font-semibold line-clamp-2">
+                        <p className="w-full pt-1.5 text-[10px] sm:text-xs lg:text-sm text-primary text-center font-semibold line-clamp-2">
                           {name}
                         </p>
                       </div>
@@ -105,4 +105,4 @@ function Categories() {
   );
 }
 
-export default Categories;
+export default Brands;

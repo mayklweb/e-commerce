@@ -1,9 +1,11 @@
 import { ProductCard } from "@/app/components";
 import { useProducts } from "@/app/shared/lib/hooks/useProducts";
+import { useShuffledProducts } from "@/app/shared/lib/hooks/useShuffledProducts";
 import { ProductsType } from "@/app/types";
 
-function Products() {
+function FavoriteProducts() {
   const { data: products, isLoading, isError } = useProducts();
+  const favoriteProducts = useShuffledProducts<ProductsType>(products, 10);
 
   if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>Error</div>;
@@ -19,14 +21,9 @@ function Products() {
           </div>
 
           <div className="mt-6 mb-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            {products.map((product: ProductsType) => (
+            {favoriteProducts.map((product: ProductsType) => (
               <ProductCard product={product} />
             ))}
-          </div>
-          <div className="w-full h-16">
-            <button className="mb-24 w-full h-full text-white text-xl cursor-pointer bg-[#2e3192] rounded-2xl">
-              KOPROQ KORISH
-            </button>
           </div>
         </div>
       </div>
@@ -34,4 +31,4 @@ function Products() {
   );
 }
 
-export default Products;
+export default FavoriteProducts;
