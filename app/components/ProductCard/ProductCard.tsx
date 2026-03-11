@@ -1,4 +1,5 @@
 import { FavoriteIcon } from "@/app/shared/icons";
+import { useFavoritesStore } from "@/app/store/favoritesStore";
 import { ProductsType } from "@/app/types";
 import Image from "next/image";
 
@@ -7,14 +8,25 @@ interface Props {
 }
 
 function ProductCard({ product }: Props) {
+  const { toggleFavorite, isFavorite } = useFavoritesStore();
+
+  const liked = isFavorite(product.id);
+
   return (
     <div
       key={product.id}
       className="flex flex-col items-start gap-5 border-0 shadow-none"
     >
       <div className="w-full relative">
-        <button className="p-1 rounded-full absolute top-2.5 right-2.5 bg-white cursor-pointer">
-          <FavoriteIcon className="w-5 lg:w-6 h-5 lg:h-6" />
+        <button
+          onClick={() => toggleFavorite(product)}
+          className="p-1 absolute top-2 right-2 z-10 bg-white rounded-full"
+        >
+          <FavoriteIcon
+            className={`w-5 h-5 transition-colors ${
+              liked ? "fill-error text-error" : "text-black"
+            }`}
+          />
         </button>
         <div className="rounded-xl overflow-hidden mb-2.5">
           <Image

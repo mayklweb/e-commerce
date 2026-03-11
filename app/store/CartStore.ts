@@ -1,63 +1,81 @@
-import { makeAutoObservable } from "mobx";
-import { ProductsType } from "../types";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import { ProductsType } from "@/app/types";
 
-class CartStore {
-  cart: { id: number; count: number; stock_qty: number }[] = [];
-
-  constructor() {
-    makeAutoObservable(this);
-    const saved = localStorage.getItem("cart");
-    this.cart = saved ? JSON.parse(saved) : [];
-  }
-
-  saveCart() {
-    localStorage.setItem("cart", JSON.stringify(this.cart));
-  }
-
-  getQuantity(id: number) {
-    const item = this.cart.find((p) => p.id === id);
-    return item ? item.count : 0; // ✅ count ishlatiladi
-  }
-
-  addToCart(item: ProductsType) {
-
-    const existing = this.cart.find((p) => p.id === item.id);
-    if (existing) {
-      if (existing.count < item.stock_qty) {
-        existing.count += item.qty || 1;
-      }
-    } else {
-      this.cart.push({ ...item, count: 1, stock_qty: item.stock_qty });
-    }
-    this.saveCart();
-  }
-
-  inc(id: number) {
-    const item = this.cart.find((p) => p.id === id);
-    if (item && item.count < item.stock_qty) {
-      item.count += 1;
-      this.saveCart();
-    }
-  }
-
-  dec(id: number) {
-    this.cart = this.cart.map((item) =>
-      item.id === id && item.count > 1
-        ? { ...item, count: item.count - 1 }
-        : item
-    );
-    this.saveCart();
-  }
-
-  remove(id: number) {
-    this.cart = this.cart.filter((item) => item.id !== id);
-    this.saveCart();
-  }
-
-  clearCart() {
-    this.cart = [];
-    this.saveCart();
-  }
+interface CartItem {
+  id: number;
+  count: number;
+  stock_qty: number;
 }
 
-export const cartStore = new CartStore();
+interface CartState {
+  cart: CartItem[];
+  getQuantity: (id: number) => number;
+  addToCart: (item: ProductsType) => void;
+  inc: (id: number) => void;
+  dec: (id: number) => void;
+  remove: (id: number) => void;
+  clearCart: () => void;
+}
+
+export const useCartStore = create<CartState>()(
+  persist(
+    (set, get) => ({
+      cart: [],
+
+      getQuantity: (id) => {
+        const item = get().cart.find((p) => p.id === id);
+        return item ? item.count : 0;
+      },
+
+      addToCart: (item) => {
+        const existing = get().cart.find((p) => p.id === item.id);
+        if (existing) {
+          if (existing.count < item.stock_qty) {
+            set((state) => ({
+              cart: state.cart.map((p) =>
+                p.id === item.id
+                  ? { ...p, count: p.count + (item.qty || 1) }
+                  : p
+              ),
+            }));
+          }
+        } else {
+          set((state) => ({
+            cart: [...state.cart, { id: item.id, count: 1, stock_qty: item.stock_qty }],
+          }));
+        }
+      },
+
+      inc: (id) => {
+        const item = get().cart.find((p) => p.id === id);
+        if (item && item.count < item.stock_qty) {
+          set((state) => ({
+            cart: state.cart.map((p) =>
+              p.id === id ? { ...p, count: p.count + 1 } : p
+            ),
+          }));
+        }
+      },
+
+      dec: (id) => {
+        set((state) => ({
+          cart: state.cart.map((p) =>
+            p.id === id && p.count > 1 ? { ...p, count: p.count - 1 } : p
+          ),
+        }));
+      },
+
+      remove: (id) => {
+        set((state) => ({
+          cart: state.cart.filter((p) => p.id !== id),
+        }));
+      },
+
+      clearCart: () => set({ cart: [] }),
+    }),
+    {
+      name: "cart", // same localStorage key as your MobX store
+    }
+  )
+);
