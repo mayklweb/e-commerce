@@ -85,6 +85,9 @@ function Categories() {
               modules={[Autoplay, Navigation]}
               breakpoints={{
                 0: {
+                  slidesPerView: 2.7,
+                },
+                425: {
                   slidesPerView: 3.4,
                 },
                 640: {
