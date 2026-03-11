@@ -7,7 +7,7 @@ export interface CategoriesType {
 export interface ProductsType {
   id: number;
   name: string;
-  price: string;
+  price: number;
   photo: string;
   stock_qty: number;
   qty?: number;

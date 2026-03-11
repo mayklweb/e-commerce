@@ -44,7 +44,7 @@ function ProductCard({ product }: Props) {
           </h2>
 
           <p className="font-semibold text-[#000000cc] text-base tracking-tight">
-            {product.price} so'm
+            {product.price?.toLocaleString()} so'm
           </p>
         </div>
       </div>
