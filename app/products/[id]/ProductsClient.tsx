@@ -1,24 +1,19 @@
 "use client";
 import { useQuery } from "@tanstack/react-query";
-import { getProducts } from "@/app/shared/api/apiServices";
-import { ProductsType } from "@/app/types";
+
 import Image from "next/image";
+import { useProduct, useProducts } from "@/app/shared/lib/hooks/useProducts";
 
 export default function ProductsClient({ id }: { id: number }) {
-  const {
-    data: products,
-    isError,
-    error,
-    isLoading,
-  } = useQuery<ProductsType[], Error>({
-    queryKey: ["products"],
-    queryFn: getProducts,
-  });
+  // All products
+  const { data: products, isLoading, isError } = useProducts();
 
-  if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error: {error.message}</p>;
+  // Single product
+  const { data: product } = useProduct(id);
 
-  const product = products?.find((p) => p.id === id);
+  // In JSX
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error</div>;
 
   return (
     <section>
