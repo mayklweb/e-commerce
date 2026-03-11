@@ -1,3 +1,1 @@
-import { AppFooter } from "./ui/AppFooter";
-
-export {AppFooter}
+export { default as AppFooter } from "./ui/AppFooter";

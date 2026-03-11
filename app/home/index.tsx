@@ -1,17 +1,14 @@
-import Banner from "./sections/banner";
-import Brands from "./sections/brends";
-import Categories from "./sections/categories";
-import Products from "./sections/products";
+"use client";
+import { Banner, Categories, Products } from "./ui/sections";
 
-function HomePage() {
+function Home() {
   return (
-    <div className="mt-20 pb-24">
+    <div className="mt-5">
       <Banner />
       <Categories />
-      <Brands />
       <Products />
     </div>
   );
 }
 
-export default HomePage;
+export default Home;

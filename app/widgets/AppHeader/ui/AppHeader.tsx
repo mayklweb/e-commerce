@@ -4,21 +4,21 @@ import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-import { useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/app/store";
-import { getProducts } from "@/app/store/actions/productsAction";
-import { latinToCyrillic } from "@/app/utils/helpers";
+// import { useSelector } from "react-redux";
+// import { AppDispatch, RootState } from "@/app/store";
+// import { getProducts } from "@/app/store/actions/productsAction";
+// import { latinToCyrillic } from "@/app/utils/helpers";
 
-export const AppHeader = () => {
+function AppHeader  ()  {
   const path = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState<string>("");
-  const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
-  const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
+  // const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
+  // const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(latinToCyrillic(e.target.value));
-  };
+  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setQuery(latinToCyrillic(e.target.value));
+  // };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,11 +32,11 @@ export const AppHeader = () => {
     path.split("/")[1],
   );
 
-  const filteredProducts = Array.isArray(products)
-    ? products.filter((p) =>
-        latinToCyrillic(p.name).includes(latinToCyrillic(query)),
-      )
-    : [];
+  // const filteredProducts = Array.isArray(products)
+  //   ? products.filter((p) =>
+  //       latinToCyrillic(p.name).includes(latinToCyrillic(query)),
+  //     )
+  //   : [];
 
   return (
     <header>
@@ -61,7 +61,7 @@ export const AppHeader = () => {
                     <div className="lg:w-100 flex flex-auto border border-primary/10 rounded-lg overflow-hidden focus-within:border-secondary transition-all ease-in-out duration-300">
                       <div className="flex flex-auto px-3 py-2">
                         <input
-                          onChange={handleChange}
+                          // onChange={handleChange}
                           placeholder="Shirinlik..."
                           className="outline-none w-full"
                           type="text"
@@ -80,30 +80,30 @@ export const AppHeader = () => {
                 </div>
                 <div className="hidden lg:flex items-center gap-5">
                   <Link
-                    href={user ? "/profile" : "/signin"}
-                    className="text-xs flex flex-row items-center gap-1 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+                    href={"/profile"}
+                    className="text-xs flex flex-row items-center gap-1 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
                   >
-                    <UserIcon />
-                    <span className="text-[16px] text-primary font-semibold uppercase ">
-                      {user ? user?.name : "KIRISH"}
+                    <UserIcon className="text-primary w-6 h-6" />
+                    <span className="text-[16px] text-primary font-semibold capitalize">
+                      {"Muhammad"}
                     </span>
                   </Link>
                   <Link
                     href={"/cart"}
-                    className="text-xs flex flex-row items-center gap-2 bg-primary/10 p-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+                    className="text-xs flex flex-row items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
                   >
                     <span>
-                      <CartIcon />
+                      <CartIcon className="text-primary w-6 h-6" />
                     </span>
-                    <span className="text-[16px] text-primary font-semibold uppercase">
-                      SAVAT
+                    <span className="text-[16px] text-primary font-semibold capitalize">
+                      Savat
                     </span>
                   </Link>
                 </div>
               </div>
             </div>
           </div>
-          {query && (
+          {/* {query && (
             <div className="bg-white py-4 pb-4 absolute max-w-100 w-full h-[60vh] overflow-y-scroll left-0 lg:left-1/2 lg:transform lg:-translate-x-1/2 top-18 z-10 ">
               <div className="container">
                 <div className="flex flex-col gap-2">
@@ -131,9 +131,11 @@ export const AppHeader = () => {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       )}
     </header>
   );
 };
+
+export default AppHeader

@@ -1,49 +1,11 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-
-@custom-variant dark (&:is(.dark *));
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-nunito: var(--font-nunito);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-error: var(--error);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --color-gray: var(--gray);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --radius-2xl: calc(var(--radius) + 8px);
-  --radius-3xl: calc(var(--radius) + 12px);
-  --radius-4xl: calc(var(--radius) + 16px);
-}
 
 :root {
+  --background: #ffffff;
+  --foreground: #171717;
   --font-nunito: var(--font-nunito);
   --radius: 0.625rem;
-  --gray: #cacaca;
+  --gray: #e5e7eb ;
   --background: #ffffff;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -58,144 +20,68 @@
   --muted-foreground: oklch(0.556 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
-  --error: oklch(0.577 0.245 27.325);
+  --error: #ff0000;
+  --error-foreground: #ffd1d1;
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  /* --sidebar: oklch(0.985 0 0); */
-  /* --sidebar-foreground: oklch(0.145 0 0); */
-  /* --sidebar-primary: oklch(0.205 0 0); */
-  /* --sidebar-primary-foreground: oklch(0.985 0 0); */
-  /* --sidebar-accent: oklch(0.97 0 0); */
-  /* --sidebar-accent-foreground: oklch(0.205 0 0); */
-  /* --sidebar-border: oklch(0.922 0 0); */
-  /* --sidebar-ring: oklch(0.708 0 0); */
 }
 
-@layer base {
-  * {
-    @apply border-border outline-ring/100;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-Instrument-sans);
+  --font-nunito: var(--font-nunito);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-gray: var(--gray);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
 }
 
-html {
+@media (prefers-color-scheme: light) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+html{
   width: 100%;
   height: 100%;
-  letter-spacing: -0.35px;
 }
+
 body {
   width: 100%;
   height: 100%;
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-nunito);
-  display: flex;
-  flex-direction: column;
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
+  font-family: var(--font-sans);
 }
 
 .container {
-  max-width: 1000px;
+  max-width: 768px;
   width: 100%;
   margin: 0 auto;
   padding: 0 1rem;
 }
 
-[data-vaul-drawer][data-vaul-drawer-direction="bottom"]::after {
-  content: "";
-  max-height: 0;
-}
-
-.swiper-pagination-bullet {
-  width: 10px !important;
-  height: 10px !important;
-  background: gray !important;
-  opacity: 1 !important;
-}
-
-.swiper-pagination-bullet-active {
-  background: var(--primary) !important;
-  width: 20px !important;
-  border-radius: 8px !important;
-  transition: 0.5s ease-in-out !important ;
-}
-.swiper-pagination {
-  bottom: 0px !important;
-}
-
-@media (max-width: 360px) {
-  .swiper-pagination-bullet {
-    width: 6px !important;
-    height: 6px !important;
-    background: gray !important;
-    opacity: 1 !important;
-  }
-
-  .swiper-pagination-bullet-active {
-    background: var(--primary) !important;
-    width: 14px !important;
-    border-radius: 8px !important;
-    transition: 0.5s ease-in-out !important ;
-  }
-}
-
-@media (max-width: 360px) {
-  .swiper-pagination-bullet {
-    width: 6px !important;
-    height: 6px !important;
-    background: gray !important;
-    opacity: 1 !important;
-  }
-
-  .swiper-pagination-bullet-active {
-    background: var(--primary) !important;
-    width: 14px !important;
-    border-radius: 8px !important;
-    transition: 0.5s ease-in-out !important ;
-  }
-}
-
-@media (max-width: 768px) {
-  .swiper-pagination-bullet {
-    width: 8px !important;
-    height: 8px !important;
-    background: gray !important;
-    opacity: 1 !important;
-  }
-
-  .swiper-pagination-bullet-active {
-    background: var(--primary) !important;
-    width: 16px !important;
-    border-radius: 8px !important;
-    transition: 0.5s ease-in-out !important ;
-  }
-}
-
-@media (max-width: 1024px) {
-  .swiper-pagination-bullet {
-    width: 10px !important;
-    height: 10px !important;
-    background: gray !important;
-    opacity: 1 !important;
-  }
-
-  .swiper-pagination-bullet-active {
-    background: var(--primary) !important;
-    width: 20px !important;
-    border-radius: 8px !important;
-    transition: 0.5s ease-in-out !important ;
-  }
-}
-
-@media (max-width: 1440px) {
+@media (min-width: 1024px) {
   .container {
     max-width: 1000px;
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 1rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1200px;
   }
 }

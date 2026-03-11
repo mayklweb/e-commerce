@@ -6,120 +6,136 @@ import {
   ArrowRight01Icon,
   Cancel01Icon,
   Delete02Icon,
+  DeliveryTruck01Icon,
+  Edit03Icon,
+  FavouriteIcon,
+  File02Icon,
   FilterHorizontalIcon,
   Home04Icon,
+  Location01Icon,
+  Logout01Icon,
   MenuSquareIcon,
   Remove01Icon,
   Search01Icon,
   ShoppingBasket03Icon,
+  Store01Icon,
   User,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-export const UserIcon = ({ color = "#2e3192", size = 24 }) => {
-  return (
-    <HugeiconsIcon icon={User} size={size} color={color} strokeWidth={1.5} />
-  );
-};
-
-export const CartIcon = ({ color = "#2e3192" }) => {
-  return (
-    <HugeiconsIcon
-      icon={ShoppingBasket03Icon}
-      size={24}
-      color={color}
-      strokeWidth={1.5}
-    />
-  );
-};
-
-export const SearchIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={Search01Icon}
-      size={24}
-      color="#2e3192"
-      strokeWidth={1.5}
-    />
-  );
-};
-export const HomeIcon = ({ color = "#2e3192", size = 24 }) => {
-  return (
-    <HugeiconsIcon
-      icon={Home04Icon}
-      size={size}
-      color={color}
-      strokeWidth={1.5}
-    />
-  );
-};
-
-export const ProductsIcon = ({ color = "#2e3192" }) => {
-  return (
-    <HugeiconsIcon
-      icon={MenuSquareIcon}
-      size={24}
-      color={color}
-      strokeWidth={1.5}
-    />
-  );
-};
-export const PlusIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={Add01Icon}
-      size={24}
-      color="#000000"
-      strokeWidth={1.5}
-    />
-  );
-};
-export const MinusIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={Remove01Icon}
-      size={24}
-      color="#000000"
-      strokeWidth={1.5}
-    />
-  );
-};
-export const DeleteIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={Delete02Icon}
-      size={24}
-      color="#e7000b"
-      strokeWidth={1.5}
-    />
-  );
-};
-
-export const FilterIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={FilterHorizontalIcon}
-      size={24}
-      color="#2e3192"
-      strokeWidth={1.5}
-    />
-  );
-};
-
-export const CloseIcon = () => {
-  return (
-    <HugeiconsIcon
-      icon={Cancel01Icon}
-      size={24}
-      color="#000000"
-      strokeWidth={1.5}
-    />
-  );
-};
-
 interface IconProps {
   className?: string;
 }
+
+export const UserIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      icon={User}
+      className={className}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const CartIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={ShoppingBasket03Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const SearchIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Search01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const HomeIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Home04Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const ProductsIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={MenuSquareIcon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const PlusIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Add01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const MinusIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Remove01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const DeleteIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Delete02Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const FilterIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={FilterHorizontalIcon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const CloseIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      icon={Cancel01Icon}
+      className={className}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
 
 export const DownIcon = ({ className }: IconProps) => {
   return (
@@ -127,7 +143,6 @@ export const DownIcon = ({ className }: IconProps) => {
       className={className}
       icon={ArrowDown01Icon}
       size={24}
-      color="#000000"
       strokeWidth={1.5}
     />
   );
@@ -139,29 +154,105 @@ export const RightIcon = ({ className }: IconProps) => {
       className={className}
       icon={ArrowRight01Icon}
       size={24}
-      color="#2e3192"
       strokeWidth={1.5}
     />
   );
 };
+
 export const LeftIcon = ({ className }: IconProps) => {
   return (
     <HugeiconsIcon
       className={className}
       icon={ArrowLeft01Icon}
       size={24}
-      color="#2e3192"
       strokeWidth={1.5}
     />
   );
 };
+
 export const LeftArrowIcon = ({ className }: IconProps) => {
   return (
     <HugeiconsIcon
       className={className}
       icon={ArrowLeft02Icon}
-      size={28}
-      color="#000000"
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const FileIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={File02Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const DeliveryIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={DeliveryTruck01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const LocationIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Location01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const LogoutIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Logout01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const FavoriteIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={FavouriteIcon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const EditIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Edit03Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+
+export const MarketIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Store01Icon}
+      size={24}
       strokeWidth={1.5}
     />
   );
