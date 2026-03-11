@@ -76,7 +76,7 @@ function Categories() {
                 .map(({ name, id }: CategoriesType, i: number) => (
                   <SwiperSlide key={i}>
                     <Link
-                      href="/products"
+                      href="/categories"
                       className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
                     >
                       <div className="w-full p-2">
