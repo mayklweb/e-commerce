@@ -13,11 +13,11 @@ function Categories() {
             </div>
 
             <div className="w-full flex items-center justify-end gap-4">
-              <button className="px-10 py-4 bg-[#d4b6b6] rounded-lg border-black font-medium text-black text tracking-tight leading-3">
+              <button className="px-10 py-3.5 bg-[#d4b6b6] rounded-lg border-black font-medium text-black text tracking-tight leading-3">
                 Saralash
               </button>
 
-              <button className="px-10 py-4 bg-[#d4b6b6] rounded-lg border-black font-medium text-black text tracking-tight leading-3">
+              <button className="px-10 py-3.5 bg-[#d4b6b6] rounded-lg border-black font-medium text-black text tracking-tight leading-3">
                 FIlter
               </button>
             </div>

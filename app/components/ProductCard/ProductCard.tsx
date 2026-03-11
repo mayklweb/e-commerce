@@ -14,7 +14,7 @@ function ProductCard({ product }: Props) {
     >
       <div className="w-full relative">
         <button className="p-1 rounded-full absolute top-2.5 right-2.5 bg-white cursor-pointer">
-          <FavoriteIcon className="w-4 lg:w-6 h-4 lg:h-6" />
+          <FavoriteIcon className="w-5 lg:w-6 h-5 lg:h-6" />
         </button>
         <div className="rounded-xl overflow-hidden mb-2.5">
           <Image

@@ -27,7 +27,7 @@ function Brands() {
         <div className="mt-5">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-              Kategoriya
+              Brendlar
             </h1>
             <div className="flex items-center gap-2">
               <button
