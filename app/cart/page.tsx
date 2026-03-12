@@ -76,7 +76,7 @@ function Cart() {
                           : "border-gray-100"
                       }`}
                     >
-                      <div className="flex gap-2">
+                      <div className="w-full flex gap-2">
                         {/* Image */}
                         <div className="w-25 h-18.5 rounded-xl bg-gray-100 overflow-hidden shrink-0">
                           <Image
@@ -92,13 +92,18 @@ function Cart() {
                         </div>
                         {/* Info */}
                         <div className="flex-1 min-w-0 flex flex-col">
-                          <p className="text-sm xs:text-base lg:text-lg font-semibold text-gray-800 truncate">
+                          <p className="text-sm sm:text-lg font-semibold text-gray-800 truncate">
                             {item.name}
                           </p>
-                          <p className="text-base font-medium text-gray-900">
+                          <p className="text-sm sm:text-base font-medium text-gray-900">
                             {item?.price?.toLocaleString()} so'm
                           </p>
-                          <p className="text-xs">Yetkazib berish vaqti: 1 ish kuni</p>
+                          <div className="flex text-sm justify-between">
+                            <span>Yetkazib berish vaqti:</span>
+                            <span className="flex flex-1 border-b border-accent"></span>
+                            <span>1 ish kuni</span>
+                          </div>
+                          {/* <p className="text-xs">Yetkazib berish vaqti: 1 ish kuni</p> */}
                         </div>
                         {/* Checkbox */}
                         <div
