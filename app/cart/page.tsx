@@ -61,10 +61,12 @@ function Cart() {
                   >
                     {allSelected() && <Check className="w-3 h-3 text-white" />}
                   </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    Barchasini tanlash ({cart.length})
+                  <span className="text-sm font-medium text-black">
+                    Tanlangan: {selectedItems().length} ta mahsulot
                   </span>
-                  <span>Yetkazib berish vaqti 1 ish kuni</span>
+                  {/* <span className="text-xs font-medium ">
+                    Yetkazib berish: 1 ish kuni
+                  </span> */}
                 </div>
                 <div className="flex flex-col gap-3">
                   {cart.map((item) => (
@@ -96,7 +98,7 @@ function Cart() {
                             {item.name}
                           </p>
                           <p className="text-sm sm:text-base font-medium text-gray-900">
-                            {item?.price?.toLocaleString()} so'm
+                            {(item.price * item.count).toLocaleString()} so'm
                           </p>
                           {/* <div className="flex text-sm justify-between">
                             <span>Yetkazib berish vaqti:</span>
