@@ -150,7 +150,7 @@ function Cart() {
 
                         <button
                           onClick={() => remove(item.id)}
-                          className="flex items-center font-medium gap-2 px-2 py-1.5 bg-error-foreground text-error rounded-lg cursor-pointer"
+                          className="flex items-center text-sm font-medium gap-2 px-2 py-2 bg-error-foreground text-error rounded-lg cursor-pointer"
                         >
                           <Trash2 className="w-5 h-5" />
                           <span>Yoq qilish</span>
