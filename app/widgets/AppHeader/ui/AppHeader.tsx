@@ -46,15 +46,24 @@ function AppHeader() {
         <div className=" w-full bg-white shadow-sm fixed z-10">
           <div className="container">
             <div className="relative">
-              <div className="w-full flex items-center justify-between py-4">
-                <div className="hidden lg:block text-center">
-                  <Link href={"/"} className="w-40 h-12">
+              <div className="w-full flex gap-4 items-center justify-between py-4">
+                <div className="">
+                  <Link href={"/"} className="w-40 h-12 hidden lg:block">
                     <Image
                       src="/logo.png"
                       width={200}
                       height={50}
                       alt="Logo"
                       className="w-44 h-10 object-cover "
+                    />
+                  </Link>
+                  <Link href={"/"} className="w-10 h-10 block lg:hidden">
+                    <Image
+                      src="/logo1.svg"
+                      width={40}
+                      height={40}
+                      alt="Logo"
+                      className="w-10 h-10 object-cover lg:hidden"
                     />
                   </Link>
                 </div>
