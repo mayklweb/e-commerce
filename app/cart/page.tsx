@@ -98,11 +98,11 @@ function Cart() {
                           <p className="text-sm sm:text-base font-medium text-gray-900">
                             {item?.price?.toLocaleString()} so'm
                           </p>
-                          <div className="flex text-sm justify-between">
+                          {/* <div className="flex text-sm justify-between">
                             <span>Yetkazib berish vaqti:</span>
                             <span className="flex flex-1 border-b border-accent"></span>
                             <span>1 ish kuni</span>
-                          </div>
+                          </div> */}
                           {/* <p className="text-xs">Yetkazib berish vaqti: 1 ish kuni</p> */}
                         </div>
                         {/* Checkbox */}
