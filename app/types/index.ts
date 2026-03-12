@@ -20,9 +20,8 @@ export interface ProductsType {
   created_at: string;
   updated_at: string;
   brand_id: number;
-  images: {
-    url: string;
-  }[];
+  // images: Array<string | { url: string }>;
+  images: { url: string }[]
 }
 
 export interface UserType {

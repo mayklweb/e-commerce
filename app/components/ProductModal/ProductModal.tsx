@@ -21,6 +21,11 @@ function ProductModal({ product, onClose }: Props) {
 
   if (!product) return null;
 
+  const firstImage = product.images?.[0];
+  const imageSrc =
+    (typeof firstImage === "string" ? firstImage : firstImage?.url) ||
+    "/placeholder.jpg";
+
   const qty = getQuantity(product.id);
   const liked = isFavorite(product.id);
 
@@ -46,7 +51,7 @@ function ProductModal({ product, onClose }: Props) {
         {/* Image */}
         <div className="w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden">
           <Image
-            src={"/product.jpg"}
+            src={imageSrc}
             fill
             alt={product.name}
             className="object-cover"
