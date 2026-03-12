@@ -5,22 +5,24 @@ import Image from "next/image";
 
 interface Props {
   product: ProductsType;
+  onClick?: () => void;
 }
 
-function ProductCard({ product }: Props) {
+function ProductCard({ product, onClick }: Props) {
   const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const liked = isFavorite(product.id);
 
   return (
     <div
+      onClick={onClick}
       key={product.id}
       className="flex flex-col items-start gap-5 border-0 shadow-none"
     >
       <div className="w-full relative">
         <button
           onClick={() => toggleFavorite(product)}
-          className="p-1 absolute top-2 right-2 z-10 bg-white rounded-full"
+          className="p-1 absolute top-2 right-2 z-2 bg-white rounded-full"
         >
           <FavoriteIcon
             className={`w-5 h-5 transition-colors ${

@@ -2,26 +2,37 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { ProductsType } from "@/app/types";
 
-interface CartItem {
-  id: number;
+interface CartItem extends ProductsType {
   count: number;
-  stock_qty: number;
 }
 
 interface CartState {
   cart: CartItem[];
+  selectedIds: number[];
+
+  // cart actions
   getQuantity: (id: number) => number;
   addToCart: (item: ProductsType) => void;
   inc: (id: number) => void;
   dec: (id: number) => void;
   remove: (id: number) => void;
   clearCart: () => void;
+  changeQty: (id: number, delta: number) => void;
+
+  // selection actions
+  toggleAll: () => void;
+  toggleItem: (id: number) => void;
+  allSelected: () => boolean;
+  selectedItems: () => CartItem[];
+  total: () => number;
+  totalCount: () => number;
 }
 
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       cart: [],
+      selectedIds: [],
 
       getQuantity: (id) => {
         const item = get().cart.find((p) => p.id === id);
@@ -34,15 +45,17 @@ export const useCartStore = create<CartState>()(
           if (existing.count < item.stock_qty) {
             set((state) => ({
               cart: state.cart.map((p) =>
-                p.id === item.id
-                  ? { ...p, count: p.count + (item.qty || 1) }
-                  : p
+                p.id === item.id ? { ...p, count: p.count + 1 } : p,
               ),
             }));
           }
         } else {
           set((state) => ({
-            cart: [...state.cart, { id: item.id, count: 1, stock_qty: item.stock_qty }],
+            cart: [
+              ...state.cart,
+              { ...item, count: 1, price: Number(item.price) },
+            ],
+            selectedIds: [...state.selectedIds, item.id], // 👈 auto select
           }));
         }
       },
@@ -52,7 +65,7 @@ export const useCartStore = create<CartState>()(
         if (item && item.count < item.stock_qty) {
           set((state) => ({
             cart: state.cart.map((p) =>
-              p.id === id ? { ...p, count: p.count + 1 } : p
+              p.id === id ? { ...p, count: p.count + 1 } : p,
             ),
           }));
         }
@@ -61,7 +74,7 @@ export const useCartStore = create<CartState>()(
       dec: (id) => {
         set((state) => ({
           cart: state.cart.map((p) =>
-            p.id === id && p.count > 1 ? { ...p, count: p.count - 1 } : p
+            p.id === id && p.count > 1 ? { ...p, count: p.count - 1 } : p,
           ),
         }));
       },
@@ -69,13 +82,54 @@ export const useCartStore = create<CartState>()(
       remove: (id) => {
         set((state) => ({
           cart: state.cart.filter((p) => p.id !== id),
+          selectedIds: state.selectedIds.filter((i) => i !== id), // clean selection too
         }));
       },
 
-      clearCart: () => set({ cart: [] }),
+      clearCart: () => set({ cart: [], selectedIds: [] }),
+
+      changeQty: (id, delta) => {
+        if (delta > 0) get().inc(id);
+        else get().dec(id);
+      },
+
+      // ─── Selection ───────────────────────────────────────────
+
+      allSelected: () => {
+        const { cart, selectedIds } = get();
+        return cart.length > 0 && cart.every((i) => selectedIds.includes(i.id));
+      },
+
+      toggleAll: () => {
+        const { cart, allSelected } = get();
+        set({ selectedIds: allSelected() ? [] : cart.map((i) => i.id) });
+      },
+
+      toggleItem: (id) => {
+        set((state) => ({
+          selectedIds: state.selectedIds.includes(id)
+            ? state.selectedIds.filter((i) => i !== id)
+            : [...state.selectedIds, id],
+        }));
+      },
+
+      selectedItems: () => {
+        const { cart, selectedIds } = get();
+        return cart.filter((i) => selectedIds.includes(i.id));
+      },
+
+      total: () =>
+        get()
+          .selectedItems()
+          .reduce((sum, i) => sum + Number(i.price) * i.count, 0),
+
+      totalCount: () =>
+        get()
+          .selectedItems()
+          .reduce((sum, i) => sum + i.count, 0),
     }),
     {
-      name: "cart", // same localStorage key as your MobX store
-    }
-  )
+      name: "cart",
+    },
+  ),
 );

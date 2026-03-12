@@ -4,12 +4,13 @@ import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useCartStore } from "@/app/store/CartStore";
 // import { useSelector } from "react-redux";
 // import { AppDispatch, RootState } from "@/app/store";
 // import { getProducts } from "@/app/store/actions/productsAction";
 // import { latinToCyrillic } from "@/app/utils/helpers";
 
-function AppHeader  ()  {
+function AppHeader() {
   const path = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState<string>("");
@@ -38,6 +39,7 @@ function AppHeader  ()  {
   //     )
   //   : [];
 
+  const { cart } = useCartStore();
   return (
     <header>
       {!hideHeader && (
@@ -90,13 +92,13 @@ function AppHeader  ()  {
                   </Link>
                   <Link
                     href={"/cart"}
-                    className="text-xs flex flex-row items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
+                    className="relative text-xs flex flex-row items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
                   >
                     <span>
                       <CartIcon className="text-primary w-6 h-6" />
                     </span>
                     <span className="text-[16px] text-primary font-semibold capitalize">
-                      Savat
+                      `Savat ({cart.length})`
                     </span>
                   </Link>
                 </div>
@@ -136,6 +138,6 @@ function AppHeader  ()  {
       )}
     </header>
   );
-};
+}
 
-export default AppHeader
+export default AppHeader;
