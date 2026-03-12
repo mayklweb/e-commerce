@@ -92,7 +92,7 @@ function Cart() {
                         </div>
                         {/* Info */}
                         <div className="flex-1 min-w-0 flex flex-col">
-                          <p className="text-lg font-semibold text-gray-800 truncate">
+                          <p className="text-sm xs:text-base lg:text-lg font-semibold text-gray-800 truncate">
                             {item.name}
                           </p>
                           <p className="text-base font-medium text-gray-900">
