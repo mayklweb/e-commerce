@@ -1,10 +1,9 @@
 import { Home, LayoutGrid, ShoppingBag, User } from "lucide-react";
 import Link from "next/link";
-import { authStore } from "@/app/store/AuthStore";
 
 function Menu() {
   return (
-    <div className="fixed bottom-0 left-0 w-full border-t-[0.5px] border-solid border-[#999] bg-[#FAFAFA] px-2">
+    <div className="fixed z-2 bottom-0 left-0 w-full border-t-[0.5px] border-solid border-[#999] bg-[#FAFAFA] px-2">
       <div className="container">
         <div className="flex items-center justify-between">
           <Link
