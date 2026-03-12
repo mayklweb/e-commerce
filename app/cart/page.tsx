@@ -130,7 +130,7 @@ function Cart() {
 
                       {/* Qty + Remove */}
                       <div className="flex gap-4 items-center justify-end ">
-                        <div className="flex items-center gap-2 bg-gray-100 rounded-xl px-1 py-1">
+                        <div className="flex items-center gap-3 bg-gray-100 rounded-xl px-1 py-1">
                           <button
                             onClick={() => changeQty(item.id, -1)}
                             className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
