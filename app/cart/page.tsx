@@ -64,6 +64,7 @@ function Cart() {
                   <span className="text-sm font-medium text-gray-700">
                     Barchasini tanlash ({cart.length})
                   </span>
+                  <span>Yetkazib berish vaqti 1 ish kuni</span>
                 </div>
                 <div className="flex flex-col gap-3">
                   {cart.map((item) => (
@@ -97,6 +98,7 @@ function Cart() {
                         <p className="text-base font-medium text-gray-900">
                           {item?.price?.toLocaleString()} so'm
                         </p>
+                        <p>Yetkazib berish vaqti: 1 ish kuni</p>
 
                         <div className="border border-solid border-accent mt-2"></div>
 
@@ -105,26 +107,27 @@ function Cart() {
                           <div className="flex items-center gap-2 bg-gray-100 rounded-xl px-1 py-1">
                             <button
                               onClick={() => changeQty(item.id, -1)}
-                              className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
+                              className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
                             >
-                              <Minus className="w-3.5 h-3.5" />
+                              <Minus className="w-5 h-5" />
                             </button>
                             <span className="text-sm font-semibold w-5 text-center">
                               {item.count}
                             </span>
                             <button
                               onClick={() => changeQty(item.id, 1)}
-                              className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
+                              className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
                             >
-                              <Plus className="w-3.5 h-3.5" />
+                              <Plus className="w-5 h-5" />
                             </button>
                           </div>
 
                           <button
                             onClick={() => remove(item.id)}
-                            className="p-2 bg-error-foreground text-error rounded-lg cursor-pointer"
+                            className="flex items-center font-medium gap-2 px-2 py-1.5 bg-error-foreground text-error rounded-lg cursor-pointer"
                           >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-5 h-5" />
+                            <span>Yoq qilish</span>
                           </button>
                         </div>
                       </div>
