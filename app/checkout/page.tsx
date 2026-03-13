@@ -1,12 +1,11 @@
 "use client";
 
-import { useState } from "react";
-// import { Check, ChevronDown, MapPin, ShoppingBag } from "lucide-react";
-import { useCartStore } from "../store/CartStore";
-import { useAddresses } from "../shared/lib/hooks/useAddresses";
-import { useCheckout } from "../shared/lib/hooks/useCheckout";
 import Image from "next/image";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useCartStore } from "../store/CartStore";
+import { useCheckout } from "../shared/lib/hooks/useCheckout";
+import { useAddresses } from "../shared/lib/hooks/useAddresses";
 import { CartIcon, CheckIcon, DownIcon, LocationIcon } from "../shared/icons";
 
 function Checkout() {
@@ -24,6 +23,9 @@ function Checkout() {
 
   const selectedAddress = addresses?.find((a) => a.id === selectedAddressId);
   const items = selectedItems();
+
+  console.log(selectedAddress);
+  
 
   const handleCheckout = () => {
     checkout(
