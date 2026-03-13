@@ -65,6 +65,7 @@ export function PersonalInfo() {
           />
         ))}
       </div>
+      {String(JSON.stringify(user))}
     </div>
   );
 }
