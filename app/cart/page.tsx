@@ -1,9 +1,15 @@
 "use client";
 
-import { Check, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import { useCartStore } from "../store/CartStore";
 import Link from "next/link";
 import Image from "next/image";
+import { useCartStore } from "../store/CartStore";
+import {
+  CartIcon,
+  CheckIcon,
+  DeleteIcon,
+  MinusIcon,
+  PlusIcon,
+} from "../shared/icons";
 
 function Cart() {
   const {
@@ -31,7 +37,7 @@ function Cart() {
           {cart.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">
               <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center">
-                <ShoppingCart className="w-10 h-10 text-gray-400" />
+                <CartIcon className="w-10 h-10 text-gray-400" />
               </div>
               <h3 className="text-2xl font-semibold">Savat bo'sh</h3>
               <p className="text-gray-500 text-base">
@@ -59,7 +65,9 @@ function Cart() {
                         : "border-gray-300 bg-white"
                     }`}
                   >
-                    {allSelected() && <Check className="w-3 h-3 text-white" />}
+                    {allSelected() && (
+                      <CheckIcon className="w-3 h-3 text-white" />
+                    )}
                   </div>
                   <span className="text-sm font-medium text-black">
                     Tanlangan: {selectedItems().length} ta mahsulot
@@ -120,7 +128,7 @@ function Cart() {
                             }`}
                           >
                             {selectedIds.includes(item.id) && (
-                              <Check className="w-3 h-3 text-white" />
+                              <CheckIcon className="w-3 h-3 text-white" />
                             )}
                           </div>
                         </div>
@@ -135,7 +143,7 @@ function Cart() {
                             onClick={() => changeQty(item.id, -1)}
                             className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
                           >
-                            <Minus className="w-5 h-5" />
+                            <MinusIcon className="w-5 h-5" />
                           </button>
                           <span className="text-sm font-semibold w-5 text-center">
                             {item.count}
@@ -144,7 +152,7 @@ function Cart() {
                             onClick={() => changeQty(item.id, 1)}
                             className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer"
                           >
-                            <Plus className="w-5 h-5" />
+                            <PlusIcon className="w-5 h-5" />
                           </button>
                         </div>
 
@@ -152,7 +160,7 @@ function Cart() {
                           onClick={() => remove(item.id)}
                           className="flex items-center text-sm font-medium gap-2 px-2 py-2 bg-error-foreground text-error rounded-lg cursor-pointer"
                         >
-                          <Trash2 className="w-5 h-5" />
+                          <DeleteIcon className="w-5 h-5" />
                           <span>Yoq qilish</span>
                         </button>
                       </div>

@@ -1,4 +1,4 @@
-import { Home, LayoutGrid, ShoppingBag, User } from "lucide-react";
+import { CartIcon, HomeIcon, ProductsIcon, UserIcon } from "@/app/shared/icons";
 import Link from "next/link";
 
 function Menu() {
@@ -11,7 +11,7 @@ function Menu() {
             href="/"
           >
             <span>
-              <Home />
+              <HomeIcon />
             </span>
             <span className="text-sm font-medium">Asosiy</span>
           </Link>
@@ -20,7 +20,7 @@ function Menu() {
             href="/categories"
           >
             <span>
-              <LayoutGrid />
+              <ProductsIcon />
             </span>
             <span className="text-sm font-medium">Mahsulotlar</span>
           </Link>
@@ -29,7 +29,7 @@ function Menu() {
             href="/cart"
           >
             <span>
-              <ShoppingBag />
+              <CartIcon />
             </span>
             <span className="text-sm font-medium">Savat</span>
           </Link>
@@ -38,7 +38,7 @@ function Menu() {
             href={"/profile"}
           >
             <span>
-              <User />
+              <UserIcon />
             </span>
             <span className="text-sm font-medium">
               {/* Telegram firstname */}

@@ -4,11 +4,9 @@ import { queryKeys } from "../query-keys";
 
 interface Address {
   id: number;
-  name: string;
-  district_id: string;
-  street: string;
-  house: string;
-  apartment: string;
+  region: string;
+  district: string;
+  address: string;
   isDefault: boolean;
 }
 

@@ -1,5 +1,5 @@
 import { Order, STATUS_CONFIG, orders } from "@/app/profile/model/constants/constants";
-import { Clock, Eye, MapPin, ShoppingBag, X } from "lucide-react";
+import { CartIcon, ClockIcon, CloseIcon, EyeIcon, LocationIcon } from "@/app/shared/icons";
 import { useState } from "react";
 
 export function Orders() {
@@ -15,7 +15,7 @@ export function Orders() {
         <div className="w-full h-full flex items-center justify-center">
           <div className="flex flex-col items-center gap-3 text-center max-w-xs">
             <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center">
-              <ShoppingBag className="w-10 h-10 text-gray-400" />
+              <CartIcon className="w-10 h-10 text-gray-400" />
             </div>
             <h3 className="text-xl font-semibold">Buyurtma mavjud emas</h3>
             <p className="text-gray-500 text-sm">
@@ -65,14 +65,14 @@ export function Orders() {
                   onClick={() => setSelectedOrder(null)}
                   className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
                 >
-                  <X className="w-5 h-5 text-gray-500" />
+                  <CloseIcon className="w-5 h-5 text-gray-500" />
                 </button>
               </div>
             </div>
 
             {/* Date */}
             <div className="px-5 py-3 bg-gray-50 border-b border-gray-100 flex items-center gap-2">
-              <Clock className="w-4 h-4 text-gray-400" />
+              <ClockIcon className="w-4 h-4 text-gray-400" />
               <span className="text-sm text-gray-500">
                 {selectedOrder.createdAt}
               </span>
@@ -111,7 +111,7 @@ export function Orders() {
               {(selectedOrder.status === "pending" ||
                 selectedOrder.status === "processing") && (
                 <button className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors">
-                  <MapPin className="w-4 h-4" />
+                  <LocationIcon className="w-4 h-4" />
                   Kuzatish
                 </button>
               )}
@@ -207,7 +207,7 @@ function OrderCard({
           {/* Track order — only for active orders */}
           {(order.status === "pending" || order.status === "processing") && (
             <button className="flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-gray-600 text-xs font-medium hover:bg-gray-100 transition-colors">
-              <MapPin className="w-3.5 h-3.5" />
+              <LocationIcon className="w-3.5 h-3.5" />
               Kuzatish
             </button>
           )}
@@ -216,7 +216,7 @@ function OrderCard({
             onClick={onViewDetails} // ← add this
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-white text-xs font-medium hover:opacity-90 transition-opacity"
           >
-            <Eye className="w-3.5 h-3.5" />
+            <EyeIcon className="w-3.5 h-3.5" />
             Batafsil
           </button>
         </div>

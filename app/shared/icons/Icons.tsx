@@ -5,6 +5,7 @@ import {
   ArrowLeft02Icon,
   ArrowRight01Icon,
   Cancel01Icon,
+  Clock01Icon,
   Delete02Icon,
   DeliveryTruck01Icon,
   Edit03Icon,
@@ -19,7 +20,9 @@ import {
   Search01Icon,
   ShoppingBasket03Icon,
   Store01Icon,
+  Tick02Icon,
   User,
+  ViewIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -252,6 +255,36 @@ export const MarketIcon = ({ className }: IconProps) => {
     <HugeiconsIcon
       className={className}
       icon={Store01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+export const ClockIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Clock01Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+export const EyeIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={ViewIcon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+export const CheckIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={Tick02Icon}
       size={24}
       strokeWidth={1.5}
     />

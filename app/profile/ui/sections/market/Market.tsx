@@ -1,5 +1,5 @@
 import { DISTRICTS } from "@/app/profile/model/constants/constants";
-import { Check, MapPin, Pencil, Store, X } from "lucide-react";
+import { EditIcon, LocationIcon, MarketIcon } from "@/app/shared/icons";
 import { useState } from "react";
 
 interface ShopInfo {
@@ -56,7 +56,7 @@ export function Market() {
           {/* Card header strip — edit button only shown when data exists */}
           <div className="bg-primary/5 border-b border-gray-100 px-6 py-4 flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Store className="w-5 h-5 text-primary" />
+              <MarketIcon className="w-5 h-5 text-primary" />
             </div>
             <div className="flex-1">
               <p className="text-xs text-gray-400 font-medium uppercase tracking-wide">
@@ -77,7 +77,7 @@ export function Market() {
                 onClick={handleEdit}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
               >
-                <Pencil className="w-4 h-4" />
+                <EditIcon className="w-4 h-4" />
                 Tahrirlash
               </button>
             )}
@@ -143,7 +143,6 @@ export function Market() {
                     onClick={handleCancel}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
                   >
-                    <X className="w-4 h-4" />
                     Bekor qilish
                   </button>
                   <button
@@ -151,7 +150,6 @@ export function Market() {
                     onClick={handleSave}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:opacity-90 transition-opacity"
                   >
-                    <Check className="w-4 h-4" />
                     Saqlash
                   </button>
                 </div>
@@ -161,7 +159,7 @@ export function Market() {
                 {isEmpty ? (
                   <div className="flex flex-col items-center justify-center py-8 text-center">
                     <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
-                      <MapPin className="w-6 h-6 text-gray-400" />
+                      <LocationIcon className="w-6 h-6 text-gray-400" />
                     </div>
                     <p className="text-gray-500 text-sm">
                       Do'kon ma'lumotlari kiritilmagan
@@ -176,12 +174,12 @@ export function Market() {
                 ) : (
                   <>
                     <InfoRow
-                      icon={<Store className="w-4 h-4" />}
+                      icon={<MarketIcon className="w-4 h-4" />}
                       label="Do'kon nomi"
                       value={shop.name}
                     />
                     <InfoRow
-                      icon={<MapPin className="w-4 h-4" />}
+                      icon={<LocationIcon className="w-4 h-4" />}
                       label="Joylashuv"
                       value={[districtName, shop.address]
                         .filter(Boolean)

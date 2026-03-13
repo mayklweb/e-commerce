@@ -1,6 +1,5 @@
 import { DISTRICTS } from "@/app/profile/model/constants/constants";
-import { PlusIcon } from "@/app/shared/icons";
-import { DeleteIcon, Pencil, X } from "lucide-react";
+import { CloseIcon, DeleteIcon, EditIcon, PlusIcon } from "@/app/shared/icons";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -67,7 +66,7 @@ function AddressCard({
           onClick={onEdit}
           className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 text-gray-500 hover:bg-blue-50 hover:text-blue-500 hover:border-blue-200 transition-colors"
         >
-          <Pencil className="w-4 h-4" />
+          <EditIcon className="w-4 h-4" />
         </button>
 
         <button
@@ -243,7 +242,7 @@ export function Addresses() {
                 onClick={closeModal}
                 className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <CloseIcon className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -364,7 +363,7 @@ export function Addresses() {
                 onClick={() => setEditingAddress(null)}
                 className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <CloseIcon className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
