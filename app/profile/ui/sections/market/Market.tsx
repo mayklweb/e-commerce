@@ -2,14 +2,13 @@
 
 import { useState } from "react";
 import { DISTRICTS } from "@/app/profile/model/constants/constants";
-import { EditIcon, LocationIcon, MarketIcon } from "@/app/shared/icons";
+import { EditIcon, LocationIcon, MarketIcon, DeleteIcon } from "@/app/shared/icons";
 import {
   useCreateMarket,
   useDeleteMarket,
   useMarkets,
   useUpdateMarket,
 } from "@/app/shared/lib/hooks/useMarket";
-import { Market as MarketType } from "@/app/shared/lib/marketApi";
 
 interface FormState {
   name: string;
@@ -23,15 +22,19 @@ export function Market() {
   const { data: markets, isLoading } = useMarkets();
   const { mutate: createMarket, isPending: creating } = useCreateMarket();
   const { mutate: updateMarket, isPending: updating } = useUpdateMarket();
+  const { mutate: deleteMarket, isPending: deleting } = useDeleteMarket();
 
   const [isEditing, setIsEditing] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
   const [draft, setDraft] = useState<FormState>(empty);
 
-  const shop = markets?.[0]; // user has one market
+  const shop = markets?.[0];
   const isEmpty = !shop;
 
+  // FIX 1: was returning the whole district object instead of just the name string
   const districtName =
-  DISTRICTS.find((d) => String(d.district) === shop?.district) ?? shop?.district;
+    DISTRICTS.find((d) => String(d.id) === String(shop?.district))?.district ??
+    shop?.district;
 
   const handleEdit = () => {
     setDraft({
@@ -45,6 +48,7 @@ export function Market() {
   const handleCancel = () => {
     setDraft(empty);
     setIsEditing(false);
+    setConfirmDelete(false);
   };
 
   const handleChange = (
@@ -64,13 +68,28 @@ export function Market() {
     };
 
     if (shop) {
+      // FIX 2: update existing market
       updateMarket({ id: shop.id, data: payload }, { onSuccess: handleCancel });
     } else {
+      // FIX 3: create new market
       createMarket(payload, { onSuccess: handleCancel });
     }
   };
 
-  if (isLoading) return <div className="text-sm text-gray-400">Yuklanmoqda...</div>;
+  // FIX 4: delete was imported but never wired up
+  const handleDelete = () => {
+    if (!shop) return;
+    deleteMarket(shop.id, {
+      onSuccess: () => {
+        setConfirmDelete(false);
+        setIsEditing(false);
+        setDraft(empty);
+      },
+    });
+  };
+
+  if (isLoading)
+    return <div className="text-sm text-gray-400">Yuklanmoqda...</div>;
 
   return (
     <div className="w-full">
@@ -92,23 +111,61 @@ export function Market() {
             </p>
             <p className="text-sm font-semibold text-gray-700">
               {shop?.name ?? (
-                <span className="text-gray-400 font-normal">Nom kiritilmagan</span>
+                <span className="text-gray-400 font-normal">
+                  Nom kiritilmagan
+                </span>
               )}
             </p>
           </div>
 
+          {/* FIX 5: show Edit + Delete buttons whenever a shop exists and we're not already editing */}
           {!isEmpty && !isEditing && (
-            <button
-              onClick={handleEdit}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-            >
-              <EditIcon className="w-4 h-4" />
-              Tahrirlash
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleEdit}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                <EditIcon className="w-4 h-4" />
+                Tahrirlash
+              </button>
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl border border-red-200 text-sm font-medium text-red-500 hover:bg-red-50 transition-colors"
+              >
+                <DeleteIcon className="w-4 h-4" />
+                O'chirish
+              </button>
+            </div>
           )}
         </div>
 
         <div className="px-6 py-5">
+          {/* Delete confirmation dialog */}
+          {confirmDelete && (
+            <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-100">
+              <p className="text-sm text-red-700 font-medium mb-3">
+                Do'konni o'chirishni tasdiqlaysizmi? Bu amalni qaytarib
+                bo'lmaydi.
+              </p>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  className="flex-1 px-4 py-2 rounded-xl border border-gray-200 text-gray-600 text-sm font-medium hover:bg-gray-50 transition-colors"
+                >
+                  Bekor qilish
+                </button>
+                <button
+                  onClick={handleDelete}
+                  disabled={deleting}
+                  className="flex-1 px-4 py-2 rounded-xl bg-red-500 text-white text-sm font-medium hover:bg-red-600 transition-colors disabled:opacity-40"
+                >
+                  {deleting ? "O'chirilmoqda..." : "Ha, o'chirish"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* FIX 6: isEditing must render the form regardless of isEmpty */}
           {isEditing ? (
             <div className="flex flex-col gap-4">
               {/* Shop name */}
@@ -171,7 +228,13 @@ export function Market() {
                 </button>
                 <button
                   onClick={handleSave}
-                  disabled={creating || updating || !draft.name || !draft.district || !draft.address}
+                  disabled={
+                    creating ||
+                    updating ||
+                    !draft.name ||
+                    !draft.district ||
+                    !draft.address
+                  }
                   className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-40"
                 >
                   {creating || updating ? "Saqlanmoqda..." : "Saqlash"}
@@ -205,7 +268,9 @@ export function Market() {
                   <InfoRow
                     icon={<LocationIcon className="w-4 h-4" />}
                     label="Joylashuv"
-                    value={[districtName, shop.address].filter(Boolean).join(", ")}
+                    value={[districtName, shop.address]
+                      .filter(Boolean)
+                      .join(", ")}
                   />
                 </>
               )}

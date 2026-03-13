@@ -18,13 +18,16 @@ export interface FieldConfig {
 
 export type ProfileFields = Record<FieldKey, string>;
 
+// add these to your existing ProfileFieldProps interface
 export interface ProfileFieldProps {
-  // user: UserType
   label: string;
   value: string;
   editing: boolean;
   disabled?: boolean;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  saving?: boolean;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onToggle: () => void;
-  inputRef: (el: HTMLInputElement | null) => void;
+  onSave?: () => void;
+  onCancel?: () => void;
+  inputRef?: React.Ref<HTMLInputElement>;
 }

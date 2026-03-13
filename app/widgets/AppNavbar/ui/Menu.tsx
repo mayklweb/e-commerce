@@ -33,7 +33,7 @@ function Menu() {
             </span>
             <span className="text-sm font-medium">Savat</span>
           </Link>
-          <Link
+          {/* <Link
             className="my-4 flex items-center justify-center flex-col gap-1 "
             href="/cart"
           >
@@ -41,7 +41,7 @@ function Menu() {
               <CartIcon />
             </span>
             <span className="text-sm font-medium">Savat</span>
-          </Link>
+          </Link> */}
           <Link
             className="my-4 flex items-center justify-center flex-col gap-1 "
             href={"/profile"}
