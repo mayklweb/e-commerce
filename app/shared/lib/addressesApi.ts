@@ -11,17 +11,26 @@ export interface Address {
 export const addressApi = {
   getAll: async () => {
     const { data } = await $api.get("/addresses");
-    return data.data as Address[];
+    return data.data.map((a: any) => ({
+      ...a,
+      is_default: Number(a.is_default), // 👈 force number
+    })) as Address[];
   },
 
-  add: async (payload: Omit<Address, "id" | "is_default">) => {
+  add: async (payload: Omit<Address, "id">) => {
     const { data } = await $api.post("/addresses", payload);
-    return data.data as Address;
+    return {
+      ...data.data,
+      is_default: Number(data.data.is_default),
+    } as Address;
   },
 
   edit: async (id: number, payload: Partial<Address>) => {
-    const { data } = await $api.patch(`/addresses/${id}`, payload);
-    return data.data as Address;
+    const { data } = await $api.put(`/addresses/${id}`, payload);
+    return {
+      ...data.data,
+      is_default: Number(data.data.is_default),
+    } as Address;
   },
 
   remove: async (id: number) => {
@@ -30,7 +39,7 @@ export const addressApi = {
   },
 
   setDefault: async (id: number) => {
-    const { data } = await $api.patch(`/addresses/${id}/default`);
+    const { data } = await $api.put(`/addresses/${id}/`);
     return data;
   },
 };

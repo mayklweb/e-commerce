@@ -33,18 +33,18 @@ export const INITIAL_FIELDS: ProfileFields = {
 };
 
 export const DISTRICTS = [
-  { id: 1, region_id: 14, name_uz: "Bog'ot tumani" },
-  { id: 2, region_id: 14, name_uz: "Gurlan tumani" },
-  { id: 3, region_id: 14, name_uz: "Qo'shko'pir tumani" },
-  { id: 4, region_id: 14, name_uz: "Urganch tumani" },
-  { id: 5, region_id: 14, name_uz: "Xazorasp tumani" },
-  { id: 6, region_id: 14, name_uz: "Xonqa tumani" },
-  { id: 7, region_id: 14, name_uz: "Xiva tumani" },
-  { id: 8, region_id: 14, name_uz: "Shovot tumani" },
-  { id: 9, region_id: 14, name_uz: "Yangiariq tumani" },
-  { id: 10, region_id: 14, name_uz: "Yangibozor tumani" },
-  { id: 11, region_id: 14, name_uz: "Urganch" },
-  { id: 12, region_id: 14, name_uz: "Xiva" },
+  { id: 1, region: "Xorazm", district: "Bog'ot tumani" },
+  { id: 2, region: "Xorazm", district: "Gurlan tumani" },
+  { id: 3, region: "Xorazm", district: "Qo'shko'pir tumani" },
+  { id: 4, region: "Xorazm", district: "Urganch tumani" },
+  { id: 5, region: "Xorazm", district: "Xazorasp tumani" },
+  { id: 6, region: "Xorazm", district: "Xonqa tumani" },
+  { id: 7, region: "Xorazm", district: "Xiva tumani" },
+  { id: 8, region: "Xorazm", district: "Shovot tumani" },
+  { id: 9, region: "Xorazm", district: "Yangiariq tumani" },
+  { id: 10, region: "Xorazm", district: "Yangibozor tumani" },
+  { id: 11, region: "Xorazm", district: "Urganch" },
+  { id: 12, region: "Xorazm", district: "Xiva" },
   // districts for other regions will filter automatically by region_id
 ];
 

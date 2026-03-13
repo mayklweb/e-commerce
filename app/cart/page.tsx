@@ -7,9 +7,12 @@ import {
   CartIcon,
   CheckIcon,
   DeleteIcon,
+  DownIcon,
   MinusIcon,
   PlusIcon,
 } from "../shared/icons";
+import { useEffect, useState } from "react";
+import { useAddresses } from "../shared/lib/hooks/useAddresses";
 
 function Cart() {
   const {
@@ -24,6 +27,22 @@ function Cart() {
     totalCount,
     selectedIds,
   } = useCartStore();
+
+  // inside Cart component:
+  const { data: addresses } = useAddresses();
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
+    null,
+  );
+  const [isAddressOpen, setIsAddressOpen] = useState(false);
+
+  const selectedAddress = addresses?.find((a) => a.id === selectedAddressId);
+
+  useEffect(() => {
+    if (addresses && !selectedAddressId) {
+      const defaultAddr = addresses.find((a) => a.is_default);
+      if (defaultAddr) setSelectedAddressId(defaultAddr.id);
+    }
+  }, [addresses]);
 
   return (
     <section>
@@ -52,7 +71,7 @@ function Cart() {
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col lg:flex-row gap-5">
+            <div className="flex flex-col lg:flex-row items-start gap-5">
               <div className="w-full lg:w-7/10 flex flex-col lg:flex-col gap-5">
                 <div
                   className="flex items-center gap-3 cursor-pointer select-none bg-accent p-4 rounded-xl"
@@ -168,26 +187,76 @@ function Cart() {
                   ))}
                 </div>
               </div>
-              {/* <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-col gap-3">
+              <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
+                {/* Selected items count */}
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>Tanlangan mahsulotlar</span>
                   <span>{totalCount()} dona</span>
                 </div>
+
+                <div className="w-full h-px bg-gray-100" />
+
+                {/* Address */}
+                <div className="flex flex-col gap-1">
+                  {addresses?.map((addr) => (
+                    <div
+                      key={addr.id}
+                      onClick={() => {
+                        setSelectedAddressId(addr.id);
+                        setIsAddressOpen(false);
+                      }}
+                      className={`flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors ${
+                        selectedAddressId === addr.id ? "bg-primary/5" : ""
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center gap-1.5">
+                          <p className="text-sm font-medium">
+                            {addr.region}, {addr.district}
+                          </p>
+                          {addr.is_default && (
+                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-medium">
+                              Asosiy
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-xs text-gray-400 truncate">
+                          {addr.address}
+                        </p>
+                      </div>
+                      {selectedAddressId === addr.id && (
+                        <CheckIcon className="w-4 h-4 text-primary shrink-0" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="w-full h-px bg-gray-100" />
+
+                {/* Total */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">Jami summa</span>
                   <span className="text-lg font-bold text-gray-900">
                     {total().toLocaleString()} so'm
                   </span>
                 </div>
+
+                {/* Checkout button */}
                 <button
-                  disabled={selectedItems().length === 0}
+                  // disabled={selectedItems().length === 0 || !selectedAddressId}
                   className="w-full py-3 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 >
                   Buyurtma berish ({selectedItems().length})
                 </button>
-              </div> */}
 
-              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t p-4 flex items-center justify-between gap-3 lg:hidden">
+                {!selectedAddressId && selectedItems().length > 0 && (
+                  <p className="text-xs text-center text-red-400">
+                    Buyurtma berish uchun manzil tanlang
+                  </p>
+                )}
+              </div>
+
+              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex items-center justify-between gap-3 lg:hidden">
                 <div className="flex flex-col text-sm shrink-0">
                   <p className="text-gray-500">
                     Mahsulotlar {totalCount()} dona

@@ -1,469 +1,273 @@
-import { DISTRICTS } from "@/app/profile/model/constants/constants";
-import { CloseIcon, DeleteIcon, EditIcon, PlusIcon } from "@/app/shared/icons";
-import Image from "next/image";
-import { useState } from "react";
+"use client";
 
-interface Address {
-  id: number;
-  district_id: string;
-  name: string;
-  street: string;
-  house: string;
-  apartment: string;
-  isDefault: boolean;
+import { useEffect, useState } from "react";
+import {
+  useAddAddress,
+  useAddresses,
+  useDeleteAddress,
+  useEditAddress,
+  useSetDefaultAddress,
+} from "@/app/shared/lib/hooks/useAddresses";
+import { Address } from "@/app/shared/lib/addressesApi";
+import {
+  CheckIcon,
+  CloseIcon,
+  DeleteIcon,
+  EditIcon,
+  PlusIcon,
+} from "@/app/shared/icons";
+
+const DISTRICTS = [
+  "Urganch tumani",
+  "Xonqa tumani",
+  "Bog'ot tumani",
+  "Gurlan tumani",
+  "Qo'shko'pir tumani",
+  "Shovot tumani",
+  "Yangiariq tumani",
+  "Yangibozor tumani",
+  "Xazorasp tumani",
+  "Pitnak tumani",
+];
+
+interface FormState {
+  region: string;
+  district: string;
+  address: string;
+  is_default?: number;
 }
 
-const districtName = (id: string) =>
-  DISTRICTS.find((d) => d.id === Number(id))?.name_uz ?? "";
-
-function AddressCard({
-  address,
-  onDelete,
-  onSetDefault,
-  onEdit,
-}: {
-  address: Address;
-  onDelete: () => void;
-  onSetDefault: () => void;
-  onEdit: () => void;
-}) {
-  const fullAddress = [
-    districtName(address.district_id),
-    address.street,
-    address.house ? `Uy ${address.house}` : "",
-    address.apartment ? `Kv ${address.apartment}` : "",
-  ]
-    .filter(Boolean)
-    .join(", ");
-
-  return (
-    <div className="bg-white border border-gray-100 rounded-2xl p-4 flex flex-col gap-3 shadow-sm">
-      <div>
-        <p className="font-semibold text-gray-900">
-          {districtName(address.district_id)}
-        </p>
-        <p className="text-xs text-gray-400 mt-0.5">Manzil</p>
-        <p className="text-sm font-semibold text-gray-800 mt-1 leading-snug">
-          {fullAddress}
-        </p>
-      </div>
-
-      <div className="flex items-center gap-2 mt-1">
-        <button
-          onClick={onSetDefault}
-          className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors ${
-            address.isDefault
-              ? "bg-primary text-white cursor-default"
-              : "bg-primary/10 text-primary hover:bg-primary/20"
-          }`}
-          disabled={address.isDefault}
-        >
-          {address.isDefault ? "Standart" : "Standart qilish"}
-        </button>
-
-        {/* Edit button */}
-        <button
-          onClick={onEdit}
-          className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 text-gray-500 hover:bg-blue-50 hover:text-blue-500 hover:border-blue-200 transition-colors"
-        >
-          <EditIcon className="w-4 h-4" />
-        </button>
-
-        <button
-          onClick={onDelete}
-          className="w-10 h-10 flex items-center justify-center rounded-xl border border-gray-200 text-gray-500 hover:bg-red-50 hover:text-red-500 hover:border-red-200 transition-colors"
-        >
-          <DeleteIcon className="w-4 h-4" />
-        </button>
-      </div>
-    </div>
-  );
-}
+const empty: FormState = {
+  region: "Xorazm",
+  district: "",
+  address: "",
+  is_default: 0,
+};
 
 export function Addresses() {
-  const [addresses, setAddresses] = useState<Address[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [form, setForm] = useState({
-    district_id: "",
-    name: "",
-    street: "",
-    house: "",
-    apartment: "",
-  });
+  const { data: addresses, isLoading } = useAddresses();
+  const { mutate: addAddress, isPending: adding } = useAddAddress();
+  const { mutate: editAddress, isPending: editing } = useEditAddress();
+  const { mutate: deleteAddress } = useDeleteAddress();
+  const { mutate: setDefault } = useSetDefaultAddress();
 
-  const closeModal = () => setIsModalOpen(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
+  const [form, setForm] = useState<FormState>(empty);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  // useEffect(() => {
+  //   if (addresses && !selectedId) {
+  //     const def = addresses.find((a) => a.is_default == 1);
+  //     if (def) setSelectedId(def.id);
+  //   }
+  // }, [addresses]);
+
+  const openAdd = () => {
+    setEditingId(null);
+    setForm(empty);
+    setIsFormOpen(true);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const newAddress: Address = {
-      id: Date.now(),
-      ...form,
-      isDefault: addresses.length === 0, // first address is default
-    };
-    setAddresses((prev) => [...prev, newAddress]);
+  const openEdit = (addr: Address) => {
+    setEditingId(addr.id);
     setForm({
-      district_id: "",
-      name: "",
-      street: "",
-      house: "",
-      apartment: "",
+      region: addr.region,
+      district: addr.district,
+      address: addr.address,
+      // is_default: addr.is_default,
     });
-    closeModal();
+    setIsFormOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    setAddresses((prev) => {
-      const filtered = prev.filter((a) => a.id !== id);
-      // if deleted was default, make first one default
-      if (filtered.length > 0 && !filtered.some((a) => a.isDefault)) {
-        filtered[0].isDefault = true;
-      }
-      return filtered;
-    });
+  const closeForm = () => {
+    setIsFormOpen(false);
+    setEditingId(null);
+    setForm(empty);
   };
 
-  const handleSetDefault = (id: number) => {
-    setAddresses((prev) => prev.map((a) => ({ ...a, isDefault: a.id === id })));
+  const handleSubmit = () => {
+    if (!form.district || !form.address) return;
+
+    const payload: Partial<Address> = {
+      region: "Xorazm",
+      district: form.district,
+      address: form.address,
+      // is_default: form.is_default,
+    };
+
+    if (editingId) {
+      editAddress({ id: editingId, data: payload }, { onSuccess: closeForm });
+    } else {
+      addAddress(payload as Omit<Address, "id">, { onSuccess: closeForm });
+    }
   };
 
-  const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-  const [editForm, setEditForm] = useState<typeof form | null>(null);
-
-  const handleEditOpen = (addr: Address) => {
-    setEditingAddress(addr);
-    setEditForm({
-      district_id: addr.district_id,
-      name: addr.name,
-      street: addr.street,
-      house: addr.house,
-      apartment: addr.apartment,
-    });
-  };
-
-  const handleEditChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => (prev ? { ...prev, [name]: value } : prev));
-  };
-
-  const handleEditSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editingAddress || !editForm) return;
-    setAddresses((prev) =>
-      prev.map((a) => (a.id === editingAddress.id ? { ...a, ...editForm } : a)),
-    );
-    setEditingAddress(null);
-    setEditForm(null);
-  };
+  if (isLoading)
+    return <div className="text-sm text-gray-400">Yuklanmoqda...</div>;
 
   return (
-    <div className="w-full h-full">
-      {/* Page header */}
-      <div className="hidden lg:flex lg:items-center lg:justify-between lg:mb-5">
-        <h1 className="text-2xl font-semibold">Manzillar</h1>
-        {addresses.length > 0 && (
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium hover:opacity-90 transition-opacity"
-          >
-            <PlusIcon className="w-4 h-4" />
-            Manzil qo'shish
-          </button>
-        )}
-      </div>
-
-      {addresses.length === 0 ? (
-        /* Empty state */
-        <div className="w-full h-full flex flex-col items-center justify-center">
-          <div className="flex flex-col items-center gap-2 text-center max-w-xs">
-            <Image width={200} height={200} src="/location.svg" alt="" />
-            <h3 className="text-2xl font-semibold mt-5">Manzil mavjud emas</h3>
-            <p className="text-gray-500">
-              Hozircha sizda manzil mavjud emas manzil qo'shish uchun "Manzil
-              qo'shish"ni bosing
+    <div className="flex flex-col gap-3">
+      {/* Address list */}
+      {addresses?.map((address: Address) => (
+        <div
+          key={address.id}
+          onClick={() => setSelectedId(address.id)}
+          className={`border rounded-xl p-4 flex flex-col items-start justify-between gap-3 transition-colors cursor-pointer ${
+            selectedId === address.id
+              ? "border-accent bg-[#e5e6ff]"
+              : "bg-primary/10 border-gray-100"
+          }`}
+        >
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <p className="text-sm font-semibold">
+                {address.region}, {address.district}
+              </p>
+              {/* {address.is_default == 1 && (
+                <span className="text-[10px] bg-primary text-white px-2 py-0.5 rounded-full font-medium">
+                  Asosiy
+                </span>
+              )} */}
+            </div>
+            <p className="text-xs text-gray-400 mt-0.5 truncate">
+              {address.address}
             </p>
-            <button
-              onClick={() => setIsModalOpen(true)}
-              className="mt-2.5 px-6 py-3 text-white font-normal flex gap-3 items-center bg-primary rounded-xl cursor-pointer"
-            >
-              <PlusIcon className="text-white w-5 h-5" />
-              Manzil qo'shish
+          </div>
+
+          <div className="w-full h-0.25 bg-" />
+
+          <div>
+            <button>Standard qilish</button>
+            <button className="border-accent border rounded-xl text-gray">
+              <EditIcon />
+            </button>
+            <button>
+              <DeleteIcon />
+              {/* <DelateIcon */}
             </button>
           </div>
+
+          {/* Radio indicator */}
+          <div
+            className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-colors ${
+              selectedId === address.id ? "border-primary" : "border-gray-300"
+            }`}
+          >
+            {selectedId === address.id && (
+              <div className="w-2.5 h-2.5 rounded-full bg-primary" />
+            )}
+          </div>
         </div>
-      ) : (
-        /* Address cards grid */
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {addresses.map((addr) => (
-            <AddressCard
-              key={addr.id}
-              address={addr}
-              onDelete={() => handleDelete(addr.id)}
-              onSetDefault={() => handleSetDefault(addr.id)}
-              onEdit={() => handleEditOpen(addr)} // ← add this
-            />
-          ))}
+      ))}
+      {/* Empty state */}
+      {addresses?.length === 0 && (
+        <div className="text-center text-gray-400 text-sm py-6">
+          Manzil yo'q. Yangi manzil qo'shing.
         </div>
       )}
 
-      {/* Mobile add button */}
-      {addresses.length > 0 && (
+      {/* Add button */}
+      {!isFormOpen && (
         <button
-          onClick={() => setIsModalOpen(true)}
-          className="lg:hidden fixed bottom-6 right-6 w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg hover:opacity-90 transition-opacity z-40"
+          onClick={openAdd}
+          className="w-full py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-400 hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2"
         >
-          <PlusIcon className="w-6 h-6" />
+          <PlusIcon className="w-4 h-4" />
+          Yangi manzil qo'shish
         </button>
       )}
 
-      {/* Modal */}
-      {/* Add Modal */}
-      {isModalOpen && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-          onClick={closeModal}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-semibold">Manzil qo'shish</h2>
-              <button
-                type="button"
-                onClick={closeModal}
-                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <CloseIcon className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tuman / Shahar
-                </label>
-                <select
-                  name="district_id"
-                  value={form.district_id}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm bg-white"
-                >
-                  <option value="">Tumanni tanlang</option>
-                  {DISTRICTS.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.name_uz}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Manzil nomi
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={form.name}
-                  onChange={handleChange}
-                  placeholder="Uy, Ish..."
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Ko'cha
-                </label>
-                <input
-                  type="text"
-                  name="street"
-                  value={form.street}
-                  onChange={handleChange}
-                  placeholder="Ko'cha nomi"
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-medium text-gray-700 mb-1">
-                    Uy raqami
-                  </label>
-                  <input
-                    type="text"
-                    name="house"
-                    value={form.house}
-                    onChange={handleChange}
-                    placeholder="12"
-                    required
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Xonadon
-                  </label>
-                  <input
-                    type="text"
-                    name="apartment"
-                    value={form.apartment}
-                    onChange={handleChange}
-                    placeholder="5"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition-colors"
-                >
-                  Bekor qilish
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity"
-                >
-                  Saqlash
-                </button>
-              </div>
-            </form>
+      {/* Form */}
+      {isFormOpen && (
+        <div className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col gap-3 shadow-sm">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-semibold">
+              {editingId ? "Manzilni tahrirlash" : "Yangi manzil"}
+            </h3>
+            <button
+              onClick={closeForm}
+              className="text-gray-400 hover:text-gray-600"
+            >
+              <CloseIcon className="w-4 h-4" />
+            </button>
           </div>
-        </div>
-      )}
 
-      {/* Edit Modal */}
-      {editingAddress && editForm && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-          onClick={() => setEditingAddress(null)}
-        >
-          <div
-            className="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-6"
-            onClick={(e) => e.stopPropagation()}
+          {/* Region - disabled */}
+          <input
+            value="Xorazm"
+            disabled
+            className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm bg-gray-50 text-gray-400 cursor-not-allowed"
+          />
+
+          {/* District - select */}
+          <select
+            value={form.district}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, district: e.target.value }))
+            }
+            className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-primary transition-colors bg-white"
           >
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-xl font-semibold">Manzilni tahrirlash</h2>
-              <button
-                onClick={() => setEditingAddress(null)}
-                className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <CloseIcon className="w-5 h-5 text-gray-500" />
-              </button>
+            <option value="">Tuman tanlang</option>
+            {DISTRICTS.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+
+          {/* Address */}
+          <input
+            value={form.address}
+            onChange={(e) =>
+              setForm((p) => ({ ...p, address: e.target.value }))
+            }
+            placeholder="Ko'cha, uy raqami"
+            className="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm outline-none focus:border-primary transition-colors"
+          />
+
+          {/* is_default checkbox */}
+          <label
+            className="flex items-center gap-2 cursor-pointer select-none"
+            onClick={() =>
+              setForm((p) => ({ ...p, is_default: p.is_default == 1 ? 0 : 1 }))
+            }
+          >
+            <div
+              className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+                form.is_default == 1
+                  ? "bg-primary border-primary"
+                  : "border-gray-300"
+              }`}
+            >
+              {form.is_default == 1 && (
+                <CheckIcon className="w-3 h-3 text-white" />
+              )}
             </div>
+            <span className="text-sm text-gray-600">
+              Asosiy manzil sifatida saqlash
+            </span>
+          </label>
 
-            <form onSubmit={handleEditSubmit} className="flex flex-col gap-3">
-              <div>
-                <label className="block font-medium text-gray-700 mb-1">
-                  Tuman / Shahar
-                </label>
-                <select
-                  name="district_id"
-                  value={editForm.district_id}
-                  onChange={handleEditChange}
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white"
-                >
-                  <option value="">Tumanni tanlang</option>
-                  {DISTRICTS.map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.name_uz}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700 mb-1">
-                  Manzil nomi
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={editForm.name}
-                  onChange={handleEditChange}
-                  placeholder="Uy, Ish..."
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700 mb-1">
-                  Ko'cha
-                </label>
-                <input
-                  type="text"
-                  name="street"
-                  value={editForm.street}
-                  onChange={handleEditChange}
-                  placeholder="Ko'cha nomi"
-                  required
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block font-medium text-gray-700 mb-1">
-                    Uy raqami
-                  </label>
-                  <input
-                    type="text"
-                    name="house"
-                    value={editForm.house}
-                    onChange={handleEditChange}
-                    placeholder="12"
-                    required
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                  />
-                </div>
-                <div>
-                  <label className="block font-medium text-gray-700 mb-1">
-                    Xonadon
-                  </label>
-                  <input
-                    type="text"
-                    name="apartment"
-                    value={editForm.apartment}
-                    onChange={handleEditChange}
-                    placeholder="5"
-                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
-                  />
-                </div>
-              </div>
-
-              <div className="flex gap-3 mt-2">
-                <button
-                  type="button"
-                  onClick={() => setEditingAddress(null)}
-                  className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-medium text-sm hover:bg-gray-50 transition-colors"
-                >
-                  Bekor qilish
-                </button>
-                <button
-                  type="submit"
-                  className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity"
-                >
-                  Saqlash
-                </button>
-              </div>
-            </form>
+          {/* Buttons */}
+          <div className="flex gap-2">
+            <button
+              onClick={closeForm}
+              className="flex-1 py-2.5 rounded-xl border border-gray-200 text-sm text-gray-500 hover:bg-gray-50 transition-colors"
+            >
+              Bekor qilish
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={adding || editing || !form.district || !form.address}
+              className="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 hover:opacity-90 transition-opacity"
+            >
+              {adding || editing
+                ? "Saqlanmoqda..."
+                : editingId
+                  ? "Saqlash"
+                  : "Qo'shish"}
+            </button>
           </div>
         </div>
       )}

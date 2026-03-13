@@ -33,7 +33,7 @@ export function useEditAddress() {
       addressApi.edit(id, data),
     onSuccess: (updated) => {
       queryClient.setQueryData<Address[]>(addressKeys.all, (old = []) =>
-        old.map((a) => (a.id === updated.id ? updated : a))
+        old.map((a) => (a.id === updated.id ? updated : a)),
       );
     },
   });
@@ -47,7 +47,7 @@ export function useDeleteAddress() {
       await queryClient.cancelQueries({ queryKey: addressKeys.all });
       const previous = queryClient.getQueryData<Address[]>(addressKeys.all);
       queryClient.setQueryData<Address[]>(addressKeys.all, (old = []) =>
-        old.filter((a) => a.id !== id)
+        old.filter((a) => a.id !== id),
       );
       return { previous };
     },
@@ -69,7 +69,7 @@ export function useSetDefaultAddress() {
       await queryClient.cancelQueries({ queryKey: addressKeys.all });
       const previous = queryClient.getQueryData<Address[]>(addressKeys.all);
       queryClient.setQueryData<Address[]>(addressKeys.all, (old = []) =>
-        old.map((a) => ({ ...a, is_default: a.id === id }))
+        old.map((a) => ({ ...a, is_default: a.id === id })),
       );
       return { previous };
     },
