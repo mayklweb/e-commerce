@@ -25,7 +25,6 @@ function Checkout() {
   const items = selectedItems();
 
   console.log(selectedAddress);
-  
 
   const handleCheckout = () => {
     checkout(
@@ -50,7 +49,10 @@ function Checkout() {
   }
 
   return (
-    <div className="container mt-5 max-w-lg mx-auto pb-10">
+    <section className="pb-20">
+
+    <div className="container">
+      <div className="mb-20">
       <h1 className="text-2xl font-semibold mb-6">Buyurtma berish</h1>
 
       <div className="flex flex-col gap-4">
@@ -204,7 +206,11 @@ function Checkout() {
           )}
         </div>
       </div>
+
+      </div>
+
     </div>
+    </section>
   );
 }
 

@@ -168,7 +168,7 @@ function Cart() {
                   ))}
                 </div>
               </div>
-              <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-col gap-3">
+              {/* <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-col gap-3">
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>Tanlangan mahsulotlar</span>
                   <span>{totalCount()} dona</span>
@@ -182,6 +182,22 @@ function Cart() {
                 <button
                   disabled={selectedItems().length === 0}
                   className="w-full py-3 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  Buyurtma berish ({selectedItems().length})
+                </button>
+              </div> */}
+
+              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t p-4 flex items-center justify-between gap-3 lg:hidden">
+                <div className="flex flex-col text-sm shrink-0">
+                  <p className="text-gray-500">
+                    Mahsulotlar {totalCount()} dona
+                  </p>
+                  <p>Summa: {total().toLocaleString()} so'm</p>
+                </div>
+
+                <button
+                  disabled={!selectedItems().length}
+                  className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity"
                 >
                   Buyurtma berish ({selectedItems().length})
                 </button>
