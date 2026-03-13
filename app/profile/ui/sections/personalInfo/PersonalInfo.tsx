@@ -9,18 +9,30 @@ import { ProfileField } from "../profileField/ProfileField";
 import { useGetMe, useUser } from "@/app/shared/lib/useAuth";
 
 export function PersonalInfo() {
-  const { mutate: getMe, data: user } = useGetMe(); // 👈 data comes from mutation itself
-
-  useEffect(() => {
-    getMe();
-  }, []);
-  
-
-  const [fields, setFields] = useState<ProfileFields>(INITIAL_FIELDS);
+  const { mutate: getMe } = useGetMe(); // 👈 data comes from mutation itself
+  const { data: user } = useUser(); // 👈 data comes from mutation itself
+  const [fields, setFields] = useState<ProfileFields>(INITIAL_FIELDS); // 👈 always initialized
   const [editingField, setEditingField] = useState<FieldKey | null>(null);
   const inputRefs = useRef<Partial<Record<FieldKey, HTMLInputElement | null>>>(
     {},
   );
+
+  useEffect(() => {
+    getMe();
+  }, []);
+
+  console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      setFields((prev) => ({
+        ...prev,
+        name: user.name ?? "",
+        phone: user.phone ?? "",
+        id: String(user.id), // 👈 convert number to string
+      }));
+    }
+  }, [user]);
 
   useEffect(() => {
     if (editingField) inputRefs.current[editingField]?.focus();
@@ -30,7 +42,7 @@ export function PersonalInfo() {
     setEditingField((prev) => (prev === key ? null : key));
 
   const handleChange = (key: FieldKey, value: string): void =>
-    setFields((prev) => ({ ...prev, [key]: value }));
+    setFields((prev) => ({ ...prev!, [key]: value })); // 👈 add ! to handle undefined
 
   return (
     <div className="w-full h-full">
@@ -42,7 +54,7 @@ export function PersonalInfo() {
           <ProfileField
             key={key}
             label={label}
-            value={fields[key]}
+            value={fields?.[key] ?? ""} // 👈 fix
             editing={editingField === key}
             disabled={disabled}
             onChange={(e) => handleChange(key, e.target.value)}

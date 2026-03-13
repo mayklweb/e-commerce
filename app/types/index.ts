@@ -25,8 +25,7 @@ export interface ProductsType {
 }
 
 export interface UserType {
-  id: number; // User Telegram ID
-  first_name: string; // User first name
-  last_name?: string; // User last name (optional)
+  id: string; // User Telegram ID
+  name: string; // User last name (optional)
   phone: string; // User phone number
 }

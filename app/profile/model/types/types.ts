@@ -1,3 +1,4 @@
+import { UserType } from "@/app/types";
 import { ChangeEvent } from "react";
 
 export type FieldKey = "id" | "name" | "phone" | "birthdate" | "gender" | "email";
@@ -18,6 +19,7 @@ export interface FieldConfig {
 export type ProfileFields = Record<FieldKey, string>;
 
 export interface ProfileFieldProps {
+  // user: UserType
   label: string;
   value: string;
   editing: boolean;
