@@ -118,7 +118,7 @@ export default function CategoryProductsPage() {
         {/* Products grid */}
         <div className="flex-1 ">
           {!productsReady ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="rounded-2xl bg-gray-100 animate-pulse aspect-[3/4]" />
               ))}
