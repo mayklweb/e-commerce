@@ -42,51 +42,7 @@ export default function CategoryProductsPage() {
 
   return (
     <div className="flex flex-col h-full mt-24">
-      {/* Header */}
-      <div className="flex items-center gap-3 px-4 pt-5 pb-4 shrink-0">
-        <button
-          onClick={() => router.back()}
-          className="w-9 h-9 flex items-center justify-center rounded-xl border border-gray-200 bg-white shrink-0"
-        >
-          <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <div className="flex-1 min-w-0">
-          {categoriesLoading ? (
-            <div className="h-5 w-32 bg-gray-100 animate-pulse rounded-lg" />
-          ) : (
-            <h1 className="text-lg font-bold text-gray-900 truncate">
-              {category?.name}
-            </h1>
-          )}
-          {productsReady && (
-            <p className="text-xs text-gray-400 mt-0.5">
-              {filtered.length} ta mahsulot
-            </p>
-          )}
-        </div>
-
-        {/* Mobile filter button */}
-        <button
-          onClick={() => {
-            setPendingFilters(filters);
-            setSheetOpen(true);
-          }}
-          className="lg:hidden relative flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-600"
-        >
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 4h18M7 12h10M11 20h2" />
-          </svg>
-          Filtr
-          {activeCount > 0 && (
-            <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">
-              {activeCount}
-            </span>
-          )}
-        </button>
-      </div>
+  
 
       {/* Body */}
       <div className="flex flex-1 gap-4 px-4 pb-6">
@@ -120,7 +76,7 @@ export default function CategoryProductsPage() {
           {!productsReady ? (
             <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
               {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="rounded-2xl bg-gray-100 animate-pulse aspect-[3/4]" />
+                <div key={i} className="rounded-2xl bg-gray-100 animate-pulse aspect-4/3" />
               ))}
             </div>
           ) : filtered.length === 0 ? (
@@ -137,7 +93,7 @@ export default function CategoryProductsPage() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 gap-3">
               {filtered.map((product: ProductsType) => (
                 <ProductCard key={product.id} product={product} />
               ))}

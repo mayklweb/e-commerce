@@ -42,7 +42,7 @@ export function FilterPanel({
   const toggleBrand = (id: number) =>
     set({
       brandIds: filters.brandIds.includes(id)
-        ? filters.brandIds.filter((b:any) => b !== id)
+        ? filters.brandIds.filter((b: any) => b !== id)
         : [...filters.brandIds, id],
     });
 
@@ -62,7 +62,6 @@ export function FilterPanel({
 
   return (
     <div className="flex flex-col gap-5">
-
       {/* Sort */}
       <Section title="Saralash">
         <div className="flex gap-2 flex-wrap">
@@ -108,18 +107,26 @@ export function FilterPanel({
         <Section title="Kategoriya">
           <div className="flex flex-col gap-1.5">
             {/* default category pinned at top, locked */}
-            {defaultCategoryId && (() => {
-              const pinned = categories.find((c) => c.id === defaultCategoryId);
-              return pinned ? (
-                <label key={pinned.id} className="flex items-center gap-3 py-1">
-                  <Checkbox checked={true} onChange={() => {}} locked />
-                  <span className="text-sm text-gray-700 font-medium">{pinned.name}</span>
-                  <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-md font-medium">
-                    Joriy
-                  </span>
-                </label>
-              ) : null;
-            })()}
+            {defaultCategoryId &&
+              (() => {
+                const pinned = categories.find(
+                  (c) => c.id === defaultCategoryId,
+                );
+                return pinned ? (
+                  <label
+                    key={pinned.id}
+                    className="flex items-center gap-3 py-1"
+                  >
+                    <Checkbox checked={true} onChange={() => {}} locked />
+                    <span className="text-sm text-gray-700 font-medium">
+                      {pinned.name}
+                    </span>
+                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-md font-medium">
+                      Joriy
+                    </span>
+                  </label>
+                ) : null;
+              })()}
 
             {/* rest of categories */}
             {categories
@@ -165,15 +172,35 @@ export function FilterPanel({
             >
               {showAllBrands ? (
                 <>
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M5 15l7-7 7 7"
+                    />
                   </svg>
                   Kamroq
                 </>
               ) : (
                 <>
-                  <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  <svg
+                    className="w-3.5 h-3.5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2.5}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                   Yana {brands.length - BRANDS_VISIBLE_DEFAULT} ta
                 </>
@@ -182,22 +209,17 @@ export function FilterPanel({
           )}
         </Section>
       )}
-
-      {/* In stock */}
-      <Section title="Mavjudlik">
-        <label className="flex items-center gap-3 cursor-pointer">
-          <Checkbox
-            checked={filters.inStockOnly}
-            onChange={() => set({ inStockOnly: !filters.inStockOnly })}
-          />
-          <span className="text-sm text-gray-700">Faqat mavjud tovarlar</span>
-        </label>
-      </Section>
     </div>
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-2.5">
       <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
@@ -230,7 +252,13 @@ function Checkbox({
     >
       {checked && (
         <svg className="w-3 h-3 text-white" viewBox="0 0 12 12" fill="none">
-          <path d="M2 6l3 3 5-5" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+          <path
+            d="M2 6l3 3 5-5"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
         </svg>
       )}
     </div>

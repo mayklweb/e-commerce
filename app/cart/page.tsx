@@ -99,10 +99,10 @@ function Cart() {
                   {cart.map((item) => (
                     <div
                       key={item.id}
-                      className={`bg-white border rounded-xl p-2 flex flex-col gap-2 shadow-sm transition-all ${
+                      className={`rounded-xl p-2 flex flex-col gap-2 shadow-sm transition-all ${
                         selectedIds.includes(item.id)
-                          ? "border-primary/30"
-                          : "border-gray-100"
+                          ? "bg-secondary/10"
+                          : "bg-[#E5E6FF]"
                       }`}
                     >
                       <div className="w-full flex gap-2">
