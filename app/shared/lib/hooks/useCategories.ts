@@ -12,11 +12,3 @@ export function useCategories() {
     queryFn: categoriesApi.getAll,
   });
 }
-
-export function useCategory(id: number) {
-  return useQuery({
-    queryKey: categoriesKeys.one(id),
-    queryFn: () => categoriesApi.getOne(id),
-    enabled: !!id, // only fetch if id exists
-  });
-}
