@@ -28,4 +28,37 @@ export interface UserType {
   id: string; // User Telegram ID
   name: string; // User last name (optional)
   phone: string; // User phone number
+  market_id: string
+}
+
+export type OrderStatus = "Yo'lda" | "Yetkazildi" | "Bekor qilindi";
+export type PaymentMethod = "cash" | "click";
+
+export interface OrderProduct {
+  product_id: number;
+  qty: number;
+  unit_price: number;
+  product: {
+    id: number;
+    name: string;
+    images?: { url: string }[];
+  } | null;
+}
+
+export interface OrderAddress {
+  id: number;
+  region: string;
+  district: string;
+  address: string;
+}
+
+export interface Order {
+  id: number;
+  status: OrderStatus;
+  payment: PaymentMethod;
+  payed: boolean;
+  user_id: number;
+  market_id: number | null;
+  products: OrderProduct[];
+  address: OrderAddress | null;
 }

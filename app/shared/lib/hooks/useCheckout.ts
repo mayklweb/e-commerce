@@ -2,11 +2,23 @@ import $api from "../../api";
 import { useMutation } from "@tanstack/react-query";
 import { useCartStore } from "@/app/store/CartStore";
 
+interface CheckoutProduct {
+  id: number;
+  name: string;
+  price: number;
+  qty: number;
+  images?: any[];
+  [key: string]: any;   // ✅ all other product fields
+}
+
 interface CheckoutPayload {
-  address_id: number | null;
-  payment_method: "cash" | "click";
-  notes: string;
-  items: { product_id: number; qty: number }[];
+  address_id:  number | null;
+  market_id:   number | null;   // ✅ added
+  payment:     "cash" | "click";
+  payment_method:     "cash" | "click";
+  payed:       boolean;
+  products:    CheckoutProduct[];
+  notes?:      string;
 }
 
 export function useCheckout() {

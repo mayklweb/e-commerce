@@ -7,8 +7,6 @@ import {
   PlusIcon,
 } from "@/app/shared/icons";
 import Image from "next/image";
-import { useFavoritesStore } from "@/app/store/favoritesStore";
-import { useCartStore } from "@/app/store/CartStore";
 
 interface Props {
   product: ProductsType | null;
@@ -45,7 +43,7 @@ function ProductModal({ product, onClose }: Props) {
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer"
         >
-          <CloseIcon className="w-6 h-6" />
+          <CloseIcon className="w-8 h-8" />
         </button>
 
         {/* Image */}
@@ -63,7 +61,7 @@ function ProductModal({ product, onClose }: Props) {
           <h2 className="text-xl font-bold">{product.name}</h2>
 
           <div className="flex flex-col items-start justify-between mt-3">
-            <p className="text-2xl font-bold text-primary">
+            <p className="text-2xl font-bold">
               {product.price.toLocaleString()} so'm
             </p>
             {product.stock_qty > 0 ? (
@@ -121,8 +119,8 @@ function ProductModal({ product, onClose }: Props) {
               className="bg-accent p-4 rounded-xl cursor-pointer"
             >
               <FavoriteIcon
-                className={`w-6 h-6 transition-colors ${
-                  liked ? "fill-red-500 text-red-500" : "text-gray-300"
+                className={`w-6 h-6 transition-all ${
+                  liked ? "fill-red-500 text-red-500" : "text-gray-500"
                 }`}
               />
             </button>

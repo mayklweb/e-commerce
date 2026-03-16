@@ -2,7 +2,6 @@ import { FavoriteIcon } from "@/app/shared/icons";
 import { useFavoritesStore } from "@/app/store/favoritesStore";
 import { ProductsType } from "@/app/types";
 import Image from "next/image";
-import Link from "next/link";
 
 interface Props {
   product: ProductsType;
@@ -15,23 +14,23 @@ function ProductCard({ product, onClick }: Props) {
   const liked = isFavorite(product.id);
 
   return (
-    // <Link href={`${product.slug}`}>
+    <div className="relative">
+      <button
+        onClick={() => toggleFavorite(product)}
+        className="p-1 absolute top-2 right-2 z-2 bg-white rounded-full cursor-pointer"
+      >
+        <FavoriteIcon
+          className={`w-5 h-5 transition-colors ${
+            liked ? "fill-error text-error" : "text-black"
+          }`}
+        />
+      </button>
       <div
         onClick={onClick}
         key={product.id}
         className="flex flex-col items-start gap-5 border-0 shadow-none cursor-pointer"
       >
         <div className="w-full relative">
-          <button
-            onClick={() => toggleFavorite(product)}
-            className="p-1 absolute top-2 right-2 z-2 bg-white rounded-full"
-          >
-            <FavoriteIcon
-              className={`w-5 h-5 transition-colors ${
-                liked ? "fill-error text-error" : "text-black"
-              }`}
-            />
-          </button>
           <div className="rounded-xl overflow-hidden mb-2.5">
             <Image
               width={300}
@@ -53,7 +52,7 @@ function ProductCard({ product, onClick }: Props) {
           </div>
         </div>
       </div>
-    // </Link>
+    </div>
   );
 }
 

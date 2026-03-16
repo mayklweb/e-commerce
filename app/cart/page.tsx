@@ -7,12 +7,15 @@ import {
   CartIcon,
   CheckIcon,
   DeleteIcon,
-  DownIcon,
   MinusIcon,
   PlusIcon,
 } from "../shared/icons";
 import { useEffect, useState } from "react";
 import { useAddresses } from "../shared/lib/hooks/useAddresses";
+import { useCheckout } from "../shared/lib/hooks/useCheckout";
+import { useUser } from "../shared/lib/useAuth";
+
+type PaymentMethod = "cash" | "click";
 
 function Cart() {
   const {
@@ -28,14 +31,14 @@ function Cart() {
     selectedIds,
   } = useCartStore();
 
-  // inside Cart component:
+  const {data: user} = useUser()
   const { data: addresses } = useAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
     null,
   );
-  const [isAddressOpen, setIsAddressOpen] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
 
-  const selectedAddress = addresses?.find((a) => a.id === selectedAddressId);
+  const { mutate: checkout, isPending } = useCheckout();
 
   useEffect(() => {
     if (addresses && !selectedAddressId) {
@@ -43,6 +46,25 @@ function Cart() {
       if (defaultAddr) setSelectedAddressId(defaultAddr.id);
     }
   }, [addresses]);
+
+  function handleCheckout() {
+    const products = selectedItems().map((item) => ({
+      ...item, // ✅ all product fields (id, name, price, images, etc.)
+      qty: item.count, // ✅ qty from cart count
+    }));
+
+    checkout({
+      address_id: selectedAddressId,
+      market_id: null, // ✅ from useUser()
+      payment: paymentMethod,
+      payment_method: paymentMethod,
+      payed: false,
+      products,
+      notes: "",
+    });
+  }
+
+  const canCheckout = selectedItems().length > 0 && !isPending;
 
   return (
     <section>
@@ -72,6 +94,7 @@ function Cart() {
             </div>
           ) : (
             <div className="flex flex-col lg:flex-row items-start gap-5">
+              {/* ── Cart items ── */}
               <div className="w-full lg:w-7/10 flex flex-col lg:flex-col gap-5">
                 <div
                   className="flex items-center gap-3 cursor-pointer select-none bg-accent p-4 rounded-xl"
@@ -91,10 +114,8 @@ function Cart() {
                   <span className="text-sm font-medium text-black">
                     Tanlangan: {selectedItems().length} ta mahsulot
                   </span>
-                  {/* <span className="text-xs font-medium ">
-                    Yetkazib berish: 1 ish kuni
-                  </span> */}
                 </div>
+
                 <div className="flex flex-col gap-3">
                   {cart.map((item) => (
                     <div
@@ -127,12 +148,6 @@ function Cart() {
                           <p className="text-sm sm:text-base font-medium text-gray-900">
                             {(item.price * item.count).toLocaleString()} so'm
                           </p>
-                          {/* <div className="flex text-sm justify-between">
-                            <span>Yetkazib berish vaqti:</span>
-                            <span className="flex flex-1 border-b border-accent"></span>
-                            <span>1 ish kuni</span>
-                          </div> */}
-                          {/* <p className="text-xs">Yetkazib berish vaqti: 1 ish kuni</p> */}
                         </div>
                         {/* Checkbox */}
                         <div
@@ -153,10 +168,10 @@ function Cart() {
                         </div>
                       </div>
 
-                      <div className="border border-solid border-accent "></div>
+                      <div className="border border-solid border-accent" />
 
                       {/* Qty + Remove */}
-                      <div className="flex gap-4 items-center justify-end ">
+                      <div className="flex gap-4 items-center justify-end">
                         <div className="flex items-center gap-3 bg-gray-100 rounded-xl px-1 py-1">
                           <button
                             onClick={() => changeQty(item.id, -1)}
@@ -187,8 +202,10 @@ function Cart() {
                   ))}
                 </div>
               </div>
+
+              {/* ── Desktop sidebar ── */}
               <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
-                {/* Selected items count */}
+                {/* Selected count */}
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>Tanlangan mahsulotlar</span>
                   <span>{totalCount()} dona</span>
@@ -196,30 +213,20 @@ function Cart() {
 
                 <div className="w-full h-px bg-gray-100" />
 
-                {/* Address */}
+                {/* Address list */}
                 <div className="flex flex-col gap-1">
                   {addresses?.map((addr) => (
                     <div
                       key={addr.id}
-                      onClick={() => {
-                        setSelectedAddressId(addr.id);
-                        setIsAddressOpen(false);
-                      }}
-                      className={`flex items-center justify-between px-3 py-2.5 cursor-pointer hover:bg-gray-50 transition-colors ${
+                      onClick={() => setSelectedAddressId(addr.id)}
+                      className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${
                         selectedAddressId === addr.id ? "bg-primary/5" : ""
                       }`}
                     >
                       <div>
-                        <div className="flex items-center gap-1.5">
-                          <p className="text-sm font-medium">
-                            {addr.region}, {addr.district}
-                          </p>
-                          {addr.is_default && (
-                            <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-medium">
-                              Asosiy
-                            </span>
-                          )}
-                        </div>
+                        <p className="text-sm font-medium">
+                          {addr.region}, {addr.district}
+                        </p>
                         <p className="text-xs text-gray-400 truncate">
                           {addr.address}
                         </p>
@@ -233,6 +240,28 @@ function Cart() {
 
                 <div className="w-full h-px bg-gray-100" />
 
+                {/* ✅ Payment method selector */}
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-gray-500">To'lov usuli</span>
+                  <div className="flex gap-2">
+                    {(["cash", "click"] as PaymentMethod[]).map((method) => (
+                      <button
+                        key={method}
+                        onClick={() => setPaymentMethod(method)}
+                        className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
+                          paymentMethod === method
+                            ? "bg-primary text-white border-primary"
+                            : "bg-white text-gray-600 border-gray-200 hover:border-primary"
+                        }`}
+                      >
+                        {method === "cash" ? "💵 Naqd" : "💳 Click"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="w-full h-px bg-gray-100" />
+
                 {/* Total */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">Jami summa</span>
@@ -241,12 +270,15 @@ function Cart() {
                   </span>
                 </div>
 
-                {/* Checkout button */}
+                {/* ✅ Checkout button */}
                 <button
-                  // disabled={selectedItems().length === 0 || !selectedAddressId}
+                  onClick={handleCheckout}
+                  disabled={!canCheckout}
                   className="w-full py-3 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  Buyurtma berish ({selectedItems().length})
+                  {isPending
+                    ? "Yuborilmoqda..."
+                    : `Buyurtma berish (${selectedItems().length})`}
                 </button>
 
                 {!selectedAddressId && selectedItems().length > 0 && (
@@ -256,20 +288,44 @@ function Cart() {
                 )}
               </div>
 
-              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex items-center justify-between gap-3 lg:hidden">
-                <div className="flex flex-col text-sm shrink-0">
-                  <p className="text-gray-500">
-                    Mahsulotlar {totalCount()} dona
-                  </p>
-                  <p>Summa: {total().toLocaleString()} so'm</p>
+              {/* ── Mobile bottom bar ── */}
+              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex flex-col gap-3 lg:hidden">
+                {/* ✅ Payment method selector (mobile) */}
+                <div className="flex gap-2">
+                  {(["cash", "click"] as PaymentMethod[]).map((method) => (
+                    <button
+                      key={method}
+                      onClick={() => setPaymentMethod(method)}
+                      className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
+                        paymentMethod === method
+                          ? "bg-primary text-white border-primary"
+                          : "bg-white text-gray-600 border-gray-200 hover:border-primary"
+                      }`}
+                    >
+                      {method === "cash" ? "💵 Naqd" : "💳 Click"}
+                    </button>
+                  ))}
                 </div>
 
-                <button
-                  disabled={!selectedItems().length}
-                  className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity"
-                >
-                  Buyurtma berish ({selectedItems().length})
-                </button>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex flex-col text-sm shrink-0">
+                    <p className="text-gray-500">
+                      Mahsulotlar {totalCount()} dona
+                    </p>
+                    <p>Summa: {total().toLocaleString()} so'm</p>
+                  </div>
+
+                  {/* ✅ Checkout button (mobile) */}
+                  <button
+                    onClick={handleCheckout}
+                    disabled={!canCheckout}
+                    className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity"
+                  >
+                    {isPending
+                      ? "Yuborilmoqda..."
+                      : `Buyurtma berish (${selectedItems().length})`}
+                  </button>
+                </div>
               </div>
             </div>
           )}
