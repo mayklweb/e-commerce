@@ -68,7 +68,7 @@ function Cart() {
 
     checkout({
       address_id: selectedAddressId,
-      market_id: user?.market_id ?? null,
+      market_id:  null,
       payment: paymentMethod,
       payment_method: paymentMethod,
       payed: false,
