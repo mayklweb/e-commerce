@@ -31,12 +31,13 @@ function Cart() {
     selectedIds,
   } = useCartStore();
 
-  const {data: user} = useUser()
+  const { data: user } = useUser();
   const { data: addresses } = useAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
     null,
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ mobile modal state
 
   const { mutate: checkout, isPending } = useCheckout();
 
@@ -47,21 +48,35 @@ function Cart() {
     }
   }, [addresses]);
 
+  // ✅ lock body scroll when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isModalOpen]);
+
   function handleCheckout() {
     const products = selectedItems().map((item) => ({
-      ...item, // ✅ all product fields (id, name, price, images, etc.)
-      qty: item.count, // ✅ qty from cart count
+      ...item,
+      qty: item.count,
     }));
 
     checkout({
       address_id: selectedAddressId,
-      market_id: null, // ✅ from useUser()
+      market_id: user?.market_id ?? null,
       payment: paymentMethod,
       payment_method: paymentMethod,
       payed: false,
       products,
       notes: "",
     });
+
+    setIsModalOpen(false);
   }
 
   const canCheckout = selectedItems().length > 0 && !isPending;
@@ -95,7 +110,7 @@ function Cart() {
           ) : (
             <div className="flex flex-col lg:flex-row items-start gap-5">
               {/* ── Cart items ── */}
-              <div className="w-full lg:w-7/10 flex flex-col lg:flex-col gap-5">
+              <div className="w-full lg:w-7/10 flex flex-col gap-5">
                 <div
                   className="flex items-center gap-3 cursor-pointer select-none bg-accent p-4 rounded-xl"
                   onClick={toggleAll}
@@ -127,7 +142,6 @@ function Cart() {
                       }`}
                     >
                       <div className="w-full flex gap-2">
-                        {/* Image */}
                         <div className="w-25 h-18.5 rounded-xl bg-gray-100 overflow-hidden shrink-0">
                           <Image
                             src={
@@ -140,7 +154,6 @@ function Cart() {
                             height={225}
                           />
                         </div>
-                        {/* Info */}
                         <div className="flex-1 min-w-0 flex flex-col">
                           <p className="text-sm sm:text-lg font-semibold text-gray-800 truncate">
                             {item.name}
@@ -149,7 +162,6 @@ function Cart() {
                             {(item.price * item.count).toLocaleString()} so'm
                           </p>
                         </div>
-                        {/* Checkbox */}
                         <div
                           className="cursor-pointer shrink-0"
                           onClick={() => toggleItem(item.id)}
@@ -170,7 +182,6 @@ function Cart() {
 
                       <div className="border border-solid border-accent" />
 
-                      {/* Qty + Remove */}
                       <div className="flex gap-4 items-center justify-end">
                         <div className="flex items-center gap-3 bg-gray-100 rounded-xl px-1 py-1">
                           <button
@@ -205,7 +216,6 @@ function Cart() {
 
               {/* ── Desktop sidebar ── */}
               <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
-                {/* Selected count */}
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>Tanlangan mahsulotlar</span>
                   <span>{totalCount()} dona</span>
@@ -213,7 +223,6 @@ function Cart() {
 
                 <div className="w-full h-px bg-gray-100" />
 
-                {/* Address list */}
                 <div className="flex flex-col gap-1">
                   {addresses?.map((addr) => (
                     <div
@@ -240,7 +249,6 @@ function Cart() {
 
                 <div className="w-full h-px bg-gray-100" />
 
-                {/* ✅ Payment method selector */}
                 <div className="flex flex-col gap-2">
                   <span className="text-sm text-gray-500">To'lov usuli</span>
                   <div className="flex gap-2">
@@ -262,7 +270,6 @@ function Cart() {
 
                 <div className="w-full h-px bg-gray-100" />
 
-                {/* Total */}
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-gray-500">Jami summa</span>
                   <span className="text-lg font-bold text-gray-900">
@@ -270,7 +277,6 @@ function Cart() {
                   </span>
                 </div>
 
-                {/* ✅ Checkout button */}
                 <button
                   onClick={handleCheckout}
                   disabled={!canCheckout}
@@ -289,44 +295,144 @@ function Cart() {
               </div>
 
               {/* ── Mobile bottom bar ── */}
-              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex flex-col gap-3 lg:hidden">
-                {/* ✅ Payment method selector (mobile) */}
-                <div className="flex gap-2">
-                  {(["cash", "click"] as PaymentMethod[]).map((method) => (
-                    <button
-                      key={method}
-                      onClick={() => setPaymentMethod(method)}
-                      className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
-                        paymentMethod === method
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-gray-600 border-gray-200 hover:border-primary"
-                      }`}
-                    >
-                      {method === "cash" ? "💵 Naqd" : "💳 Click"}
-                    </button>
-                  ))}
+              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex items-center justify-between gap-3 lg:hidden">
+                <div className="flex flex-col text-sm shrink-0">
+                  <p className="text-gray-500">
+                    Mahsulotlar {totalCount()} dona
+                  </p>
+                  <p className="font-semibold">
+                    {total().toLocaleString()} so'm
+                  </p>
                 </div>
 
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex flex-col text-sm shrink-0">
-                    <p className="text-gray-500">
-                      Mahsulotlar {totalCount()} dona
-                    </p>
-                    <p>Summa: {total().toLocaleString()} so'm</p>
-                  </div>
-
-                  {/* ✅ Checkout button (mobile) */}
-                  <button
-                    onClick={handleCheckout}
-                    disabled={!canCheckout}
-                    className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity"
-                  >
-                    {isPending
-                      ? "Yuborilmoqda..."
-                      : `Buyurtma berish (${selectedItems().length})`}
-                  </button>
-                </div>
+                {/* ✅ opens modal instead of direct checkout */}
+                <button
+                  disabled={!selectedItems().length}
+                  onClick={() => setIsModalOpen(true)}
+                  className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity"
+                >
+                  Buyurtma berish ({selectedItems().length})
+                </button>
               </div>
+
+              {/* ── Mobile checkout modal ── */}
+              {isModalOpen && (
+                <>
+                  {/* Backdrop */}
+                  <div
+                    className="fixed inset-0 bg-black/40 z-40 lg:hidden"
+                    onClick={() => setIsModalOpen(false)}
+                  />
+
+                  {/* Bottom sheet */}
+                  <div className="fixed left-0 bottom-0 w-full bg-white rounded-t-2xl z-50 p-5 flex flex-col gap-4 lg:hidden shadow-2xl">
+                    {/* Handle bar */}
+                    <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto -mt-1" />
+
+                    <h2 className="text-lg font-semibold text-gray-800">
+                      Buyurtmani tasdiqlash
+                    </h2>
+
+                    {/* Order summary */}
+                    <div className="flex items-center justify-between text-sm text-gray-500 bg-gray-50 px-4 py-3 rounded-xl">
+                      <span>Mahsulotlar</span>
+                      <span className="font-semibold text-gray-800">
+                        {totalCount()} dona
+                      </span>
+                    </div>
+
+                    {/* Address */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm text-gray-500">Manzil</span>
+                      <div className="flex flex-col gap-1">
+                        {addresses?.map((addr) => (
+                          <div
+                            key={addr.id}
+                            onClick={() => setSelectedAddressId(addr.id)}
+                            className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer border transition-colors ${
+                              selectedAddressId === addr.id
+                                ? "border-primary bg-primary/5"
+                                : "border-gray-100 bg-gray-50"
+                            }`}
+                          >
+                            <div>
+                              <p className="text-sm font-medium">
+                                {addr.region}, {addr.district}
+                              </p>
+                              <p className="text-xs text-gray-400 truncate">
+                                {addr.address}
+                              </p>
+                            </div>
+                            {selectedAddressId === addr.id && (
+                              <CheckIcon className="w-4 h-4 text-primary shrink-0" />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Payment method */}
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm text-gray-500">
+                        To'lov usuli
+                      </span>
+                      <div className="flex gap-2">
+                        {(["cash", "click"] as PaymentMethod[]).map(
+                          (method) => (
+                            <button
+                              disabled={method === "click"}
+                              key={method}
+                              onClick={() => setPaymentMethod(method)}
+                              className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
+                                paymentMethod === method
+                                  ? "bg-primary text-white border-primary"
+                                  : "bg-white text-gray-600 border-gray-200"
+                              }`}
+                            >
+                              {method === "cash" ? "💵 Naqd" : "💳 Click"}
+                            </button>
+                          ),
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="w-full h-px bg-gray-100" />
+
+                    {/* Total */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Jami summa</span>
+                      <span className="text-xl font-bold text-gray-900">
+                        {total().toLocaleString()} so'm
+                      </span>
+                    </div>
+
+                    {/* Confirm button */}
+                    <button
+                      onClick={handleCheckout}
+                      disabled={!canCheckout}
+                      className="w-full py-3.5 rounded-xl bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                    >
+                      {isPending
+                        ? "Yuborilmoqda..."
+                        : `Tasdiqlash — ${total().toLocaleString()} so'm`}
+                    </button>
+
+                    {!selectedAddressId && (
+                      <p className="text-xs text-center text-red-400 -mt-2">
+                        Buyurtma berish uchun manzil tanlang
+                      </p>
+                    )}
+
+                    {/* Cancel */}
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="w-full py-3 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium cursor-pointer"
+                    >
+                      Bekor qilish
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </div>

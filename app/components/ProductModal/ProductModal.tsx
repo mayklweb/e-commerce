@@ -7,6 +7,8 @@ import {
   PlusIcon,
 } from "@/app/shared/icons";
 import Image from "next/image";
+import { useCartStore } from "@/app/store/CartStore";
+import { useFavoritesStore } from "@/app/store/favoritesStore";
 
 interface Props {
   product: ProductsType | null;
