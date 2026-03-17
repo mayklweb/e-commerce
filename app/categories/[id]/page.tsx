@@ -188,6 +188,7 @@ export default function CategoryProductsPage() {
         onApply={applyPending}
         onReset={resetPending}
         brands={brands}
+        categories={categories}
         defaultCategoryId={id}
       />
     </section>
