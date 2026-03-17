@@ -13,12 +13,58 @@ import { LeftIcon, RightIcon } from "@/app/shared/icons";
 import Link from "next/link";
 import Image from "next/image";
 
+function CategoriesSkeleton() {
+  return (
+    <section>
+      <div className="container">
+        <div className="mt-5">
+          {/* Header skeleton */}
+          <div className="flex items-center justify-between">
+            <div className="h-9 md:h-10 lg:h-11 w-40 bg-gray-200 rounded-xl animate-pulse" />
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 md:w-9 md:h-9 bg-gray-200 rounded-full animate-pulse" />
+              <div className="w-8 h-8 md:w-9 md:h-9 bg-gray-200 rounded-full animate-pulse" />
+            </div>
+          </div>
+
+          {/* Slides skeleton */}
+          <div className="flex gap-2 sm:gap-3 md:gap-3.5 lg:gap-4 mt-3 lg:mt-5 overflow-hidden">
+          {Array.from({ length: 10 }).map((_, i) => (
+              <div
+                key={i}
+                className={`
+      flex-1 w-[38%] sm:w-[23%] md:w-[19%] lg:w-[15.5%] xl:w-[13.5%] 2xl:w-[10%]
+      ${i >= 3 ? "hidden sm:block" : ""}
+      ${i >= 5 ? "hidden md:block" : ""}
+      ${i >= 7 ? "hidden lg:block" : ""}
+      ${i >= 8 ? "hidden xl:block" : ""}
+    `}
+              >
+                <div
+                  className="rounded-xl bg-gray-100 overflow-hidden animate-pulse [animation-fill-mode:both]"
+                  style={{ animationDelay: `${i * 80}ms` }}
+                >
+                  <div className="p-2">
+                    <div className="w-full h-20 sm:h-24 md:h-28 lg:h-32 rounded-lg bg-gray-300" />
+                    <div className="mt-2 mx-auto h-3.5 w-2/3 bg-gray-300 rounded-full" />
+                    <div className="mt-1.5 mx-auto h-3 w-1/2 bg-gray-200 rounded-full mb-1" />
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Categories() {
   const { data: categories, isLoading, isError } = useCategories();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <CategoriesSkeleton />;
   if (isError) return <div>Error</div>;
 
   return (

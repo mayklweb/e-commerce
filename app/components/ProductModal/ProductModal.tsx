@@ -37,19 +37,33 @@ function ProductModal({ product, onClose }: Props) {
     >
       {/* Modal */}
       <div
-        className="bg-white w-200 rounded-xl relative flex gap-5 p-5"
-        onClick={(e) => e.stopPropagation()} // prevent close on modal click
+        className="
+          bg-white w-full sm:w-[520px] lg:w-[700px]
+          rounded-t-2xl sm:rounded-xl
+          relative
+          flex flex-col sm:flex-row
+          gap-4 sm:gap-5
+          p-4 sm:p-5
+          max-h-[92dvh] sm:max-h-[85vh]
+          overflow-y-auto
+        "
+        onClick={(e) => e.stopPropagation()}
       >
+        {/* Drag handle — mobile only */}
+        <div className="sm:hidden flex justify-center mb-1 shrink-0">
+          <div className="w-10 h-1 rounded-full bg-gray-300" />
+        </div>
+
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 text-gray-400 hover:text-gray-600 cursor-pointer z-10"
         >
-          <CloseIcon className="w-8 h-8" />
+          <CloseIcon className="w-7 h-7 sm:w-8 sm:h-8" />
         </button>
 
         {/* Image */}
-        <div className="w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden">
+        <div className="w-full sm:w-1/2 relative aspect-video sm:aspect-4/3 rounded-xl sm:rounded-2xl overflow-hidden shrink-0">
           <Image
             src={imageSrc}
             fill
@@ -59,11 +73,13 @@ function ProductModal({ product, onClose }: Props) {
         </div>
 
         {/* Info */}
-        <div className="w-1/2  flex flex-col">
-          <h2 className="text-xl font-bold">{product.name}</h2>
+        <div className="w-full sm:w-1/2 flex flex-col gap-1">
+          <h2 className="text-lg sm:text-xl font-bold pr-8 sm:pr-0 leading-snug">
+            {product.name}
+          </h2>
 
-          <div className="flex flex-col items-start justify-between mt-3">
-            <p className="text-2xl font-bold">
+          <div className="flex flex-row sm:flex-col items-center sm:items-start justify-between sm:justify-start gap-1 mt-2 sm:mt-3">
+            <p className="text-xl sm:text-2xl font-bold">
               {product.price.toLocaleString()} so'm
             </p>
             {product.stock_qty > 0 ? (
@@ -86,13 +102,14 @@ function ProductModal({ product, onClose }: Props) {
               Dona narxi: {product.piece_price.toLocaleString()} so'm
             </p>
           )}
+
           {/* Cart controls */}
-          <div className="mt-5 flex gap-2.5">
+          <div className="mt-4 sm:mt-5 flex gap-2.5">
             {qty === 0 ? (
               <button
                 onClick={() => addToCart(product)}
                 disabled={product.stock_qty === 0}
-                className="w-full py-3 bg-primary text-white font-semibold rounded-xl disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 bg-primary text-white font-semibold rounded-xl disabled:opacity-50 cursor-pointer text-sm sm:text-base"
               >
                 Savatga qo'shish
               </button>
@@ -102,14 +119,14 @@ function ProductModal({ product, onClose }: Props) {
                   onClick={() =>
                     qty === 1 ? remove(product.id) : dec(product.id)
                   }
-                  className="w-10 h-10 rounded-xl bg-white text-black text-xl font-bold flex items-center justify-center cursor-pointer"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white text-black text-xl font-bold flex items-center justify-center cursor-pointer"
                 >
                   <MinusIcon />
                 </button>
                 <span className="font-semibold text-xl">{qty}</span>
                 <button
                   onClick={() => inc(product.id)}
-                  className="w-10 h-10 rounded-xl bg-white text-black text-xl font-bold flex items-center justify-center cursor-pointer"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-white text-black text-xl font-bold flex items-center justify-center cursor-pointer"
                 >
                   <PlusIcon />
                 </button>
@@ -118,10 +135,10 @@ function ProductModal({ product, onClose }: Props) {
             {/* Favorite */}
             <button
               onClick={() => toggleFavorite(product)}
-              className="bg-accent p-4 rounded-xl cursor-pointer"
+              className="bg-accent p-3 sm:p-4 rounded-xl cursor-pointer shrink-0"
             >
               <FavoriteIcon
-                className={`w-6 h-6 transition-all ${
+                className={`w-5 h-5 sm:w-6 sm:h-6 transition-all ${
                   liked ? "fill-red-500 text-red-500" : "text-gray-500"
                 }`}
               />
