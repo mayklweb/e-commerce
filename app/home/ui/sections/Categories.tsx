@@ -29,7 +29,7 @@ function CategoriesSkeleton() {
 
           {/* Slides skeleton */}
           <div className="flex gap-2 sm:gap-3 md:gap-3.5 lg:gap-4 mt-3 lg:mt-5 overflow-hidden">
-          {Array.from({ length: 10 }).map((_, i) => (
+            {Array.from({ length: 10 }).map((_, i) => (
               <div
                 key={i}
                 className={`
@@ -117,32 +117,30 @@ function Categories() {
               }}
               className="w-full mt-3 lg:mt-5"
             >
-              {categories
-                .slice(1)
-                .map(({ name, id }: CategoriesType, i: number) => (
-                  <SwiperSlide key={i}>
-                    <Link
-                      href="/categories"
-                      className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
-                    >
-                      <div className="w-full p-2">
-                        <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden">
-                          <Image
-                            src={`/${id}.jpg`}
-                            fill
-                            sizes="(max-width: 640px) 35vw, (max-width: 1024px) 18vw, 12vw"
-                            alt={name}
-                            className="object-cover"
-                            priority
-                          />
-                        </div>
-                        <p className="w-full pt-2 text-sm sm:text-base lg:text-lg text-primary text-center font-semibold line-clamp-2">
-                          {name}
-                        </p>
+              {categories.map(({ name, id }: CategoriesType, i: number) => (
+                <SwiperSlide key={i}>
+                  <Link
+                    href="/categories"
+                    className="flex flex-col items-center rounded-xl bg-primary/10 overflow-hidden"
+                  >
+                    <div className="w-full p-2">
+                      <div className="relative w-full aspect-4/3 rounded-lg overflow-hidden">
+                        <Image
+                          src={`/${id}.jpg`}
+                          fill
+                          sizes="(max-width: 640px) 35vw, (max-width: 1024px) 18vw, 12vw"
+                          alt={name}
+                          className="object-cover"
+                          priority
+                        />
                       </div>
-                    </Link>
-                  </SwiperSlide>
-                ))}
+                      <p className="w-full pt-2 text-sm sm:text-base lg:text-lg text-primary text-center font-semibold line-clamp-2">
+                        {name}
+                      </p>
+                    </div>
+                  </Link>
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
         </div>

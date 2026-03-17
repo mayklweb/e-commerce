@@ -32,7 +32,6 @@ export function FilterPanel({
   onChange,
   brands,
   categories,
-  defaultCategoryId,
 }: FilterPanelProps) {
   const [showAllBrands, setShowAllBrands] = useState(false);
 
@@ -48,7 +47,7 @@ export function FilterPanel({
 
   const toggleCategory = (id: number) => {
     // default category cannot be deselected
-    if (id === defaultCategoryId) return;
+    // if (id === defaultCategoryId) return;
     set({
       categoryIds: filters.categoryIds.includes(id)
         ? filters.categoryIds.filter((c: any) => c !== id)
@@ -106,43 +105,19 @@ export function FilterPanel({
       {categories && categories.length > 0 && (
         <Section title="Kategoriya">
           <div className="flex flex-col gap-1.5">
-            {/* default category pinned at top, locked */}
-            {defaultCategoryId &&
-              (() => {
-                const pinned = categories.find(
-                  (c) => c.id === defaultCategoryId,
-                );
-                return pinned ? (
-                  <label
-                    key={pinned.id}
-                    className="flex items-center gap-3 py-1"
-                  >
-                    <Checkbox checked={true} onChange={() => {}} locked />
-                    <span className="text-sm text-gray-700 font-medium">
-                      {pinned.name}
-                    </span>
-                    <span className="text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-md font-medium">
-                      Joriy
-                    </span>
-                  </label>
-                ) : null;
-              })()}
-
             {/* rest of categories */}
-            {categories
-              .filter((c) => c.id !== defaultCategoryId)
-              .map((cat) => (
-                <label
-                  key={cat.id}
-                  className="flex items-center gap-3 cursor-pointer py-1"
-                >
-                  <Checkbox
-                    checked={filters.categoryIds.includes(cat.id)}
-                    onChange={() => toggleCategory(cat.id)}
-                  />
-                  <span className="text-sm text-gray-700">{cat.name}</span>
-                </label>
-              ))}
+            {categories.map((cat) => (
+              <label
+                key={cat.id}
+                className="flex items-center gap-3 cursor-pointer py-1"
+              >
+                <Checkbox
+                  checked={filters.categoryIds.includes(cat.id)}
+                  onChange={() => toggleCategory(cat.id)}
+                />
+                <span className="text-sm text-gray-700">{cat.name}</span>
+              </label>
+            ))}
           </div>
         </Section>
       )}
