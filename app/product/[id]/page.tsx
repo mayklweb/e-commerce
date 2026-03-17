@@ -16,7 +16,7 @@ function ProductSkeleton() {
           <div className="w-full flex flex-col lg:flex-row gap-5 pb-20">
             {/* Images */}
             <div className="w-full lg:w-1/2 flex flex-col gap-3">
-              <div className="w-full aspect-[4/3] rounded-2xl bg-gray-200 animate-pulse" />
+              <div className="w-full aspect-4/3 rounded-2xl bg-gray-200 animate-pulse" />
               <div className="flex gap-3">
                 {[1, 2, 3].map((i) => (
                   <div
@@ -94,11 +94,11 @@ function Product() {
     <section>
       <div className="container">
         <div className="mt-24">
-          <div className="w-full flex flex-col lg:flex-row gap-6 pb-24 lg:pb-20">
+          <div className="w-full flex flex-col lg:flex-row gap-5 pb-24 lg:pb-20">
             {/* ── Images ── */}
             <div className="w-full lg:w-1/2 flex flex-col gap-3">
               {/* Main image */}
-              <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-gray-100 relative">
+              <div className="w-full aspect-4/3 rounded-2xl overflow-hidden bg-gray-100 relative">
                 <Image
                   src={images[activeImage]}
                   alt={product.name}
