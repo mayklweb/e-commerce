@@ -12,7 +12,8 @@ import { NavKey } from "./model/types/types";
 import { NAV_ITEMS } from "./model/constants/constants";
 import { Sidebar } from "./ui/components/Sidebar/Sidebar";
 import { BottomSheet } from "./ui/components/bottomsheet";
-import { useUser } from "../shared/lib/useAuth";
+
+import { useGetMe, useUser } from "../shared/lib/useAuth";
 
 const SECTION_MAP: Record<NavKey, React.ReactNode> = {
   personal: <PersonalInfo />,
@@ -30,9 +31,17 @@ function Account() {
   const [sheetNav, setSheetNav] = useState<NavKey | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const { mutate: getMe } = useGetMe();
 
   useEffect(() => {
-    if (!isLoading && !user) {
+    getMe()
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    // Only redirect if no token AND no user
+    if (!token && !user) {
       router.replace("/login");
     }
   }, [user, isLoading, router]);

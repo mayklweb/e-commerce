@@ -23,7 +23,7 @@ export function useUser() {
     queryKey: queryKeys.user,
     queryFn: () => null,
     staleTime: Infinity,
-    retry: false,
+    retry: true,
     enabled: false,
     initialData: null,
   });
