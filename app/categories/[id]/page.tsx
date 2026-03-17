@@ -54,52 +54,6 @@ export default function CategoryProductsPage() {
         <div>
           <div className="flex h-full overflow-hidden mt-24">
             {/* ── DESKTOP LEFT: categories sidebar ── */}
-            <aside className="hidden lg:flex flex-col w-56 shrink-0 border-r border-gray-100 overflow-y-auto bg-white">
-              <div className="px-4 pt-5 pb-3 shrink-0">
-                <h2 className="text-base font-bold text-gray-900">Katalog</h2>
-              </div>
-
-              <div className="flex flex-col gap-1 px-2 pb-4">
-                {categoriesLoading
-                  ? Array.from({ length: 8 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="h-10 rounded-xl bg-gray-100 animate-pulse mx-2"
-                      />
-                    ))
-                  : categories?.map((cat: CategoriesType) => {
-                      const isActive = Number(cat.id) === id;
-                      return (
-                        <button
-                          key={cat.id}
-                          onClick={() => handleDesktopCategoryClick(cat)}
-                          className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-xl text-left transition-colors ${
-                            isActive
-                              ? "bg-primary/10 text-primary font-semibold"
-                              : "text-gray-600 hover:bg-gray-50"
-                          }`}
-                        >
-                          {/* small icon */}
-                          <div className="w-7 h-7 rounded-lg bg-white border border-gray-100 flex items-center justify-center shrink-0 overflow-hidden">
-                            {cat.icon ? (
-                              <Image
-                                src={cat.icon}
-                                alt={cat.name}
-                                width={18}
-                                height={18}
-                                className="object-contain"
-                                unoptimized
-                              />
-                            ) : (
-                              <span className="text-sm">🛍️</span>
-                            )}
-                          </div>
-                          <span className="text-sm truncate">{cat.name}</span>
-                        </button>
-                      );
-                    })}
-              </div>
-            </aside>
 
             {/* ── MAIN AREA ── */}
             <div className="flex flex-col flex-1 overflow-hidden">
@@ -141,7 +95,7 @@ export default function CategoryProductsPage() {
                 </div>
 
                 {/* Desktop filter button */}
-                <div className="hidden lg:flex items-center gap-2">
+                {/* <div className="hidden lg:flex items-center gap-2">
                   {activeCount > 0 && (
                     <button
                       onClick={resetAll}
@@ -150,7 +104,7 @@ export default function CategoryProductsPage() {
                       Tozalash
                     </button>
                   )}
-                </div>
+                </div> */}
 
                 {/* Mobile filter button */}
                 <button
@@ -180,6 +134,7 @@ export default function CategoryProductsPage() {
                       filters={filters}
                       onChange={setFilters}
                       brands={brands}
+                      categories={categories}
                       defaultCategoryId={id}
                     />
                   </div>
