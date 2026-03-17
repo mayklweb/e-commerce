@@ -168,7 +168,7 @@ export default function CategoriesPage() {
                       {Array.from({ length: 8 }).map((_, i) => (
                         <div
                           key={i}
-                          className="rounded-2xl bg-gray-100 animate-pulse aspect-[3/4]"
+                          className="rounded-2xl bg-gray-100 animate-pulse aspect-4/3"
                         />
                       ))}
                     </div>
