@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useAddresses } from "../shared/lib/hooks/useAddresses";
 import { useCheckout } from "../shared/lib/hooks/useCheckout";
 import { useUser } from "../shared/lib/useAuth";
+import { useMarketCheck } from "../shared/lib/hooks/useMarketCheck";
 
 type PaymentMethod = "cash" | "click";
 
@@ -40,6 +41,9 @@ function Cart() {
   const [isModalOpen, setIsModalOpen] = useState(false); // ✅ mobile modal state
 
   const { mutate: checkout, isPending } = useCheckout();
+  const { hasMarket, myMarket, isLoading } = useMarketCheck();
+  const [showMarketModal, setShowMarketModal] = useState(false);
+  const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
   useEffect(() => {
     if (addresses && !selectedAddressId) {
@@ -61,6 +65,25 @@ function Cart() {
   }, [isModalOpen]);
 
   function handleCheckout() {
+    // If still loading, wait
+    if (isLoading) return;
+
+    // If no market registered, show registration modal first
+    if (!hasMarket && !pendingMarketId) {
+      setShowMarketModal(true);
+      return;
+    }
+
+    proceedToCheckout(pendingMarketId ?? myMarket?.id ?? null);
+  }
+
+  function handleMarketRegistered(marketId: number) {
+    setPendingMarketId(marketId);
+    setShowMarketModal(false);
+    proceedToCheckout(marketId);
+  }
+
+  function proceedToCheckout(marketId: number | null) {
     const products = selectedItems().map((item) => ({
       ...item,
       qty: item.count,
@@ -68,7 +91,7 @@ function Cart() {
 
     checkout({
       address_id: selectedAddressId,
-      market_id:  null,
+      market_id: marketId,
       payment: paymentMethod,
       payment_method: paymentMethod,
       payed: false,
