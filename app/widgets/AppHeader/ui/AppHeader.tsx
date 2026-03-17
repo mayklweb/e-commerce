@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useCartStore } from "@/app/store/CartStore";
+import { useUser } from "@/app/shared/lib/useAuth";
 // import { useSelector } from "react-redux";
 // import { AppDispatch, RootState } from "@/app/store";
 // import { getProducts } from "@/app/store/actions/productsAction";
@@ -14,6 +15,8 @@ function AppHeader() {
   const path = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState<string>("");
+  const { data: user } = useUser();
+
   // const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
   // const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
 
@@ -96,7 +99,7 @@ function AppHeader() {
                   >
                     <UserIcon className="text-primary w-6 h-6" />
                     <span className="text-[16px] text-primary font-semibold capitalize">
-                      {"Muhammad"}
+                      {user?.name ? user.name : "Kirish"}
                     </span>
                   </Link>
                   <Link

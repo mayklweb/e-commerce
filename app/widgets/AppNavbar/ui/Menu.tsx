@@ -1,7 +1,11 @@
+"use client"
 import { CartIcon, HomeIcon, ProductsIcon, UserIcon } from "@/app/shared/icons";
+import { useUser } from "@/app/shared/lib/useAuth";
 import Link from "next/link";
 
 function Menu() {
+
+  const {data: user} = useUser()
   return (
     <div className="fixed z-2 bottom-0 left-0 w-full border-t-[0.5px] border-solid border-[#999] bg-[#FAFAFA] px-2">
       <div className="container">
@@ -50,8 +54,7 @@ function Menu() {
               <UserIcon />
             </span>
             <span className="text-sm font-medium">
-              {/* Telegram firstname */}
-              Muhammad
+            {user?.name ? user.name : "Kirish" }
             </span>
           </Link>
         </div>

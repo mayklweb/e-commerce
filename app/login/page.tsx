@@ -1,5 +1,5 @@
-// import { useLogin } from "../hooks/useAuth";
-"use client"
+"use client";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useLogin } from "../shared/lib/useAuth";
 
@@ -9,6 +9,7 @@ interface LoginFormValues {
 }
 
 function LoginForm() {
+  const router = useRouter();
   const { mutate: login, isPending, isError, error } = useLogin();
 
   const {
@@ -18,16 +19,18 @@ function LoginForm() {
   } = useForm<LoginFormValues>();
 
   const onSubmit = (data: LoginFormValues) => {
-    login(data);
+    login(data, {
+      onSuccess: () => {
+        router.replace("/profile");
+      },
+    });
   };
 
   return (
     <form className="mt-40" onSubmit={handleSubmit(onSubmit)}>
 
-      {/* Global API error */}
       {isError && <span>{error?.message ?? "Login failed"}</span>}
 
-      {/* Phone */}
       <div>
         <input
           placeholder="Phone"
@@ -42,7 +45,6 @@ function LoginForm() {
         {errors.phone && <span>{errors.phone.message}</span>}
       </div>
 
-      {/* Password */}
       <div>
         <input
           type="password"
@@ -63,4 +65,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm
+export default LoginForm;
