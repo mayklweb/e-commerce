@@ -99,9 +99,9 @@ export function Market() {
       </div>
 
       {/* Card */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
         {/* Card header */}
-        <div className="bg-primary/5 border-b border-gray-100 px-6 py-4 flex items-center gap-3">
+        <div className="bg-primary/5 border-b border-gray-100 p-4 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <MarketIcon className="w-5 h-5 text-primary" />
           </div>
@@ -139,7 +139,7 @@ export function Market() {
           )}
         </div>
 
-        <div className="px-6 py-5">
+        <div className="p-4">
           {/* Delete confirmation dialog */}
           {confirmDelete && (
             <div className="mb-4 p-4 rounded-xl bg-red-50 border border-red-100">
@@ -170,7 +170,7 @@ export function Market() {
             <div className="flex flex-col gap-4">
               {/* Shop name */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   Do'kon nomi
                 </label>
                 <input
@@ -179,20 +179,20 @@ export function Market() {
                   value={draft.name}
                   onChange={handleChange}
                   placeholder="Masalan: Bahor savdo markazi"
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
                 />
               </div>
 
               {/* District */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   Tuman / Shahar
                 </label>
                 <select
                   name="district"
                   value={draft.district}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm bg-white"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary bg-white"
                 >
                   <option value="">Tumanni tanlang</option>
                   {DISTRICTS.map((d) => (
@@ -205,7 +205,7 @@ export function Market() {
 
               {/* Exact address */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-lg font-medium text-gray-700 mb-1">
                   Aniq manzil
                 </label>
                 <input
@@ -214,7 +214,7 @@ export function Market() {
                   value={draft.address}
                   onChange={handleChange}
                   placeholder="Ko'cha, uy raqami..."
-                  className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary text-sm"
+                  className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary "
                 />
               </div>
 
@@ -293,7 +293,7 @@ function InfoRow({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <div className="mt-0.5 w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
+      <div className="mt-0.5 w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center text-gray-500 shrink-0">
         {icon}
       </div>
       <div>

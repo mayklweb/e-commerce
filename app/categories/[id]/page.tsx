@@ -127,7 +127,7 @@ export default function CategoryProductsPage() {
               {/* Body: desktop filter panel + products */}
               <div className="flex flex-1 overflow-hidden gap-4 ">
                 {/* Desktop filter sidebar */}
-                <aside className="hidden lg:flex flex-col w-56 shrink-0 overflow-y-auto">
+                <aside className="hidden lg:flex flex-col w-56 shrink-0 overflow-y-auto sticky top-5">
                   <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-col gap-4">
                     <p className="text-xs font-bold text-gray-900">Filtr</p>
                     <FilterPanel
