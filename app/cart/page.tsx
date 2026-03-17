@@ -15,6 +15,7 @@ import { useAddresses } from "../shared/lib/hooks/useAddresses";
 import { useCheckout } from "../shared/lib/hooks/useCheckout";
 import { useUser } from "../shared/lib/useAuth";
 import { useMarketCheck } from "../shared/lib/hooks/useMarketCheck";
+import { useRouter } from "next/navigation";
 
 type PaymentMethod = "cash" | "click";
 
@@ -39,6 +40,7 @@ function Cart() {
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [isModalOpen, setIsModalOpen] = useState(false); // ✅ mobile modal state
+  const route = useRouter()
 
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
@@ -65,6 +67,7 @@ function Cart() {
   }, [isModalOpen]);
 
   function handleCheckout() {
+    
     // If still loading, wait
     if (isLoading) return;
 
@@ -277,6 +280,7 @@ function Cart() {
                   <div className="flex gap-2">
                     {(["cash", "click"] as PaymentMethod[]).map((method) => (
                       <button
+                        disabled={method === "click"}
                         key={method}
                         onClick={() => setPaymentMethod(method)}
                         className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${
@@ -285,7 +289,7 @@ function Cart() {
                             : "bg-white text-gray-600 border-gray-200 hover:border-primary"
                         }`}
                       >
-                        {method === "cash" ? "💵 Naqd" : "💳 Click"}
+                        {method === "cash" ? "Naqd" : "Click"}
                       </button>
                     ))}
                   </div>
