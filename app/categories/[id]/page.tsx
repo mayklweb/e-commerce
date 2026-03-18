@@ -13,6 +13,7 @@ import { FilterPanel } from "../shared/ui/FilterPanel";
 import { ProductCard } from "@/app/components";
 import { FilterBottomSheet } from "../desktop/FilterBottomSheet";
 import { FilterIcon } from "@/app/shared/icons";
+import Link from "next/link";
 
 export default function CategoryProductsPage() {
   const router = useRouter();
@@ -169,7 +170,9 @@ export default function CategoryProductsPage() {
                   ) : (
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
                       {filtered.map((product: ProductsType) => (
-                        <ProductCard key={product.id} product={product} />
+                        <Link href={`/product/${product.id}`}>
+                      <ProductCard key={product.id} product={product} />
+                        </Link>
                       ))}
                     </div>
                   )}

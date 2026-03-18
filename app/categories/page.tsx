@@ -13,6 +13,7 @@ import { FilterIcon } from "@/app/shared/icons";
 import { useProductFilters } from "./shared/lib/useProductFilters";
 import { FilterBottomSheet } from "./desktop/FilterBottomSheet";
 import { FilterPanel } from "./shared/ui/FilterPanel";
+import Link from "next/link";
 
 export default function CategoriesPage() {
   const router = useRouter();
@@ -190,7 +191,9 @@ export default function CategoriesPage() {
                   ) : (
                     <div className="grid grid-cols-3 xl:grid-cols-4 gap-3">
                       {filtered.map((product: ProductsType) => (
+                        <Link href={`/product/${product.id}`}>
                         <ProductCard key={product.id} product={product} />
+                        </Link>
                       ))}
                     </div>
                   )}
