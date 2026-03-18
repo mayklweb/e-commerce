@@ -21,17 +21,17 @@ export interface ProductsType {
   updated_at: string;
   brand_id: number;
   // images: Array<string | { url: string }>;
-  images: { url: string }[]
+  images: { url: string }[];
 }
 
 export interface UserType {
   id: string; // User Telegram ID
   name: string; // User last name (optional)
   phone: string; // User phone number
-  market_id: string
+  market_id: string;
 }
 
-export type OrderStatus = "Yo'lda" | "Yetkazildi" | "Bekor qilindi";
+export type OrderStatus = "pending" | "preparing" | "delivered" | "cancelled";
 export type PaymentMethod = "cash" | "click";
 
 export interface OrderProduct {

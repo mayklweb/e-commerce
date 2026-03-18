@@ -40,7 +40,7 @@ function Cart() {
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [isModalOpen, setIsModalOpen] = useState(false); // ✅ mobile modal state
-  const route = useRouter()
+  const route = useRouter();
 
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
@@ -67,7 +67,6 @@ function Cart() {
   }, [isModalOpen]);
 
   function handleCheckout() {
-    
     // If still loading, wait
     if (isLoading) return;
 
@@ -181,9 +180,12 @@ function Cart() {
                           />
                         </div>
                         <div className="flex-1 min-w-0 flex flex-col">
-                          <p className="text-sm sm:text-lg font-semibold text-gray-800 truncate">
+                          <Link
+                            href={`/product/${item.id}`}
+                            className="text-sm sm:text-lg font-semibold text-gray-800 truncate"
+                          >
                             {item.name}
-                          </p>
+                          </Link>
                           <p className="text-sm sm:text-base font-medium text-gray-900">
                             {(item.price * item.count).toLocaleString()} so'm
                           </p>

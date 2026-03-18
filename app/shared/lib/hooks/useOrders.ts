@@ -35,8 +35,12 @@ export function useCancelOrder() {
       const { data } = await $api.post(`/orders/${id}/cancel`);
       return data;
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orderKeys.all });
+    onSuccess: (_, id) => {
+      queryClient.setQueryData<Order[]>(orderKeys.all, (old) =>
+        old?.map((order) =>
+          order.id === id ? { ...order, status: "cancelled" as const } : order
+        ) ?? []
+      );
     },
   });
 }
