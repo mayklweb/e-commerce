@@ -73,7 +73,7 @@ export default function CategoriesPage() {
   return (
     <>
       {/* ── MOBILE: category grid ─────────────────────────────── */}
-      <div className="flex flex-col h-full lg:hidden">
+      <div className="flex flex-col h-full lg:hidden mt-20">
         {categoriesLoading ? (
           <div className="grid grid-cols-2 gap-3 px-4 pb-24 mt-24">
             {Array.from({ length: 9 }).map((_, i) => (
