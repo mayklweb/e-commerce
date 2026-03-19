@@ -37,7 +37,7 @@ function LoginForm() {
         onClick={() => router.back()}
         className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10 left-2"
       >
-        <LeftArrowIcon/>
+        <LeftArrowIcon />
         <span>Orqaga</span>
       </button>
       <div className="max-w-md w-full">
