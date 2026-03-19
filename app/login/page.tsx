@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { useLogin } from "../shared/lib/useAuth";
-import { ArrowLeft } from "lucide-react";
+import { LeftArrowIcon } from "../shared/icons";
 
 interface LoginFormValues {
   phone: string;
@@ -35,13 +35,13 @@ function LoginForm() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-800 transition-colors duration-200 mb-6 absolute top-4"
+        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-4"
       >
-        <ArrowLeft size={18} />
+        <LeftArrowIcon/>
         <span>Orqaga</span>
       </button>
       <div className="max-w-md w-full">
-        <div className="mb-8 text-center">
+        <div className="mb-5 text-center">
           <h1 className="text-3xl font-bold text-gray-900 mb-1">Kirish</h1>
           <p className="text-sm text-gray-500">Hisobingizga kiring</p>
         </div>
