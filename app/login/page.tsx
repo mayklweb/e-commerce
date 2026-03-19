@@ -30,12 +30,12 @@ function LoginForm() {
   };
 
   return (
-    <div className="h-full relative flex flex-col justify-center px-4">
+    <div className="h-full relative flex flex-col items-center justify-center px-4">
       {/* Back button */}
       <button
         type="button"
         onClick={() => router.back()}
-        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10"
+        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10 left-2"
       >
         <LeftArrowIcon/>
         <span>Orqaga</span>
