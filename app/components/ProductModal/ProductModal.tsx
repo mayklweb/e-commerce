@@ -38,7 +38,7 @@ function ProductModal({ product, onClose }: Props) {
     >
       {/* Modal */}
       <div
-        className="bg-white w-200 rounded-xl relative flex flex-col lg:flex-row gap-5 p-5"
+        className="bg-white w-200 rounded-t-xl md:rounded-xl relative flex flex-col lg:flex-row gap-5 p-5"
         onClick={(e) => e.stopPropagation()} // prevent close on modal click
       >
         {/* Close */}
