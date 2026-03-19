@@ -21,10 +21,11 @@ function ProductModal({ product, onClose }: Props) {
 
   if (!product) return null;
 
-  const firstImage = product.images?.[0];
-  const imageSrc =
-    (typeof firstImage === "string" ? firstImage : firstImage?.url) ||
-    "/placeholder.jpg";
+  const imagePath = product?.images?.[0]?.url;
+
+  const imageUrl = imagePath
+    ? `https://api.bunyodoptom.uz${imagePath}`
+    : "/placeholder.png";
 
   const qty = getQuantity(product.id);
   const liked = isFavorite(product.id);
@@ -43,7 +44,7 @@ function ProductModal({ product, onClose }: Props) {
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute z-10 top-4 right-4 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute z-10 top-1 right-1 text-gray-400 hover:text-gray-600 cursor-pointer"
         >
           <CloseIcon className="w-8 h-8" />
         </button>
@@ -51,7 +52,7 @@ function ProductModal({ product, onClose }: Props) {
         {/* Image */}
         <div className="w-full lg:w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden">
           <Image
-            src={imageSrc}
+            src={imageUrl}
             fill
             alt={product.name}
             className="object-cover"

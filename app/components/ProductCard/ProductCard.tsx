@@ -15,10 +15,9 @@ function ProductCard({ product, onClick }: Props) {
 
   const imagePath = product?.images?.[0]?.url;
 
-const imageUrl = imagePath
-  ? `https://api.bunyodoptom.uz${imagePath}`
-  : "/placeholder.png";
-  
+  const imageUrl = imagePath
+    ? `https://api.bunyodoptom.uz${imagePath}`
+    : "/placeholder.png";
 
   return (
     <div className="relative">
