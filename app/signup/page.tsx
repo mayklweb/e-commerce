@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { useSignup } from "../shared/lib/useAuth";
+import { LeftArrowIcon } from "../shared/icons";
 
 interface SignupFormValues {
   name: string;
@@ -32,26 +33,41 @@ function SignupForm() {
   const inputClass = (hasError: boolean) =>
     `w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-200
     focus:ring-2 focus:ring-primary/30 focus:border-primary
-    ${hasError
-      ? "border-red-400 bg-red-50"
-      : "border-gray-200 bg-gray-50 hover:border-gray-300"
+    ${
+      hasError
+        ? "border-red-400 bg-red-50"
+        : "border-gray-200 bg-gray-50 hover:border-gray-300"
     }`;
 
   return (
-    <div className="h-full flex items-center justify-center px-4">
+    <div className="h-full relative flex items-center justify-center px-4">
+      {/* Back button */}
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10"
+      >
+        <LeftArrowIcon />
+        <span>Orqaga</span>
+      </button>
       <div className="max-w-md w-full">
-
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-1">Ro'yxatdan o'tish</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">
+            Ro'yxatdan o'tish
+          </h1>
           <p className="text-sm text-gray-500">Yangi hisob yarating</p>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="rounded-2xl p-8 flex flex-col gap-5">
-
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="rounded-2xl p-8 flex flex-col gap-5"
+        >
           {isError && (
             <div className="flex items-center gap-2 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">
               <span>⚠️</span>
-              <span>{(error as any)?.message ?? "Ro'yxatdan o'tishda xatolik"}</span>
+              <span>
+                {(error as any)?.message ?? "Ro'yxatdan o'tishda xatolik"}
+              </span>
             </div>
           )}
 
@@ -130,9 +146,24 @@ function SignupForm() {
           >
             {isPending ? (
               <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                <svg
+                  className="animate-spin w-4 h-4"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v8z"
+                  />
                 </svg>
                 Yuklanmoqda...
               </span>
@@ -140,7 +171,6 @@ function SignupForm() {
               "Ro'yxatdan o'tish"
             )}
           </button>
-
         </form>
       </div>
     </div>

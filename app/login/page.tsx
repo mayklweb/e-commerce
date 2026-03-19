@@ -35,7 +35,7 @@ function LoginForm() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-4"
+        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10"
       >
         <LeftArrowIcon/>
         <span>Orqaga</span>
