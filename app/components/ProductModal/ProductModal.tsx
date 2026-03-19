@@ -44,7 +44,7 @@ function ProductModal({ product, onClose }: Props) {
         {/* Close */}
         <button
           onClick={onClose}
-          className="absolute z-10 top-1 right-1 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute z-10 top-2 right-2 text-gray-400 hover:text-gray-600 cursor-pointer"
         >
           <CloseIcon className="w-8 h-8" />
         </button>
