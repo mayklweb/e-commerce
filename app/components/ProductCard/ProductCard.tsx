@@ -13,6 +13,13 @@ function ProductCard({ product, onClick }: Props) {
 
   const liked = isFavorite(product.id);
 
+  const imagePath = product?.images?.[0]?.url;
+
+const imageUrl = imagePath
+  ? `https://api.bunyodoptom.uz${imagePath}`
+  : "/placeholder.png";
+  
+
   return (
     <div className="relative">
       <button
@@ -35,7 +42,7 @@ function ProductCard({ product, onClick }: Props) {
             <Image
               width={300}
               height={225}
-              src={"/product.jpg"}
+              src={imageUrl}
               alt={product.name}
               className="w-full h-full object-cover"
             />

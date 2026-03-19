@@ -41,9 +41,23 @@ function FavoriteProductsSkeleton() {
   );
 }
 
+function normalizeProducts(products: ProductsType[]): ProductsType[] {
+  return products
+    ?.filter(
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+    )
+    .map((p) => ({
+      ...p,
+      mainImage:
+        `https://api.bunyodoptom.uz${p.images[0]?.url}` &&
+        `https://api.bunyodoptom.uz${p.images[1]?.url}`,
+    }));
+}
+
 function FavoriteProducts() {
   const { data: products, isLoading, isError } = useProducts();
-  const favoriteProducts = useShuffledProducts<ProductsType>(products, 10);
+  const filtred = normalizeProducts(products)
+  const favoriteProducts = useShuffledProducts<ProductsType>(filtred, 10);
   const { selectedProduct, openModal, closeModal } = useProductModal();
 
   if (isLoading) return <FavoriteProductsSkeleton />;

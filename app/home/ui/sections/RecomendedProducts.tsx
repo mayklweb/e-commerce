@@ -41,9 +41,25 @@ function RecomendedProductsSkeleton() {
   );
 }
 
+function normalizeProducts(products: ProductsType[]): ProductsType[] {
+  return products
+    ?.filter(
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+    )
+    .map((p) => ({
+      ...p,
+      mainImage:
+        `https://api.bunyodoptom.uz${p.images[0]?.url}` &&
+        `https://api.bunyodoptom.uz${p.images[1]?.url}`,
+    }));
+}
+
+
 function RecomendedProducts() {
   const { data: products, isLoading, isError } = useProducts();
-  const recomendedProduct = useShuffledProducts<ProductsType>(products, 20);
+  const filtred = normalizeProducts(products)
+  const recomendedProduct = useShuffledProducts<ProductsType>(filtred, 20);
+
   const { selectedProduct, openModal, closeModal } = useProductModal();
 
   if (isLoading) return <RecomendedProductsSkeleton />;

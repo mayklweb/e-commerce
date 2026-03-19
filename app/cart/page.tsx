@@ -169,11 +169,7 @@ function Cart() {
                       <div className="w-full flex gap-2">
                         <div className="w-25 h-18.5 rounded-xl bg-gray-100 overflow-hidden shrink-0">
                           <Image
-                            src={
-                              typeof item.images?.[0] === "string"
-                                ? item.images?.[0]
-                                : item.images?.[0]?.url || "/product.jpg"
-                            }
+                            src={`https://api.bunyodoptom.uz${item.images[0].url}`}
                             alt={item.name}
                             width={300}
                             height={225}

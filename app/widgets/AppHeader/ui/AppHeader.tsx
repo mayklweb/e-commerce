@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useCartStore } from "@/app/store/CartStore";
-import { useUser } from "@/app/shared/lib/useAuth";
+import { useGetMe, useUser } from "@/app/shared/lib/useAuth";
 // import { useSelector } from "react-redux";
 // import { AppDispatch, RootState } from "@/app/store";
 // import { getProducts } from "@/app/store/actions/productsAction";
@@ -16,6 +16,11 @@ function AppHeader() {
   const router = useRouter();
   const [query, setQuery] = useState<string>("");
   const { data: user } = useUser();
+  const { mutate: getMe } = useGetMe();
+
+  useEffect(() => {
+    getMe()
+  }, []);
 
   // const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
   // const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
@@ -32,7 +37,7 @@ function AppHeader() {
     router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
-  const hideHeader = ["signup", "signin", "checkout"].includes(
+  const hideHeader = ["signup", "login", "checkout"].includes(
     path.split("/")[1],
   );
 
@@ -102,17 +107,23 @@ function AppHeader() {
                       {user?.name ? user.name : "Kirish"}
                     </span>
                   </Link>
-                  <Link
-                    href={"/cart"}
-                    className="relative text-xs flex flex-row items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all ease-in-out duration-300"
-                  >
-                    <span>
+                  <div className="relative">
+                    <Link
+                      href={"/cart"}
+                      className="text-xs flex items-center gap-2 bg-primary/10 px-5 py-2.5 rounded-lg hover:bg-secondary transition-all duration-300"
+                    >
                       <CartIcon className="text-primary w-6 h-6" />
-                    </span>
-                    <span className="text-[16px] text-primary font-semibold capitalize">
-                      `Savat ({cart.length})`
-                    </span>
-                  </Link>
+                      <span className="text-[16px] text-primary font-semibold capitalize">
+                        Savat
+                      </span>
+                    </Link>
+
+                    {cart.length > 0 && (
+                      <div className="absolute -top-1.5 -right-1.5 bg-primary text-white text-sm px-2 py-0.5 leading-[120%] rounded-full z-10">
+                        {cart.length}
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>

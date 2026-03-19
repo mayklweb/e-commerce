@@ -15,6 +15,19 @@ import { FilterBottomSheet } from "./desktop/FilterBottomSheet";
 import { FilterPanel } from "./shared/ui/FilterPanel";
 import Link from "next/link";
 
+function normalizeProducts(products: ProductsType[]): ProductsType[] {
+  return products
+    ?.filter(
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+    )
+    .map((p) => ({
+      ...p,
+      mainImage:
+        `https://api.bunyodoptom.uz${p.images[0]?.url}` &&
+        `https://api.bunyodoptom.uz${p.images[1]?.url}`,
+    }));
+}
+
 export default function CategoriesPage() {
   const router = useRouter();
   const { data: categories, isLoading: categoriesLoading } = useCategories();
@@ -23,6 +36,8 @@ export default function CategoriesPage() {
   const { selectedCategoryId, setSelectedCategoryId } = useCategoryStore();
 
   const [sheetOpen, setSheetOpen] = useState(false);
+
+  const products = normalizeProducts(allProducts)
 
   // Desktop: use selectedCategoryId or fall back to first category
   // const desktopCategoryId =
@@ -42,9 +57,9 @@ export default function CategoriesPage() {
     applyPending,
     resetPending,
     resetAll,
-  } = useProductFilters(allProducts,);
+  } = useProductFilters(products,);
 
-  const productsReady = !productsLoading && !!allProducts;
+  const productsReady = !productsLoading && !!products;
 
   const handleMobileClick = (category: CategoriesType) => {
     setSelectedCategoryId(category.id);
@@ -190,9 +205,9 @@ export default function CategoriesPage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-3 xl:grid-cols-4 gap-3">
-                      {filtered.map((product: ProductsType) => (
-                        <Link href={`/product/${product.id}`}>
-                        <ProductCard key={product.id} product={product} />
+                      {filtered.map((product: ProductsType, i) => (
+                        <Link key={i} href={`/product/${product.id}`}>
+                        <ProductCard product={product} />
                         </Link>
                       ))}
                     </div>
