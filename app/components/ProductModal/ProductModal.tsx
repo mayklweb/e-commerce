@@ -50,7 +50,7 @@ function ProductModal({ product, onClose }: Props) {
         </button>
 
         {/* Image */}
-        <div className="w-full lg:w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden">
+        <div className="w-full lg:w-1/2 relative aspect-4/3 rounded-2xl overflow-hidden mt-2.5">
           <Image
             src={imageUrl}
             fill
