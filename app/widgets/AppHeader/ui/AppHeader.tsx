@@ -19,7 +19,7 @@ function AppHeader() {
   const { mutate: getMe } = useGetMe();
 
   useEffect(() => {
-    getMe()
+    getMe();
   }, []);
 
   // const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
@@ -76,6 +76,12 @@ function AppHeader() {
                   </Link>
                 </div>
                 <div className="w-full flex flex-auto lg:flex-0 gap-3">
+                  <div className="text-xs flex items-center gap-2 bg-primary px-5 py-2 rounded-lg hover:bg-secondary transition-all duration-300 border border-primary/10">
+                    <CartIcon className="text-white w-6 h-6" />
+                    <span className="text-[16px] text-white font-medium capitalize">
+                      Savat
+                    </span>
+                  </div>
                   <form onSubmit={handleSubmit} className="w-full">
                     <div className="lg:w-100 flex flex-auto border border-primary/10 rounded-lg overflow-hidden focus-within:border-secondary transition-all ease-in-out duration-300">
                       <div className="flex flex-auto px-3 py-2">
