@@ -51,7 +51,7 @@ function ProductSkeleton() {
 function normalizeProducts(products: ProductsType[]): ProductsType[] {
   return products
     ?.filter(
-      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url,
     )
     .map((p) => ({
       ...p,
@@ -69,7 +69,7 @@ function Product() {
   const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const { data: products } = useProducts();
-  const filtred = normalizeProducts(products)
+  const filtred = normalizeProducts(products);
   const recomendedProduct = useShuffledProducts<ProductsType>(filtred, 20);
 
   const liked = isFavorite(id);
@@ -246,7 +246,7 @@ function Product() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {recomendedProduct.map((item) => {
                 const thumb = item.images?.length
-                  ? item.images[0].url
+                  ? `https://api.bunyodoptom.uz${item.images[0].url}`
                   : "/product.jpg";
                 const itemQty = getQuantity(item.id);
                 const itemLiked = isFavorite(item.id);
