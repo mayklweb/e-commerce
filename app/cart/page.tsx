@@ -16,6 +16,7 @@ import { useCheckout } from "../shared/lib/hooks/useCheckout";
 import { useUser } from "../shared/lib/useAuth";
 import { useMarketCheck } from "../shared/lib/hooks/useMarketCheck";
 import { useRouter } from "next/navigation";
+import { MarketRegisterModal } from "../components/MarketRegisterModal/MarketRegisterModal";
 
 type PaymentMethod = "cash" | "click";
 
@@ -72,11 +73,13 @@ function Cart() {
 
     // If no market registered, show registration modal first
     if (!hasMarket && !pendingMarketId) {
+      
       setShowMarketModal(true);
       return;
     }
-
+    
     proceedToCheckout(pendingMarketId ?? myMarket?.id ?? null);
+    console.log(true);
   }
 
   function handleMarketRegistered(marketId: number) {
@@ -462,6 +465,7 @@ function Cart() {
           )}
         </div>
       </div>
+      <MarketRegisterModal onSuccess={handleMarketRegistered} onClose={() => setIsModalOpen(false)} />
     </section>
   );
 }
