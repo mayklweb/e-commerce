@@ -48,6 +48,19 @@ function ProductSkeleton() {
   );
 }
 
+function normalizeProducts(products: ProductsType[]): ProductsType[] {
+  return products
+    ?.filter(
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+    )
+    .map((p) => ({
+      ...p,
+      mainImage:
+        `https://api.bunyodoptom.uz${p.images[0]?.url}` &&
+        `https://api.bunyodoptom.uz${p.images[1]?.url}`,
+    }));
+}
+
 function Product() {
   const params = useParams();
   const id = Number(params?.id);
@@ -56,7 +69,8 @@ function Product() {
   const { toggleFavorite, isFavorite } = useFavoritesStore();
 
   const { data: products } = useProducts();
-  const recomendedProduct = useShuffledProducts<ProductsType>(products, 20);
+  const filtred = normalizeProducts(products)
+  const recomendedProduct = useShuffledProducts<ProductsType>(filtred, 20);
 
   const liked = isFavorite(id);
 
@@ -201,14 +215,14 @@ function Product() {
                           onClick={() =>
                             qty === 1 ? remove(product.id) : dec(product.id)
                           }
-                          className="w-11 h-11 rounded-xl bg-white text-black flex items-center justify-center shadow-sm"
+                          className="w-11 h-11 rounded-sm bg-white text-black flex items-center justify-center shadow-sm"
                         >
                           <MinusIcon />
                         </button>
                         <span className="text-xl font-bold">{qty}</span>
                         <button
                           onClick={() => inc(product.id)}
-                          className="w-11 h-11 rounded-xl bg-primary text-white flex items-center justify-center shadow-sm"
+                          className="w-11 h-11 rounded-sm bg-primary text-white flex items-center justify-center shadow-sm"
                         >
                           <PlusIcon />
                         </button>
@@ -229,7 +243,7 @@ function Product() {
             <h2 className="text-xl lg:text-2xl font-semibold mb-5">
               Tavsiya etilgan mahsulotlar
             </h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {recomendedProduct.map((item) => {
                 const thumb = item.images?.length
                   ? item.images[0].url
@@ -244,7 +258,7 @@ function Product() {
                   >
                     <Link href={`/product/${item.id}`}>
                       {/* Thumbnail */}
-                      <div className="block relative aspect-square bg-gray-50">
+                      <div className="block relative aspect-4/3 bg-gray-50">
                         <Image
                           src={thumb}
                           alt={item.name}
@@ -268,7 +282,7 @@ function Product() {
                             className="shrink-0 p-2 rounded-xl bg-accent"
                           >
                             <FavoriteIcon
-                              className={`w-4 h-4 transition-colors ${
+                              className={`w-5 h-5 transition-colors ${
                                 itemLiked
                                   ? "fill-error text-error"
                                   : "text-black"
