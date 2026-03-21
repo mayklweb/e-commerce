@@ -2,6 +2,7 @@ import { FavoriteIcon } from "@/app/shared/icons";
 import { useFavoritesStore } from "@/app/store/favoritesStore";
 import { ProductsType } from "@/app/types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   product: ProductsType;
@@ -31,10 +32,11 @@ function ProductCard({ product, onClick }: Props) {
           }`}
         />
       </button>
-      <div
+
+      <Link
+        href={`/product/${product.id}`}
         onClick={onClick}
-        key={product.id}
-        className="flex flex-col items-start gap-5 border-0 shadow-none cursor-pointer"
+        className="flex flex-col items-start gap-5 border-0 shadow-none"
       >
         <div className="w-full relative">
           <div className="rounded-xl overflow-hidden mb-2.5">
@@ -48,16 +50,15 @@ function ProductCard({ product, onClick }: Props) {
           </div>
 
           <div className="flex flex-col items-start gap-0.5 w-full">
-            <h2 className="w-full font-semibold text-black text-base tracking-tight leading-[100%] truncate ">
+            <h2 className="w-full font-semibold text-black text-base tracking-tight leading-[100%] truncate">
               {product.name}
             </h2>
-
             <p className="font-semibold text-[#000000cc] text-base tracking-tight">
               {product.price?.toLocaleString()} so'm
             </p>
           </div>
         </div>
-      </div>
+      </Link>
     </div>
   );
 }

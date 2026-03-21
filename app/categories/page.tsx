@@ -18,7 +18,7 @@ import Link from "next/link";
 function normalizeProducts(products: ProductsType[]): ProductsType[] {
   return products
     ?.filter(
-      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url
+      (p) => Array.isArray(p.images) && p.images.length > 0 && p.images[0]?.url,
     )
     .map((p) => ({
       ...p,
@@ -37,7 +37,7 @@ export default function CategoriesPage() {
 
   const [sheetOpen, setSheetOpen] = useState(false);
 
-  const products = normalizeProducts(allProducts)
+  const products = normalizeProducts(allProducts);
 
   // Desktop: use selectedCategoryId or fall back to first category
   // const desktopCategoryId =
@@ -57,7 +57,7 @@ export default function CategoriesPage() {
     applyPending,
     resetPending,
     resetAll,
-  } = useProductFilters(products,);
+  } = useProductFilters(products);
 
   const productsReady = !productsLoading && !!products;
 
@@ -131,8 +131,6 @@ export default function CategoriesPage() {
       <section className="hidden lg:block">
         <div className="container">
           <div className="flex h-full overflow-hidden mt-24">
-
-
             {/* Main area */}
             <div className="flex flex-col flex-1 overflow-hidden pl-5">
               {/* Header */}
@@ -141,9 +139,9 @@ export default function CategoriesPage() {
                   {/* {categoriesLoading ? (
                     <div className="h-5 w-32 bg-gray-100 animate-pulse rounded-lg" />
                   ) : ( */}
-                    <h1 className="text-lg font-bold text-gray-900 truncate">
-                      { "Mahsulotlar"}
-                    </h1>
+                  <h1 className="text-lg font-bold text-gray-900 truncate">
+                    {"Mahsulotlar"}
+                  </h1>
                   {/* )} */}
                   {productsReady && (
                     <p className="text-xs text-gray-400 mt-0.5">
@@ -206,9 +204,9 @@ export default function CategoriesPage() {
                   ) : (
                     <div className="grid grid-cols-3 xl:grid-cols-4 gap-3">
                       {filtered.map((product: ProductsType, i) => (
-                        <Link key={i} href={`/product/${product.id}`}>
-                        <ProductCard product={product} />
-                        </Link>
+                        // <Link key={i} href={`/product/${product.id}`}>
+                          <ProductCard product={product} />
+                        // </Link>
                       ))}
                     </div>
                   )}
