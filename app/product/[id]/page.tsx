@@ -72,7 +72,9 @@ function Product() {
   }
 
   const images = product.images?.length
-    ? product.images.map((img: any) => img.url)
+    ? product.images.map((img: any) =>
+        img.url ? `https://api.bunyodoptom.uz${img.url}` : "/product.jpg",
+      )
     : ["/product.jpg"];
 
   const qty = getQuantity(product.id);
@@ -107,7 +109,7 @@ function Product() {
                 {/* Main image */}
                 <div className="w-full aspect-4/3 rounded-2xl overflow-hidden bg-gray-100 relative">
                   <Image
-                    src={images[activeImage]}
+                    src={`${images[activeImage]}`}
                     alt={product.name}
                     fill
                     className="object-cover transition-opacity duration-300"
@@ -123,9 +125,7 @@ function Product() {
                         key={i}
                         onClick={() => setActiveImage(i)}
                         className={`shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-colors ${
-                          activeImage === i
-                            ? "border-primary"
-                            : "border-transparent"
+                          activeImage === i ? "border-primary" : "border-white"
                         }`}
                       >
                         <Image
