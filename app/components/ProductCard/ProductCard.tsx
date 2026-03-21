@@ -20,6 +20,30 @@ function ProductCard({ product, onClick }: Props) {
     ? `https://api.bunyodoptom.uz${imagePath}`
     : "/placeholder.png";
 
+  const cardClass = "flex flex-col items-start gap-5 border-0 shadow-none";
+
+  const content = (
+    <div className="w-full relative">
+      <div className="rounded-xl overflow-hidden mb-2.5">
+        <Image
+          width={300}
+          height={225}
+          src={imageUrl}
+          alt={product.name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="flex flex-col items-start gap-0.5 w-full">
+        <h2 className="w-full font-semibold text-black text-base tracking-tight leading-[100%] truncate">
+          {product.name}
+        </h2>
+        <p className="font-semibold text-[#000000cc] text-base tracking-tight">
+          {product.price?.toLocaleString()} so'm
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="relative">
       <button
@@ -33,32 +57,15 @@ function ProductCard({ product, onClick }: Props) {
         />
       </button>
 
-      <Link
-        href={`/product/${product.id}`}
-        onClick={onClick}
-        className="flex flex-col items-start gap-5 border-0 shadow-none"
-      >
-        <div className="w-full relative">
-          <div className="rounded-xl overflow-hidden mb-2.5">
-            <Image
-              width={300}
-              height={225}
-              src={imageUrl}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-
-          <div className="flex flex-col items-start gap-0.5 w-full">
-            <h2 className="w-full font-semibold text-black text-base tracking-tight leading-[100%] truncate">
-              {product.name}
-            </h2>
-            <p className="font-semibold text-[#000000cc] text-base tracking-tight">
-              {product.price?.toLocaleString()} so'm
-            </p>
-          </div>
+      {onClick ? (
+        <div onClick={onClick} className={`${cardClass} cursor-pointer`}>
+          {content}
         </div>
-      </Link>
+      ) : (
+        <Link href={`/product/${product.id}`} className={cardClass}>
+          {content}
+        </Link>
+      )}
     </div>
   );
 }
