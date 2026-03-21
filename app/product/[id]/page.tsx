@@ -215,14 +215,14 @@ function Product() {
                           onClick={() =>
                             qty === 1 ? remove(product.id) : dec(product.id)
                           }
-                          className="w-11 h-11 rounded-sm bg-white text-black flex items-center justify-center shadow-sm"
+                          className="w-11 h-11 rounded-lg bg-white text-black flex items-center justify-center shadow-sm"
                         >
                           <MinusIcon />
                         </button>
                         <span className="text-xl font-bold">{qty}</span>
                         <button
                           onClick={() => inc(product.id)}
-                          className="w-11 h-11 rounded-sm bg-primary text-white flex items-center justify-center shadow-sm"
+                          className="w-11 h-11 rounded-lg bg-primary text-white flex items-center justify-center shadow-sm"
                         >
                           <PlusIcon />
                         </button>
@@ -304,7 +304,7 @@ function Product() {
                                 onClick={() =>
                                   itemQty === 1 ? remove(item.id) : dec(item.id)
                                 }
-                                className="w-7 h-7 rounded-xl bg-white flex items-center justify-center shadow-sm"
+                                className="w-7 h-7 rounded-md bg-white flex items-center justify-center shadow-sm"
                               >
                                 <MinusIcon />
                               </button>
@@ -313,7 +313,7 @@ function Product() {
                               </span>
                               <button
                                 onClick={(e) => { e.preventDefault(); e.stopPropagation(); inc(item.id); }}
-                                className="w-7 h-7 rounded-xl bg-primary text-white flex items-center justify-center shadow-sm"
+                                className="w-7 h-7 rounded-md bg-primary text-white flex items-center justify-center shadow-sm"
                               >
                                 <PlusIcon />
                               </button>
