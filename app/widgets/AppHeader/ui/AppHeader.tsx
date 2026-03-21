@@ -2,15 +2,106 @@
 import Link from "next/link.js";
 import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useCartStore } from "@/app/store/CartStore";
 import { useGetMe, useUser } from "@/app/shared/lib/useAuth";
-// import { useSelector } from "react-redux";
-// import { AppDispatch, RootState } from "@/app/store";
-// import { getProducts } from "@/app/store/actions/productsAction";
-// import { latinToCyrillic } from "@/app/utils/helpers";
 
+// --- Katalog data ---
+const CATEGORIES = [
+  { label: "Elektronika", emoji: "📱", count: 1240 },
+  { label: "Kiyim-kechak", emoji: "👗", count: 875 },
+  { label: "Oziq-ovqat", emoji: "🛒", count: 530 },
+  { label: "Uy-ro'zg'or", emoji: "🛋️", count: 412 },
+  { label: "Sport", emoji: "⚽", count: 318 },
+  { label: "Go'zallik", emoji: "💄", count: 290 },
+  { label: "O'yinchoqlar", emoji: "🧸", count: 204 },
+  { label: "Avtomobil", emoji: "🚗", count: 176 },
+];
+
+// --- Katalog Dropdown ---
+function KatalogDropdown() {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
+
+  useEffect(() => {
+    const fn = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(false); };
+    window.addEventListener("keydown", fn);
+    return () => window.removeEventListener("keydown", fn);
+  }, []);
+
+  return (
+    <div ref={containerRef} className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className={`text-[16px] text-white font-medium capitalize flex items-center gap-2 px-5 py-2 rounded-lg transition-all duration-300 border ${
+          open
+            ? "bg-secondary border-secondary/20"
+            : "bg-primary hover:bg-secondary border-primary/10"
+        }`}
+      >
+        <CartIcon className="text-white w-6 h-6" />
+        Katalog
+        <svg
+          className={`w-4 h-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {open && (
+        <div
+          className="absolute left-0 top-[calc(100%+8px)] w-72 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50"
+          style={{ animation: "katalogDrop 0.2s cubic-bezier(.16,1,.3,1)" }}
+        >
+          <div className="max-h-80 overflow-y-auto py-2" style={{ scrollbarWidth: "none" }}>
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.label}
+                className="group w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
+              >
+                <span className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center text-base shrink-0 transition-colors">
+                  {cat.emoji}
+                </span>
+                <span className="flex-1 text-left">
+                  <span className="block text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">
+                    {cat.label}
+                  </span>
+                  <span className="block text-[11px] text-gray-400">
+                    {cat.count.toLocaleString()} ta mahsulot
+                  </span>
+                </span>
+                <svg className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes katalogDrop {
+          from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+      `}</style>
+    </div>
+  );
+}
+
+// --- AppHeader ---
 function AppHeader() {
   const path = usePathname();
   const router = useRouter();
@@ -22,18 +113,9 @@ function AppHeader() {
     getMe();
   }, []);
 
-  // const { products } = useSelector((state: RootState) => state.products); // for categories and brands in filter drawer
-  // const { user } = useSelector((state: RootState) => state.auth); // for categories and brands in filter drawer
-
-  // const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setQuery(latinToCyrillic(e.target.value));
-  // };
-
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!query.trim()) return;
-
     router.push(`/products?search=${encodeURIComponent(query)}`);
   };
 
@@ -41,28 +123,24 @@ function AppHeader() {
     path.split("/")[1],
   );
 
-  // const filteredProducts = Array.isArray(products)
-  //   ? products.filter((p) =>
-  //       latinToCyrillic(p.name).includes(latinToCyrillic(query)),
-  //     )
-  //   : [];
-
   const { cart } = useCartStore();
+
   return (
     <header>
       {!hideHeader && (
-        <div className=" w-full bg-white shadow-sm fixed z-10">
+        <div className="w-full bg-white shadow-sm fixed z-10">
           <div className="container">
             <div className="relative">
               <div className="w-full flex gap-4 items-center justify-between py-4">
-                <div className="">
+                {/* Logo */}
+                <div>
                   <Link href={"/"} className="w-40 h-12 hidden lg:block">
                     <Image
                       src="/logo.png"
                       width={200}
                       height={50}
                       alt="Logo"
-                      className="w-44 h-10 object-cover "
+                      className="w-44 h-10 object-cover"
                     />
                   </Link>
                   <Link href={"/"} className="w-10 h-10 block lg:hidden">
@@ -75,16 +153,16 @@ function AppHeader() {
                     />
                   </Link>
                 </div>
+
+                {/* Katalog + Search */}
                 <div className="w-full flex flex-auto lg:flex-0 gap-3">
-                  <button className="text-xs text-[16px] text-white font-medium capitalize flex items-center gap-2 bg-primary px-5 py-2 rounded-lg hover:bg-secondary transition-all duration-300 border border-primary/10">
-                    <CartIcon className="text-white w-6 h-6" />
-                      Katalog
-                  </button>
+                  <KatalogDropdown />
                   <form onSubmit={handleSubmit} className="w-full">
                     <div className="lg:w-100 flex flex-auto border border-primary/10 rounded-lg overflow-hidden focus-within:border-secondary transition-all ease-in-out duration-300">
                       <div className="flex flex-auto px-3 py-2">
                         <input
-                          // onChange={handleChange}
+                          value={query}
+                          onChange={(e) => setQuery(e.target.value)}
                           placeholder="Shirinlik..."
                           className="outline-none w-full"
                           type="text"
@@ -94,13 +172,13 @@ function AppHeader() {
                         className="text-sm text-primary font-semibold px-2.5 bg-primary/10 rounded-md hover:bg-secondary transition-all ease-in-out duration-300"
                         type="submit"
                       >
-                        <span>
-                          <SearchIcon />
-                        </span>
+                        <SearchIcon />
                       </button>
                     </div>
                   </form>
                 </div>
+
+                {/* User + Cart */}
                 <div className="hidden lg:flex items-center gap-4">
                   <Link
                     href={"/profile"}
@@ -121,7 +199,6 @@ function AppHeader() {
                         Savat
                       </span>
                     </Link>
-
                     {cart.length > 0 && (
                       <div className="absolute -top-1.5 -right-1.5 bg-primary text-white text-sm px-2 py-0.5 leading-[120%] rounded-full z-10">
                         {cart.length}
@@ -132,35 +209,6 @@ function AppHeader() {
               </div>
             </div>
           </div>
-          {/* {query && (
-            <div className="bg-white py-4 pb-4 absolute max-w-100 w-full h-[60vh] overflow-y-scroll left-0 lg:left-1/2 lg:transform lg:-translate-x-1/2 top-18 z-10 ">
-              <div className="container">
-                <div className="flex flex-col gap-2">
-                  {filteredProducts.map((p) => (
-                    <Link
-                      href={`/product/${p.id}`}
-                      className="flex gap-4 border-b pb-2"
-                    >
-                      <div className="w-30 h-22 rounded-xl overflow-hidden shrink-0">
-                        <Image
-                          src="/product.webp"
-                          alt="Logo"
-                          width={120}
-                          height={100}
-                        />
-                      </div>
-                      <div>
-                        <h3 className="text font-semibold text-ellipsis">
-                          {p.name}
-                        </h3>
-                        <p className="text-base text-gray-500">{p.price} USZ</p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )} */}
         </div>
       )}
     </header>
