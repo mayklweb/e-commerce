@@ -191,7 +191,7 @@ function Product() {
                   <div className="mt-2 flex gap-4">
                     <button
                       onClick={() => toggleFavorite(product)}
-                      className="bg-accent p-3 rounded-xl cursor-pointer"
+                      className="bg-accent p-4 rounded-xl cursor-pointer"
                     >
                       <FavoriteIcon
                         className={`w-6 h-6 transition-colors ${
@@ -210,7 +210,7 @@ function Product() {
                           : "Savatga qo'shish"}
                       </button>
                     ) : (
-                      <div className="flex items-center justify-between bg-primary/10 rounded-xl p-2">
+                      <div className="w-full flex items-center justify-between bg-primary/10 rounded-xl p-2">
                         <button
                           onClick={() =>
                             qty === 1 ? remove(product.id) : dec(product.id)
@@ -312,7 +312,7 @@ function Product() {
                                 {itemQty}
                               </span>
                               <button
-                                onClick={() => inc(item.id)}
+                                onClick={(e) => { e.preventDefault(); e.stopPropagation(); inc(item.id); }}
                                 className="w-7 h-7 rounded-xl bg-primary text-white flex items-center justify-center shadow-sm"
                               >
                                 <PlusIcon />
