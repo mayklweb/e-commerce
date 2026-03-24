@@ -40,11 +40,12 @@ function Cart() {
     null,
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
-  const [isModalOpen, setIsModalOpen] = useState(false); // ✅ mobile modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const route = useRouter();
 
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
+  // ✅ Fix 1: showMarketModal now actually controls MarketRegisterModal visibility
   const [showMarketModal, setShowMarketModal] = useState(false);
   const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
@@ -55,7 +56,6 @@ function Cart() {
     }
   }, [addresses]);
 
-  // ✅ lock body scroll when modal is open
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
@@ -68,18 +68,14 @@ function Cart() {
   }, [isModalOpen]);
 
   function handleCheckout() {
-    // If still loading, wait
     if (isLoading) return;
 
-    // If no market registered, show registration modal first
     if (!hasMarket && !pendingMarketId) {
-      
       setShowMarketModal(true);
       return;
     }
-    
+
     proceedToCheckout(pendingMarketId ?? myMarket?.id ?? null);
-    console.log(true);
   }
 
   function handleMarketRegistered(marketId: number) {
@@ -107,7 +103,9 @@ function Cart() {
     setIsModalOpen(false);
   }
 
-  const canCheckout = selectedItems().length > 0 && !isPending;
+  // ✅ Fix 2: canCheckout now also requires an address to be selected
+  const canCheckout =
+    selectedItems().length > 0 && !!selectedAddressId && !isPending;
 
   return (
     <section>
@@ -117,6 +115,8 @@ function Cart() {
           <div className="hidden lg:block mb-5">
             <h1 className="text-2xl font-semibold">Savat</h1>
           </div>
+
+         
 
           {cart.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">
@@ -243,6 +243,28 @@ function Cart() {
 
               {/* ── Desktop sidebar ── */}
               <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
+                {/* ✅ User info in sidebar */}
+                {user && (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <span className="text-primary font-bold text-sm">
+                          {user.name?.charAt(0)?.toUpperCase() ?? "U"}
+                        </span>
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-semibold text-gray-800 truncate">
+                          {user.name}
+                        </span>
+                        <span className="text-xs text-gray-400 truncate">
+                          {user.phone ?? ""}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-gray-100" />
+                  </>
+                )}
+
                 <div className="flex items-center justify-between text-sm text-gray-500">
                   <span>Tanlangan mahsulotlar</span>
                   <span>{totalCount()} dona</span>
@@ -333,7 +355,6 @@ function Cart() {
                   </p>
                 </div>
 
-                {/* ✅ opens modal instead of direct checkout */}
                 <button
                   disabled={!selectedItems().length}
                   onClick={() => setIsModalOpen(true)}
@@ -346,22 +367,37 @@ function Cart() {
               {/* ── Mobile checkout modal ── */}
               {isModalOpen && (
                 <>
-                  {/* Backdrop */}
                   <div
                     className="fixed inset-0 bg-black/40 z-40 lg:hidden"
                     onClick={() => setIsModalOpen(false)}
                   />
 
-                  {/* Bottom sheet */}
                   <div className="fixed left-0 bottom-0 w-full bg-white rounded-t-2xl z-50 p-5 flex flex-col gap-4 lg:hidden shadow-2xl">
-                    {/* Handle bar */}
                     <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto -mt-1" />
 
                     <h2 className="text-lg font-semibold text-gray-800">
                       Buyurtmani tasdiqlash
                     </h2>
 
-                    {/* Order summary */}
+                    {/* ✅ User info in mobile modal */}
+                    {user && (
+                      <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
+                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <span className="text-primary font-bold text-sm">
+                            {user.name?.charAt(0)?.toUpperCase() ?? "U"}
+                          </span>
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-sm font-semibold text-gray-800 truncate">
+                            {user.name}
+                          </span>
+                          <span className="text-xs text-gray-400 truncate">
+                            {user.phone ?? ""}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex items-center justify-between text-sm text-gray-500 bg-gray-50 px-4 py-3 rounded-xl">
                       <span>Mahsulotlar</span>
                       <span className="font-semibold text-gray-800">
@@ -369,7 +405,6 @@ function Cart() {
                       </span>
                     </div>
 
-                    {/* Address */}
                     <div className="flex flex-col gap-1">
                       <span className="text-sm text-gray-500">Manzil</span>
                       <div className="flex flex-col gap-1">
@@ -399,7 +434,6 @@ function Cart() {
                       </div>
                     </div>
 
-                    {/* Payment method */}
                     <div className="flex flex-col gap-2">
                       <span className="text-sm text-gray-500">
                         To'lov usuli
@@ -426,7 +460,6 @@ function Cart() {
 
                     <div className="w-full h-px bg-gray-100" />
 
-                    {/* Total */}
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">Jami summa</span>
                       <span className="text-xl font-bold text-gray-900">
@@ -434,7 +467,6 @@ function Cart() {
                       </span>
                     </div>
 
-                    {/* Confirm button */}
                     <button
                       onClick={handleCheckout}
                       disabled={!canCheckout}
@@ -451,7 +483,6 @@ function Cart() {
                       </p>
                     )}
 
-                    {/* Cancel */}
                     <button
                       onClick={() => setIsModalOpen(false)}
                       className="w-full py-3 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium cursor-pointer"
@@ -465,7 +496,13 @@ function Cart() {
           )}
         </div>
       </div>
-      <MarketRegisterModal onSuccess={handleMarketRegistered} onClose={() => setIsModalOpen(false)} />
+
+      {showMarketModal && (
+        <MarketRegisterModal
+          onSuccess={handleMarketRegistered}
+          onClose={() => setShowMarketModal(false)}
+        />
+      )}
     </section>
   );
 }
