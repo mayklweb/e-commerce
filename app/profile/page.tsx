@@ -40,9 +40,7 @@ function Account() {
   }, []);
 
   useEffect(() => {
-    // in useUser / queryClient initial state
-    const token =
-      typeof window !== "undefined" ? localStorage.getItem("token") : null;
+    const token = localStorage.getItem("token");
 
     // Only redirect if no token AND no user
     if (!token && !user) {
