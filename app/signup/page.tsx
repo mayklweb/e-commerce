@@ -135,7 +135,7 @@ function SignupForm() {
               <p className="text-xs text-red-500">{errors.password.message}</p>
             )}
           </div>
-
+          
           {/* Submit */}
           <button
             type="submit"
@@ -171,6 +171,18 @@ function SignupForm() {
               "Ro'yxatdan o'tish"
             )}
           </button>
+
+          {/* ✅ Login route */}
+          <p className="text-center text-sm text-gray-500">
+            Hisobingiz bormi?{" "}
+            <button
+              type="button"
+              onClick={() => router.push("/login")}
+              className="text-primary font-semibold hover:underline"
+            >
+              Kirish
+            </button>
+          </p>
         </form>
       </div>
     </div>

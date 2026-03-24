@@ -81,11 +81,7 @@ export function PersonalInfo() {
   };
 
   // ✅ logout handler
-  const handleLogout = () => {
-    logout(undefined, {
-      onSuccess: () => router.replace("/login"),
-    });
-  };
+  const handleLogout = () => logout();
 
   return (
     <div className="w-full h-full">

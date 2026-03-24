@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "./authApi";
 import { queryKeys } from "./query-keys";
 import type { UserType } from "../../types";
+import { useRouter } from "next/navigation";
 
 // ─── READ: replaces isAuth, user, initialized ───────────────────────────────
 
@@ -62,16 +63,17 @@ export function useLogin() {
 }
 
 // ─── LOGOUT: replaces logout ─────────────────────────────────────────────────
-
 export function useLogout() {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
-    // mutationFn: authApi.logout,
+    mutationFn: async () => {}, // ✅ required — no API call needed
     onSuccess: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      queryClient.setQueryData(queryKeys.user, null); // wipe user from cache
+      queryClient.setQueryData(queryKeys.user, null);
+      router.replace("/login"); // ✅ moved here
     },
   });
 }
