@@ -67,7 +67,7 @@ export function useLogout() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: authApi.logout,
+    // mutationFn: authApi.logout,
     onSuccess: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
