@@ -20,7 +20,6 @@ export function PersonalInfo() {
   const { mutate: updateMe, isPending: saving } = useUpdateProfile();
   const { data: user } = useUser();
   const { mutate: logout, isPending: loggingOut } = useLogout(); // ✅
-  const router = useRouter(); // ✅
 
   const [fields, setFields] = useState<ProfileFields>(INITIAL_FIELDS);
   const [draft, setDraft] = useState<ProfileFields>(INITIAL_FIELDS);
@@ -80,7 +79,6 @@ export function PersonalInfo() {
     setEditingField(null);
   };
 
-  // ✅ logout handler
   const handleLogout = () => logout();
 
   return (
@@ -114,7 +112,7 @@ export function PersonalInfo() {
         <button
           onClick={handleLogout}
           disabled={loggingOut}
-          className="mt-2 w-full py-3 rounded-xl border border-red-200 text-red-500 text-sm font-medium
+          className="hidden lg:block mt-2 w-full py-3 rounded-xl border border-red-200 text-red-500 text-sm font-medium
             hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
         >
           {loggingOut ? "Chiqilmoqda..." : "Hisobdan chiqish"}

@@ -13,7 +13,7 @@ import { NAV_ITEMS } from "./model/constants/constants";
 import { Sidebar } from "./ui/components/Sidebar/Sidebar";
 import { BottomSheet } from "./ui/components/bottomsheet";
 
-import { useGetMe, useUser } from "../shared/lib/useAuth";
+import { useGetMe, useLogout, useUser } from "../shared/lib/useAuth";
 
 const SECTION_MAP: Record<NavKey, React.ReactNode> = {
   personal: <PersonalInfo />,
@@ -32,9 +32,10 @@ function Account() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const { mutate: getMe } = useGetMe();
+  const { mutate: logout, isPending: loggingOut } = useLogout(); // ✅
 
   useEffect(() => {
-    getMe()
+    getMe();
   }, []);
 
   useEffect(() => {
@@ -69,6 +70,9 @@ function Account() {
     setTimeout(() => setSheetNav(null), 400);
   };
 
+  // ✅ logout handler
+  const handleLogout = () => logout();
+
   const sheetTitle = sheetNav
     ? (NAV_ITEMS.find((n) => n.key === sheetNav)?.label ?? "")
     : "";
@@ -79,9 +83,20 @@ function Account() {
   return (
     <section>
       <div className="container">
-        <div className="w-full flex gap-5 mt-24">
-          <Sidebar activeNav={activeNav} onNavClick={handleNavClick} />
-          {!isMobile && <div className="w-5/7">{SECTION_MAP[activeNav]}</div>}
+        <div className="w-full h-full flex flex-col gap-5 mt-24">
+          <div className="w-full flex gap-5">
+            <Sidebar activeNav={activeNav} onNavClick={handleNavClick} />
+
+            {!isMobile && <div className="w-5/7">{SECTION_MAP[activeNav]}</div>}
+          </div>
+          <button
+            onClick={handleLogout}
+            disabled={loggingOut}
+            className=" lg:hidden mt-2 w-full py-3 rounded-xl border border-red-200 text-red-500 text-sm font-medium
+            hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            {loggingOut ? "Chiqilmoqda..." : "Hisobdan chiqish"}
+          </button>
         </div>
       </div>
 
