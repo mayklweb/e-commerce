@@ -7,27 +7,34 @@ import {
 import { FieldKey, ProfileFields } from "@/app/profile/model/types/types";
 import { useState, useRef, useEffect } from "react";
 import { ProfileField } from "../profileField/ProfileField";
-import { useGetMe, useUpdateProfile, useUser } from "@/app/shared/lib/useAuth";
+import {
+  useGetMe,
+  useUpdateProfile,
+  useUser,
+  useLogout,
+} from "@/app/shared/lib/useAuth"; // ✅ import useLogout
+import { useRouter } from "next/navigation"; // ✅ import router
 
 export function PersonalInfo() {
   const { mutate: getMe } = useGetMe();
   const { mutate: updateMe, isPending: saving } = useUpdateProfile();
   const { data: user } = useUser();
+  const { mutate: logout, isPending: loggingOut } = useLogout(); // ✅
+  const router = useRouter(); // ✅
 
   const [fields, setFields] = useState<ProfileFields>(INITIAL_FIELDS);
   const [draft, setDraft] = useState<ProfileFields>(INITIAL_FIELDS);
   const [editingField, setEditingField] = useState<FieldKey | null>(null);
 
-  // prevent server data from overwriting local state after a save
   const initializedRef = useRef(false);
-
-  const inputRefs = useRef<Partial<Record<FieldKey, HTMLInputElement | null>>>({});
+  const inputRefs = useRef<Partial<Record<FieldKey, HTMLInputElement | null>>>(
+    {},
+  );
 
   useEffect(() => {
     getMe();
   }, []);
 
-  // only run once on first load — not on every mutation-triggered cache update
   useEffect(() => {
     if (user && !initializedRef.current) {
       initializedRef.current = true;
@@ -46,9 +53,7 @@ export function PersonalInfo() {
     if (editingField) inputRefs.current[editingField]?.focus();
   }, [editingField]);
 
-  const handleToggle = (key: FieldKey) => {
-    setEditingField(key);
-  };
+  const handleToggle = (key: FieldKey) => setEditingField(key);
 
   const handleChange = (key: FieldKey, value: string) =>
     setDraft((prev) => ({ ...prev, [key]: value }));
@@ -62,21 +67,24 @@ export function PersonalInfo() {
       phone: key === "phone" ? value : draft.phone,
     };
 
-    updateMe(
-      payload,
-      {
-        onSuccess: () => {
-          // commit draft to saved fields
-          setFields((prev) => ({ ...prev, [key]: value }));
-          setEditingField(null);
-        },
-      }
-    );
+    updateMe(payload, {
+      onSuccess: () => {
+        setFields((prev) => ({ ...prev, [key]: value }));
+        setEditingField(null);
+      },
+    });
   };
 
   const handleCancel = (key: FieldKey) => {
     setDraft((prev) => ({ ...prev, [key]: fields[key] }));
     setEditingField(null);
+  };
+
+  // ✅ logout handler
+  const handleLogout = () => {
+    logout(undefined, {
+      onSuccess: () => router.replace("/login"),
+    });
   };
 
   return (
@@ -90,7 +98,9 @@ export function PersonalInfo() {
           <ProfileField
             key={key}
             label={label}
-            value={editingField === key ? (draft[key] ?? "") : (fields[key] ?? "")}
+            value={
+              editingField === key ? (draft[key] ?? "") : (fields[key] ?? "")
+            }
             editing={editingField === key}
             disabled={disabled}
             saving={saving && editingField === key}
@@ -103,6 +113,16 @@ export function PersonalInfo() {
             }}
           />
         ))}
+
+        {/* ✅ Logout button */}
+        <button
+          onClick={handleLogout}
+          disabled={loggingOut}
+          className="mt-2 w-full py-3 rounded-xl border border-red-200 text-red-500 text-sm font-medium
+            hover:bg-red-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+        >
+          {loggingOut ? "Chiqilmoqda..." : "Hisobdan chiqish"}
+        </button>
       </div>
     </div>
   );

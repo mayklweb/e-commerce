@@ -155,6 +155,18 @@ function LoginForm() {
               "Kirish"
             )}
           </button>
+
+          {/* ✅ Signup route */}
+          <p className="text-center text-sm text-gray-500">
+            Hisobingiz yo'qmi?{" "}
+            <button
+              type="button"
+              onClick={() => router.push("/signup")}
+              className="text-primary font-semibold hover:underline"
+            >
+              Ro'yxatdan o'tish
+            </button>
+          </p>
         </form>
       </div>
     </div>
