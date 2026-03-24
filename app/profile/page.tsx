@@ -14,6 +14,7 @@ import { Sidebar } from "./ui/components/Sidebar/Sidebar";
 import { BottomSheet } from "./ui/components/bottomsheet";
 
 import { useGetMe, useLogout, useUser } from "../shared/lib/useAuth";
+import { useRequireAuth } from "../shared/lib/hooks/useRequireAuth";
 
 const SECTION_MAP: Record<NavKey, React.ReactNode> = {
   personal: <PersonalInfo />,
@@ -25,7 +26,6 @@ const SECTION_MAP: Record<NavKey, React.ReactNode> = {
 
 function Account() {
   const router = useRouter();
-  const { data: user, isLoading } = useUser();
 
   const [activeNav, setActiveNav] = useState<NavKey>("personal");
   const [sheetNav, setSheetNav] = useState<NavKey | null>(null);
@@ -33,6 +33,7 @@ function Account() {
   const [isMobile, setIsMobile] = useState(false);
   const { mutate: getMe } = useGetMe();
   const { mutate: logout, isPending: loggingOut } = useLogout(); // ✅
+  const { user, isLoading } = useRequireAuth();
 
   useEffect(() => {
     getMe();
