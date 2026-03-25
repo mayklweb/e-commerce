@@ -13,7 +13,7 @@ import {
 import { useEffect, useState } from "react";
 import { useAddresses } from "../shared/lib/hooks/useAddresses";
 import { useCheckout } from "../shared/lib/hooks/useCheckout";
-import { useUser } from "../shared/lib/useAuth";
+import { useGetMe, useUser } from "../shared/lib/useAuth";
 import { useMarketCheck } from "../shared/lib/hooks/useMarketCheck";
 import { useRouter } from "next/navigation";
 import { MarketRegisterModal } from "../components/MarketRegisterModal/MarketRegisterModal";
@@ -35,6 +35,8 @@ function Cart() {
   } = useCartStore();
 
   const { data: user } = useUser();
+  const { mutate: getMe } = useGetMe();
+
   const { data: addresses } = useAddresses();
   const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
     null,
@@ -49,6 +51,7 @@ function Cart() {
   const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
   useEffect(() => {
+    getMe()
     if (addresses && !selectedAddressId) {
       const defaultAddr = addresses.find((a) => a.is_default);
       if (defaultAddr) setSelectedAddressId(defaultAddr.id);
@@ -83,45 +86,47 @@ function Cart() {
     proceedToCheckout(marketId);
   }
 
-const proceedToCheckout = (marketId: number | null) => {
-  // 1️⃣ Ensure user exists
-  if (!user) {
-    alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
-    return;
-  }
+  const proceedToCheckout = (marketId: number | null) => {
+    // 1️⃣ Ensure user exists
+    if (!user) {
+      alert(
+        "Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.",
+      );
+      return;
+    }
 
-  // 2️⃣ Ensure market and address are selected
-  if (!marketId) {
-    alert("Пожалуйста, выберите магазин.");
-    return;
-  }
+    // 2️⃣ Ensure market and address are selected
+    if (!marketId) {
+      alert("Пожалуйста, выберите магазин.");
+      return;
+    }
 
-  if (!selectedAddressId) {
-    alert("Пожалуйста, выберите адрес доставки.");
-    return;
-  }
+    if (!selectedAddressId) {
+      alert("Пожалуйста, выберите адрес доставки.");
+      return;
+    }
 
-  // 3️⃣ Map selected items to products
-  const products = selectedItems().map(item => ({
-    ...item,
-    qty: item.count ?? 1,
-  }));
+    // 3️⃣ Map selected items to products
+    const products = selectedItems().map((item) => ({
+      ...item,
+      qty: item.count ?? 1,
+    }));
 
-  // 4️⃣ Call checkout with fully type-safe payload
-  checkout({
-    user_id: user.id,               // ✅ required
-    address_id: selectedAddressId,  // ✅ guaranteed to be number
-    market_id: marketId,            // ✅ guaranteed to be number
-    payment: paymentMethod,
-    payment_method: paymentMethod,  // "cash" | "click"
-    payed: false,
-    products,
-    notes: "",
-  });
+    // 4️⃣ Call checkout with fully type-safe payload
+    checkout({
+      user_id: user.id, // ← add this line
+      address_id: selectedAddressId,
+      market_id: marketId,
+      payment: paymentMethod,
+      payment_method: paymentMethod,
+      payed: false,
+      products,
+      notes: "",
+    });
 
-  // 5️⃣ Close modal
-  setIsModalOpen(false);
-};
+    // 5️⃣ Close modal
+    setIsModalOpen(false);
+  };
 
   // ✅ Fix 2: canCheckout now also requires an address to be selected
   const canCheckout =
