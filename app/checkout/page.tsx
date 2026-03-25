@@ -1,350 +1,337 @@
 "use client";
 
+import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useCartStore } from "../store/CartStore";
-import { useCheckout } from "../shared/lib/hooks/useCheckout";
-import { useAddresses } from "../shared/lib/hooks/useAddresses";
 import {
   CartIcon,
   CheckIcon,
-  CloseIcon,
-  DownIcon,
-  LocationIcon,
+  DeleteIcon,
+  MinusIcon,
+  PlusIcon,
 } from "../shared/icons";
-import { useCreateMarket, useMarkets } from "../shared/lib/hooks/useMarket";
+import { useEffect, useState } from "react";
+import { useAddresses } from "../shared/lib/hooks/useAddresses";
+import { useCheckout } from "../shared/lib/hooks/useCheckout";
+import { useGetMe, useUser } from "../shared/lib/useAuth";
+import { useMarketCheck } from "../shared/lib/hooks/useMarketCheck";
+import { MarketRegisterModal } from "../components/MarketRegisterModal/MarketRegisterModal";
 
-// ─── Market Registration Modal ───────────────────────────────────────────────
+type PaymentMethod = "cash" | "click";
 
-interface MarketModalProps {
-  onSuccess: (marketId: number) => void;
-  onClose: () => void;
-}
+function Cart() {
+  const {
+    cart,
+    changeQty,
+    remove,
+    toggleAll,
+    toggleItem,
+    allSelected,
+    selectedItems,
+    total,
+    totalCount,
+    selectedIds,
+  } = useCartStore();
 
-function MarketRegisterModal({ onSuccess, onClose }: MarketModalProps) {
-  const { mutate: createMarket, isPending } = useCreateMarket();
-  const [form, setForm] = useState({
-    name: "",
-    region: "",
-    district: "",
-    address: "",
-  });
-
-  const isValid = form.name.trim() && form.address.trim();
-
-  const handleSubmit = () => {
-    if (!isValid) return;
-    createMarket(form, {
-      onSuccess: (market: any) => onSuccess(market.id),
-    });
-  };
-
-  return (
-    <div
-      className="fixed inset-0 z-50 bg-black/50 flex items-end sm:items-center justify-center"
-      onClick={onClose}
-    >
-      <div
-        className="bg-white w-full sm:w-[480px] rounded-t-2xl sm:rounded-2xl p-5 relative"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Drag handle mobile */}
-        <div className="sm:hidden flex justify-center mb-4">
-          <div className="w-10 h-1 rounded-full bg-gray-300" />
-        </div>
-
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
-        >
-          <CloseIcon className="w-6 h-6" />
-        </button>
-
-        <h2 className="text-xl font-bold mb-1">Magazin ro'yxatdan o'tmagan</h2>
-        <p className="text-sm text-gray-400 mb-5">
-          Buyurtma berish uchun avval magaziningizni ro'yxatdan o'tkazing
-        </p>
-
-        <div className="flex flex-col gap-3">
-          {[
-            { key: "name", label: "Magazin nomi", required: true },
-            { key: "region", label: "Viloyat", required: false },
-            { key: "district", label: "Tuman", required: false },
-            { key: "address", label: "Manzil", required: true },
-          ].map(({ key, label, required }) => (
-            <div key={key}>
-              <label className="text-sm font-medium text-gray-600 mb-1 block">
-                {label} {required && <span className="text-red-400">*</span>}
-              </label>
-              <input
-                className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary transition"
-                placeholder={label}
-                value={form[key as keyof typeof form]}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, [key]: e.target.value }))
-                }
-              />
-            </div>
-          ))}
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          disabled={isPending || !isValid}
-          className="mt-5 w-full py-3 bg-primary text-white font-semibold rounded-xl disabled:opacity-50 cursor-pointer transition-opacity"
-        >
-          {isPending ? "Saqlanmoqda..." : "Saqlash va buyurtma berish"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-// ─── Checkout ─────────────────────────────────────────────────────────────────
-
-function Checkout() {
-  const router = useRouter();
-  const { selectedItems, total, totalCount } = useCartStore();
+  const { data: user } = useUser();
+  const { mutate: getMe } = useGetMe();
   const { data: addresses } = useAddresses();
   const { mutate: checkout, isPending } = useCheckout();
-  const { data: markets, isLoading: isMarketsLoading } = useMarkets();
+  const { hasMarket, myMarket, isLoading } = useMarketCheck();
 
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
-    null,
-  );
-  const [isAddressOpen, setIsAddressOpen] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"cash" | "click">("cash");
-  const [notes, setNotes] = useState("");
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMarketModal, setShowMarketModal] = useState(false);
+  const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
-  const selectedAddress = addresses?.find((a) => a.id === selectedAddressId);
-  const products = selectedItems().map((item) => ({
-    ...item,
-    qty: item.count,
-  }));
+  useEffect(() => {
+    getMe();
+    if (addresses && !selectedAddressId) {
+      const defaultAddr = addresses.find((a) => a.is_default);
+      if (defaultAddr) setSelectedAddressId(defaultAddr.id);
+    }
+  }, [addresses]);
 
-  const proceedToCheckout = (marketId: number | null) => {
-    checkout(
-      {
-        address_id: selectedAddressId,
-        market_id: marketId,
-        payment: paymentMethod,
-        payment_method: paymentMethod,
-        payed: false,
-        products,
-        notes,
-      },
-      {
-        onSuccess: () => router.push("/orders"),
-      },
-    );
-  };
+  useEffect(() => {
+    document.body.style.overflow = isModalOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [isModalOpen]);
 
-  const handleCheckout = () => {
-    if (!selectedAddressId || isMarketsLoading) return;
-
-    const hasMarket = markets && markets.length > 0;
-
-    if (!hasMarket) {
-      // No market registered → show registration modal first
+  function handleCheckout() {
+    if (isLoading) return;
+    if (!hasMarket && !pendingMarketId) {
       setShowMarketModal(true);
       return;
     }
-
-    // Market exists → proceed directly
-    proceedToCheckout(markets[0].id);
-  };
-
-  const handleMarketRegistered = (marketId: number) => {
-    setShowMarketModal(false);
-    proceedToCheckout(marketId);
-  };
-
-  if (products.length === 0) {
-    return (
-      <div className="container mt-10 text-center text-gray-400 text-xl">
-        Tanlangan mahsulot yo'q
-      </div>
-    );
+    proceedToCheckout(pendingMarketId ?? myMarket?.id ?? null);
   }
 
+  function handleMarketRegistered(marketId: number) {
+    setPendingMarketId(marketId);
+    setShowMarketModal(false);
+    proceedToCheckout(marketId);
+  }
+
+  const proceedToCheckout = (marketId: number | null) => {
+    if (!user) {
+      alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
+      return;
+    }
+    if (!marketId) {
+      alert("Пожалуйста, выберите магазин.");
+      return;
+    }
+    if (!selectedAddressId) {
+      alert("Пожалуйста, выберите адрес доставки.");
+      return;
+    }
+
+    const products = selectedItems().map((item) => ({ ...item, qty: item.count ?? 1 }));
+
+    checkout({
+      user_id: String(user.id),
+      address_id: selectedAddressId,
+      market_id: marketId,
+      payment: paymentMethod,
+      payment_method: paymentMethod,
+      payed: false,
+      products,
+      notes: "",
+    });
+
+    setIsModalOpen(false);
+  };
+
+  const canCheckout = selectedItems().length > 0 && !!selectedAddressId && !isPending;
+
   return (
-    <section className="pb-20">
+    <section>
       <div className="container">
-        <div className="mb-20">
-          <h1 className="text-2xl font-semibold mb-6">Buyurtma berish</h1>
+        <div className="w-full h-full flex flex-col mt-24">
+          <div className="hidden lg:block mb-5">
+            <h1 className="text-2xl font-semibold">Savat</h1>
+          </div>
 
-          <div className="flex flex-col gap-4">
-            {/* Product list summary */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
-              <h2 className="text-sm font-semibold text-gray-500 mb-3">
-                Mahsulotlar ({totalCount()} dona)
-              </h2>
-              <div className="flex flex-col gap-3">
-                {products.map((item) => (
-                  <div key={item.id} className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden shrink-0">
-                      <Image
-                        src={
-                          typeof item.images?.[0] === "string"
-                            ? item.images?.[0]
-                            : item.images?.[0]?.url || "/product.jpg"
-                        }
-                        alt={item.name}
-                        width={300}
-                        height={225}
-                      />
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium truncate">
-                        {item.name}
-                      </p>
-                      <p className="text-xs text-gray-400">{item.count} dona</p>
-                    </div>
-                    <p className="text-sm font-bold shrink-0">
-                      {(Number(item.price) * item.count).toLocaleString()} so'm
-                    </p>
-                  </div>
-                ))}
+          {cart.length === 0 ? (
+            <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">
+              <div className="w-20 h-20 rounded-2xl bg-gray-100 flex items-center justify-center">
+                <CartIcon className="w-10 h-10 text-gray-400" />
               </div>
+              <h3 className="text-2xl font-semibold">Savat bo'sh</h3>
+              <p className="text-gray-500 text-base">
+                Hozircha savatda mahsulot yo'q.<br /> Xarid qilishni boshlang!
+              </p>
+              <Link href="/categories" className="text-white px-6 py-3 font-semibold rounded-xl bg-primary">
+                Xaridni boshlash
+              </Link>
             </div>
-
-            {/* Address selector */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
-              <div
-                className="flex items-center justify-between px-4 py-3.5 cursor-pointer"
-                onClick={() => setIsAddressOpen((p) => !p)}
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
-                    <LocationIcon className="w-4 h-4 text-primary" />
+          ) : (
+            <div className="flex flex-col lg:flex-row items-start gap-5">
+              {/* Cart items */}
+              <div className="w-full lg:w-7/10 flex flex-col gap-5">
+                <div className="flex items-center gap-3 cursor-pointer select-none bg-accent p-4 rounded-xl" onClick={toggleAll}>
+                  <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${allSelected() ? "bg-primary border-primary" : "border-gray-300 bg-white"}`}>
+                    {allSelected() && <CheckIcon className="w-3 h-3 text-white" />}
                   </div>
-                  <div>
-                    <p className="text-xs text-gray-400">Yetkazish manzili</p>
-                    <p className="text-sm font-medium">
-                      {selectedAddress
-                        ? `${selectedAddress.region}, ${selectedAddress.district}`
-                        : "Manzil tanlang"}
-                    </p>
-                    {selectedAddress && (
-                      <p className="text-xs text-gray-400 truncate max-w-56">
-                        {selectedAddress.address}
-                      </p>
-                    )}
-                  </div>
+                  <span className="text-sm font-medium text-black">Tanlangan: {selectedItems().length} ta mahsulot</span>
                 </div>
-                <DownIcon
-                  className={`w-4 h-4 text-gray-400 transition-transform ${
-                    isAddressOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </div>
 
-              {isAddressOpen && (
-                <div className="border-t border-gray-100">
-                  {addresses?.map((addr) => (
-                    <div
-                      key={addr.id}
-                      onClick={() => {
-                        setSelectedAddressId(addr.id);
-                        setIsAddressOpen(false);
-                      }}
-                      className={`flex items-center justify-between px-4 py-3 cursor-pointer hover:bg-gray-50 transition-colors ${
-                        selectedAddressId === addr.id ? "bg-primary/5" : ""
-                      }`}
-                    >
-                      <div>
-                        <p className="text-sm font-medium">
-                          {addr.region}, {addr.district}
-                        </p>
-                        <p className="text-xs text-gray-400">{addr.address}</p>
+                <div className="flex flex-col gap-3">
+                  {cart.map((item) => (
+                    <div key={item.id} className={`rounded-xl p-2 flex flex-col gap-2 shadow-sm transition-all ${selectedIds.includes(item.id) ? "bg-secondary/10" : "bg-[#E5E6FF]"}`}>
+                      <div className="w-full flex gap-2">
+                        <div className="w-25 h-18.5 rounded-xl bg-gray-100 overflow-hidden shrink-0">
+                          <Image src={`https://api.bunyodoptom.uz${item.images[0].url}`} alt={item.name} width={300} height={225} />
+                        </div>
+                        <div className="flex-1 min-w-0 flex flex-col">
+                          <Link href={`/product/${item.id}`} className="text-sm sm:text-lg font-semibold text-gray-800 truncate">{item.name}</Link>
+                          <p className="text-sm sm:text-base font-medium text-gray-900">{(item.price * item.count).toLocaleString()} so'm</p>
+                        </div>
+                        <div className="cursor-pointer shrink-0" onClick={() => toggleItem(item.id)}>
+                          <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${selectedIds.includes(item.id) ? "bg-primary border-primary" : "border-gray-300 bg-white"}`}>
+                            {selectedIds.includes(item.id) && <CheckIcon className="w-3 h-3 text-white" />}
+                          </div>
+                        </div>
                       </div>
-                      {selectedAddressId === addr.id && (
-                        <CheckIcon className="w-4 h-4 text-primary shrink-0" />
-                      )}
+
+                      <div className="border border-solid border-accent" />
+
+                      <div className="flex gap-4 items-center justify-end">
+                        <div className="flex items-center gap-3 bg-gray-100 rounded-xl px-1 py-1">
+                          <button onClick={() => changeQty(item.id, -1)} className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer">
+                            <MinusIcon className="w-5 h-5" />
+                          </button>
+                          <span className="text-sm font-semibold w-5 text-center">{item.count}</span>
+                          <button onClick={() => changeQty(item.id, 1)} className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-gray-600 hover:text-primary transition-colors cursor-pointer">
+                            <PlusIcon className="w-5 h-5" />
+                          </button>
+                        </div>
+                        <button onClick={() => remove(item.id)} className="flex items-center text-sm font-medium gap-2 px-2 py-2 bg-error-foreground text-error rounded-lg cursor-pointer">
+                          <DeleteIcon className="w-5 h-5" />
+                          <span>Yoq qilish</span>
+                        </button>
+                      </div>
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Desktop sidebar */}
+              <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
+                {user && (
+                  <>
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                        <span className="text-primary font-bold text-sm">{user.name?.charAt(0)?.toUpperCase() ?? "U"}</span>
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-semibold text-gray-800 truncate">{user.name}</span>
+                        <span className="text-xs text-gray-400 truncate">{user.phone ?? ""}</span>
+                      </div>
+                    </div>
+                    <div className="w-full h-px bg-gray-100" />
+                  </>
+                )}
+
+                <div className="flex items-center justify-between text-sm text-gray-500">
+                  <span>Tanlangan mahsulotlar</span>
+                  <span>{totalCount()} dona</span>
+                </div>
+                <div className="w-full h-px bg-gray-100" />
+
+                <div className="flex flex-col gap-1">
+                  {addresses?.map((addr) => (
+                    <div key={addr.id} onClick={() => setSelectedAddressId(addr.id)} className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer hover:bg-gray-50 transition-colors ${selectedAddressId === addr.id ? "bg-primary/5" : ""}`}>
+                      <div>
+                        <p className="text-sm font-medium">{addr.region}, {addr.district}</p>
+                        <p className="text-xs text-gray-400 truncate">{addr.address}</p>
+                      </div>
+                      {selectedAddressId === addr.id && <CheckIcon className="w-4 h-4 text-primary shrink-0" />}
+                    </div>
+                  ))}
+                </div>
+                <div className="w-full h-px bg-gray-100" />
+
+                <div className="flex flex-col gap-2">
+                  <span className="text-sm text-gray-500">To'lov usuli</span>
+                  <div className="flex gap-2">
+                    {(["cash", "click"] as PaymentMethod[]).map((method) => (
+                      <button disabled={method === "click"} key={method} onClick={() => setPaymentMethod(method)} className={`flex-1 py-2 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${paymentMethod === method ? "bg-primary text-white border-primary" : "bg-white text-gray-600 border-gray-200 hover:border-primary"}`}>
+                        {method === "cash" ? "Naqd" : "Click"}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="w-full h-px bg-gray-100" />
+
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-gray-500">Jami summa</span>
+                  <span className="text-lg font-bold text-gray-900">{total().toLocaleString()} so'm</span>
+                </div>
+
+                <button onClick={handleCheckout} disabled={!canCheckout} className="w-full py-3 rounded-xl bg-primary text-white font-medium text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                  {isPending ? "Yuborilmoqda..." : `Buyurtma berish (${selectedItems().length})`}
+                </button>
+
+                {!selectedAddressId && selectedItems().length > 0 && (
+                  <p className="text-xs text-center text-red-400">Buyurtma berish uchun manzil tanlang</p>
+                )}
+              </div>
+
+              {/* Mobile bottom bar */}
+              <div className="fixed left-0 bottom-20 w-full bg-white rounded-t-xl shadow-md border-t border-accent p-4 flex items-center justify-between gap-3 lg:hidden">
+                <div className="flex flex-col text-sm shrink-0">
+                  <p className="text-gray-500">Mahsulotlar {totalCount()} dona</p>
+                  <p className="font-semibold">{total().toLocaleString()} so'm</p>
+                </div>
+                <button disabled={!selectedItems().length} onClick={() => setIsModalOpen(true)} className="flex-1 py-3 rounded-xl bg-primary text-white text-sm font-medium disabled:opacity-40 cursor-pointer hover:opacity-90 transition-opacity">
+                  Buyurtma berish ({selectedItems().length})
+                </button>
+              </div>
+
+              {/* Mobile checkout modal */}
+              {isModalOpen && (
+                <>
+                  <div className="fixed inset-0 bg-black/40 z-40 lg:hidden" onClick={() => setIsModalOpen(false)} />
+                  <div className="fixed left-0 bottom-0 w-full bg-white rounded-t-2xl z-50 p-5 flex flex-col gap-4 lg:hidden shadow-2xl">
+                    <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto -mt-1" />
+                    <h2 className="text-lg font-semibold text-gray-800">Buyurtmani tasdiqlash</h2>
+
+                    {user && (
+                      <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
+                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                          <span className="text-primary font-bold text-sm">{user.name?.charAt(0)?.toUpperCase() ?? "U"}</span>
+                        </div>
+                        <div className="flex flex-col min-w-0">
+                          <span className="text-sm font-semibold text-gray-800 truncate">{user.name}</span>
+                          <span className="text-xs text-gray-400 truncate">{user.phone ?? ""}</span>
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="flex items-center justify-between text-sm text-gray-500 bg-gray-50 px-4 py-3 rounded-xl">
+                      <span>Mahsulotlar</span>
+                      <span className="font-semibold text-gray-800">{totalCount()} dona</span>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm text-gray-500">Manzil</span>
+                      <div className="flex flex-col gap-1">
+                        {addresses?.map((addr) => (
+                          <div key={addr.id} onClick={() => setSelectedAddressId(addr.id)} className={`flex items-center justify-between px-3 py-2.5 rounded-xl cursor-pointer border transition-colors ${selectedAddressId === addr.id ? "border-primary bg-primary/5" : "border-gray-100 bg-gray-50"}`}>
+                            <div>
+                              <p className="text-sm font-medium">{addr.region}, {addr.district}</p>
+                              <p className="text-xs text-gray-400 truncate">{addr.address}</p>
+                            </div>
+                            {selectedAddressId === addr.id && <CheckIcon className="w-4 h-4 text-primary shrink-0" />}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <span className="text-sm text-gray-500">To'lov usuli</span>
+                      <div className="flex gap-2">
+                        {(["cash", "click"] as PaymentMethod[]).map((method) => (
+                          <button disabled={method === "click"} key={method} onClick={() => setPaymentMethod(method)} className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-colors cursor-pointer ${paymentMethod === method ? "bg-primary text-white border-primary" : "bg-white text-gray-600 border-gray-200"}`}>
+                            {method === "cash" ? "��� Naqd" : "��� Click"}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="w-full h-px bg-gray-100" />
+
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-500">Jami summa</span>
+                      <span className="text-xl font-bold text-gray-900">{total().toLocaleString()} so'm</span>
+                    </div>
+
+                    <button onClick={handleCheckout} disabled={!canCheckout} className="w-full py-3.5 rounded-xl bg-primary text-white font-semibold text-sm hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                      {isPending ? "Yuborilmoqda..." : `Tasdiqlash — ${total().toLocaleString()} so'm`}
+                    </button>
+
+                    {!selectedAddressId && (
+                      <p className="text-xs text-center text-red-400 -mt-2">Buyurtma berish uchun manzil tanlang</p>
+                    )}
+
+                    <button onClick={() => setIsModalOpen(false)} className="w-full py-3 rounded-xl border border-gray-200 text-gray-500 text-sm font-medium cursor-pointer">
+                      Bekor qilish
+                    </button>
+                  </div>
+                </>
               )}
             </div>
-
-            {/* Payment method */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
-              <h2 className="text-sm font-semibold text-gray-500 mb-3">
-                To'lov usuli
-              </h2>
-              <div className="flex gap-3">
-                {(["cash", "click"] as const).map((method) => (
-                  <button
-                    key={method}
-                    disabled={method === "click"}
-                    onClick={() => setPaymentMethod(method)}
-                    className={`flex-1 py-2.5 rounded-xl border-2 text-sm font-semibold transition-colors ${
-                      paymentMethod === method
-                        ? "border-primary bg-primary/5 text-primary"
-                        : "border-gray-200 text-gray-500"
-                    }`}
-                  >
-                    {method === "cash" ? "Naqd" : "Click"}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Notes */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4">
-              <h2 className="text-sm font-semibold text-gray-500 mb-2">
-                Izoh (ixtiyoriy)
-              </h2>
-              <textarea
-                value={notes}
-                onChange={(e) => setNotes(e.target.value)}
-                placeholder="Kuryer uchun izoh..."
-                rows={3}
-                className="w-full text-sm border border-gray-200 rounded-xl p-3 resize-none outline-none focus:border-primary transition-colors"
-              />
-            </div>
-
-            {/* Total + Submit */}
-            <div className="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-col gap-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-gray-500">Jami summa</span>
-                <span className="text-xl font-bold text-gray-900">
-                  {total().toLocaleString()} so'm
-                </span>
-              </div>
-              <button
-                onClick={handleCheckout}
-                disabled={isPending || !selectedAddressId || isMarketsLoading}
-                className="w-full py-3.5 rounded-xl bg-primary text-white font-semibold text-base hover:opacity-90 transition-opacity disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-              >
-                <CartIcon className="w-5 h-5" />
-                {isMarketsLoading
-                  ? "Tekshirilmoqda..."
-                  : isPending
-                    ? "Yuborilmoqda..."
-                    : "Buyurtmani tasdiqlash"}
-              </button>
-              {!selectedAddressId && (
-                <p className="text-xs text-center text-red-400">
-                  Buyurtma berish uchun manzil tanlang
-                </p>
-              )}
-            </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Market registration modal */}
       {showMarketModal && (
-        <MarketRegisterModal
-          onSuccess={handleMarketRegistered}
-          onClose={() => setShowMarketModal(false)}
-        />
+        <MarketRegisterModal onSuccess={handleMarketRegistered} onClose={() => setShowMarketModal(false)} />
       )}
     </section>
   );
 }
 
-export default Checkout;
+export default Cart;
