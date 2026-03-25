@@ -50,8 +50,10 @@ function Cart() {
   const [showMarketModal, setShowMarketModal] = useState(false);
   const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
+  console.log(user);
+  
   useEffect(() => {
-    getMe()
+    getMe();
     if (addresses && !selectedAddressId) {
       const defaultAddr = addresses.find((a) => a.is_default);
       if (defaultAddr) setSelectedAddressId(defaultAddr.id);
@@ -114,7 +116,7 @@ function Cart() {
 
     // 4️⃣ Call checkout with fully type-safe payload
     checkout({
-      user_id: user.id, // ← add this line
+      user_id: user.id, // must be number, no String() or toString()
       address_id: selectedAddressId,
       market_id: marketId,
       payment: paymentMethod,
@@ -123,7 +125,6 @@ function Cart() {
       products,
       notes: "",
     });
-
     // 5️⃣ Close modal
     setIsModalOpen(false);
   };

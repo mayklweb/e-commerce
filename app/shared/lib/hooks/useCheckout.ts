@@ -12,7 +12,7 @@ interface CheckoutProduct {
 }
 
 interface CheckoutPayload {
-  user_id: string
+  user_id: number
   address_id:  number | null;
   market_id:   number | null;   // ✅ added
   payment:     "cash" | "click";
