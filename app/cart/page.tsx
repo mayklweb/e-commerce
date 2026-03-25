@@ -83,43 +83,45 @@ function Cart() {
     proceedToCheckout(marketId);
   }
 
-  function proceedToCheckout(marketId: number | null) {
-    if (!user) {
-      // user is not logged in or not available
-      alert(
-        "Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.",
-      );
-      return;
-    }
-
-    if (!marketId) {
-      alert("Пожалуйста, выберите магазин.");
-      return;
-    }
-
-    if (!selectedAddressId) {
-      alert("Пожалуйста, выберите адрес доставки.");
-      return;
-    }
-
-    const products = selectedItems().map((item) => ({
-      ...item,
-      qty: item.count ?? 1,
-    }));
-
-    checkout({
-      user_id: user.id, // ✅ required
-      address_id: selectedAddressId,
-      market_id: marketId,
-      payment_method: paymentMethod,
-      payed: false,
-      products,
-      notes: "",
-      payment: "cash",
-    });
-
-    setIsModalOpen(false);
+const proceedToCheckout = (marketId: number | null) => {
+  // 1️⃣ Ensure user exists
+  if (!user) {
+    alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
+    return;
   }
+
+  // 2️⃣ Ensure market and address are selected
+  if (!marketId) {
+    alert("Пожалуйста, выберите магазин.");
+    return;
+  }
+
+  if (!selectedAddressId) {
+    alert("Пожалуйста, выберите адрес доставки.");
+    return;
+  }
+
+  // 3️⃣ Map selected items to products
+  const products = selectedItems().map(item => ({
+    ...item,
+    qty: item.count ?? 1,
+  }));
+
+  // 4️⃣ Call checkout with fully type-safe payload
+  checkout({
+    user_id: user.id,               // ✅ required
+    address_id: selectedAddressId,  // ✅ guaranteed to be number
+    market_id: marketId,            // ✅ guaranteed to be number
+    payment: paymentMethod,
+    payment_method: paymentMethod,  // "cash" | "click"
+    payed: false,
+    products,
+    notes: "",
+  });
+
+  // 5️⃣ Close modal
+  setIsModalOpen(false);
+};
 
   // ✅ Fix 2: canCheckout now also requires an address to be selected
   const canCheckout =
