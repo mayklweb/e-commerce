@@ -83,41 +83,43 @@ function Cart() {
     proceedToCheckout(marketId);
   }
 
-function proceedToCheckout(marketId: number | null) {
-  if (!user) {
-    // user is not logged in or not available
-    alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
-    return;
+  function proceedToCheckout(marketId: number | null) {
+    if (!user) {
+      // user is not logged in or not available
+      alert(
+        "Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.",
+      );
+      return;
+    }
+
+    if (!marketId) {
+      alert("Пожалуйста, выберите магазин.");
+      return;
+    }
+
+    if (!selectedAddressId) {
+      alert("Пожалуйста, выберите адрес доставки.");
+      return;
+    }
+
+    const products = selectedItems().map((item) => ({
+      ...item,
+      qty: item.count ?? 1,
+    }));
+
+    checkout({
+      user_id: user.id, // ✅ required
+      address_id: selectedAddressId,
+      market_id: marketId,
+      payment_method: paymentMethod,
+      payed: false,
+      products,
+      notes: "",
+      payment: "cash",
+    });
+
+    setIsModalOpen(false);
   }
-
-  if (!marketId) {
-    alert("Пожалуйста, выберите магазин.");
-    return;
-  }
-
-  if (!selectedAddressId) {
-    alert("Пожалуйста, выберите адрес доставки.");
-    return;
-  }
-
-  const products = selectedItems().map((item) => ({
-    ...item,
-    qty: item.count ?? 1,
-  }));
-
-  checkout({
-    user_id: user.id,
-    address_id: selectedAddressId,
-    market_id: marketId,
-    payment_method: paymentMethod,
-    payed: false,
-    products,
-    notes: "",
-    payment: "cash"
-  });
-
-  setIsModalOpen(false);
-}
 
   // ✅ Fix 2: canCheckout now also requires an address to be selected
   const canCheckout =
