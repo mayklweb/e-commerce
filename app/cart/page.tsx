@@ -116,7 +116,7 @@ function Cart() {
 
     // 4️⃣ Call checkout with fully type-safe payload
     checkout({
-      user_id: user.id, // must be number, no String() or toString()
+      user_id: String(user.id), // must be number, no String() or toString()
       address_id: selectedAddressId,
       market_id: marketId,
       payment: paymentMethod,
