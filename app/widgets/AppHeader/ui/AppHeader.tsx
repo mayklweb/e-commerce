@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link.js";
-import { SearchIcon, UserIcon, CartIcon } from "@/app/shared/icons";
+import { SearchIcon, UserIcon, CartIcon, KatalogIcon } from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -49,7 +49,7 @@ function KatalogDropdown() {
             : "bg-primary hover:bg-secondary border-primary/10"
         }`}
       >
-        <CartIcon className="text-white w-6 h-6" />
+        <KatalogIcon className="text-white w-5 h-5 rotate-3" />
         Katalog
         <svg
           className={`w-4 h-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}

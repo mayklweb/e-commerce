@@ -4,6 +4,7 @@ import {
   ArrowLeft01Icon,
   ArrowLeft02Icon,
   ArrowRight01Icon,
+  BarCode01Icon,
   Cancel01Icon,
   Clock01Icon,
   Delete02Icon,
@@ -285,6 +286,16 @@ export const CheckIcon = ({ className }: IconProps) => {
     <HugeiconsIcon
       className={className}
       icon={Tick02Icon}
+      size={24}
+      strokeWidth={1.5}
+    />
+  );
+};
+export const KatalogIcon = ({ className }: IconProps) => {
+  return (
+    <HugeiconsIcon
+      className={className}
+      icon={BarCode01Icon}
       size={24}
       strokeWidth={1.5}
     />

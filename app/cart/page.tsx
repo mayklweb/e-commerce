@@ -41,7 +41,6 @@ function Cart() {
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const route = useRouter();
 
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
@@ -84,24 +83,41 @@ function Cart() {
     proceedToCheckout(marketId);
   }
 
-  function proceedToCheckout(marketId: number | null) {
-    const products = selectedItems().map((item) => ({
-      ...item,
-      qty: item.count,
-    }));
-
-    checkout({
-      address_id: selectedAddressId,
-      market_id: marketId,
-      payment: paymentMethod,
-      payment_method: paymentMethod,
-      payed: false,
-      products,
-      notes: "",
-    });
-
-    setIsModalOpen(false);
+function proceedToCheckout(marketId: number | null) {
+  if (!user) {
+    // user is not logged in or not available
+    alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
+    return;
   }
+
+  if (!marketId) {
+    alert("Пожалуйста, выберите магазин.");
+    return;
+  }
+
+  if (!selectedAddressId) {
+    alert("Пожалуйста, выберите адрес доставки.");
+    return;
+  }
+
+  const products = selectedItems().map((item) => ({
+    ...item,
+    qty: item.count ?? 1,
+  }));
+
+  checkout({
+    user_id: user.id,
+    address_id: selectedAddressId,
+    market_id: marketId,
+    payment_method: paymentMethod,
+    payed: false,
+    products,
+    notes: "",
+    payment: "cash"
+  });
+
+  setIsModalOpen(false);
+}
 
   // ✅ Fix 2: canCheckout now also requires an address to be selected
   const canCheckout =
@@ -115,8 +131,6 @@ function Cart() {
           <div className="hidden lg:block mb-5">
             <h1 className="text-2xl font-semibold">Savat</h1>
           </div>
-
-         
 
           {cart.length === 0 ? (
             <div className="flex-1 flex flex-col items-center justify-center text-center gap-3">
