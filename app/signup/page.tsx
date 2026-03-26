@@ -45,7 +45,7 @@ function SignupForm() {
       <button
         type="button"
         onClick={() => router.back()}
-        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10"
+        className="flex items-center gap-1 text-base font-semibold text-gray-900 mb-6 absolute top-10 left-2"
       >
         <LeftArrowIcon />
         <span>Orqaga</span>
@@ -135,7 +135,7 @@ function SignupForm() {
               <p className="text-xs text-red-500">{errors.password.message}</p>
             )}
           </div>
-          
+
           {/* Submit */}
           <button
             type="submit"
