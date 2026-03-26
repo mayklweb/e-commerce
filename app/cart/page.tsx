@@ -127,7 +127,6 @@ function Cart() {
       market_id: marketId,
       payment_method: paymentMethod,
       payed: false,
-      // payment: paymentMethod,
       status: "preparing",
       products: products,
     });

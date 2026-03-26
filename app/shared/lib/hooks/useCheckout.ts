@@ -18,7 +18,6 @@ interface CheckoutPayload {
   address_id: number | null;
   payment_status?: "pending" | "paid" | "failed" | "refunded";  // optional, defaults to "pending"
   payment_method: "cash" | "click";
-  // payment: "cash" | "click";
   payed?: boolean;                    // optional, defaults to true
   status?: "pending" | "preparing" | "delivered" | "cancelled";  // optional, defaults to "preparing"
   idempotency_key?: string | null;
