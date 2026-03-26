@@ -8,18 +8,18 @@ interface CheckoutProduct {
   price: number;
   qty: number;
   images?: any[];
-  [key: string]: any;   // ✅ all other product fields
+  [key: string]: any; // ✅ all other product fields
 }
 
 interface CheckoutPayload {
-  user_id: number;                    // ✅ integer (not string!)
-  total_amount: number;               // ✅ REQUIRED - you were missing this
+  user_id: number; // ✅ integer (not string!)
+  total_amount: number; // ✅ REQUIRED - you were missing this
   market_id: number | null;
   address_id: number | null;
-  payment_status?: "pending" | "paid" | "failed" | "refunded";  // optional, defaults to "pending"
+  payment_status?: "pending" | "paid" | "failed" | "refunded"; // optional, defaults to "pending"
   payment_method: "cash" | "click";
-  payed?: boolean;                    // optional, defaults to true
-  status?: "pending" | "preparing" | "delivered" | "cancelled";  // optional, defaults to "preparing"
+  payed?: boolean; // optional, defaults to true
+  status?: "preparing" | "pending" | "delivered" | "cancelled"; // optional, defaults to "preparing"
   idempotency_key?: string | null;
   notes?: string | null;
   products: CheckoutProduct[];
@@ -32,7 +32,7 @@ export function useCheckout() {
     mutationFn: async (payload: CheckoutPayload) => {
       // 🔍 LOG THE PAYLOAD
       console.log("📤 Checkout payload:", JSON.stringify(payload, null, 2));
-      
+
       try {
         const { data } = await $api.post("/orders/checkout", payload);
         return data;
