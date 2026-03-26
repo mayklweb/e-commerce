@@ -8,8 +8,11 @@ import { useCartStore } from "@/app/store/CartStore";
 import { useGetMe, useUser } from "@/app/shared/lib/useAuth";
 import { useCategories } from "@/app/shared/lib/hooks/useCategories";
 import { CategoriesType } from "@/app/types";
+import { GridIcon } from "lucide-react";
 
 // --- Katalog Dropdown ---
+
+
 function KatalogDropdown() {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -41,6 +44,7 @@ function KatalogDropdown() {
 
   return (
     <div ref={containerRef} className="relative">
+      {/* ✅ Main Button - Icon can be changed here */}
       <button
         onClick={() => setOpen((v) => !v)}
         className={`text-[16px] text-white font-medium capitalize lg:flex items-center gap-2 px-5 py-2 rounded-lg hidden transition-all duration-300 border ${
@@ -49,10 +53,17 @@ function KatalogDropdown() {
             : "bg-primary hover:bg-secondary border-primary/10"
         }`}
       >
-        <KatalogIcon className="text-white w-5 h-5 rotate-3" />
+        {/* 🎨 Change icon here - Options:
+            <KatalogIcon className="text-white w-5 h-5" />
+            <MenuIcon className="text-white w-5 h-5" />
+            <GridIcon className="text-white w-5 h-5" />
+        */}
+        <GridIcon className="text-white w-5 h-5" />
         Katalog
         <svg
-          className={`w-4 h-4 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+          className={`w-4 h-4 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -66,6 +77,7 @@ function KatalogDropdown() {
         </svg>
       </button>
 
+      {/* ✅ Dropdown Menu */}
       {open && (
         <div
           className="absolute left-0 top-[calc(100%+8px)] w-70 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50"
@@ -76,32 +88,40 @@ function KatalogDropdown() {
             style={{ scrollbarWidth: "none" }}
           >
             {categories.map((cat: CategoriesType) => (
-              <button
-                key={cat.name}
-                className="group w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors"
+              <Link
+                key={cat.id || cat.name}
+                href={`/categories/${cat.id || cat.name || cat.name.toLowerCase().replace(/\s+/g, "-")}`}
+                onClick={() => setOpen(false)} // Close dropdown on click
               >
-                <span className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center text-base shrink-0 transition-colors">
-                  {cat.icon}
-                </span>
-                <span className="flex-1 text-left">
-                  <span className="block text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">
-                    {cat.name}
+                <button className="group w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors">
+                  {/* ✅ Category Icon */}
+                  <span className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center text-base shrink-0 transition-colors">
+                    {cat.icon}
                   </span>
-                </span>
-                <svg
-                  className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M9 5l7 7-7 7"
-                  />
-                </svg>
-              </button>
+
+                  {/* ✅ Category Name */}
+                  <span className="flex-1 text-left">
+                    <span className="block text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">
+                      {cat.name}
+                    </span>
+                  </span>
+
+                  {/* ✅ Arrow Icon */}
+                  <svg
+                    className="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9 5l7 7-7 7"
+                    />
+                  </svg>
+                </button>
+              </Link>
             ))}
           </div>
         </div>
