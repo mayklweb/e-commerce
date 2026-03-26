@@ -12,14 +12,18 @@ interface CheckoutProduct {
 }
 
 interface CheckoutPayload {
-  user_id: string
-  address_id:  number | null;
-  market_id:   number | null;   // ✅ added
-  payment:     "cash" | "click";
-  payment_method:     "cash" | "click";
-  payed:       boolean;
-  products:    CheckoutProduct[];
-  notes?:      string;
+  user_id: number;                    // ✅ integer (not string!)
+  total_amount: number;               // ✅ REQUIRED - you were missing this
+  market_id: number | null;
+  address_id: number | null;
+  payment_status?: "pending" | "paid" | "failed" | "refunded";  // optional, defaults to "pending"
+  payment_method: "cash" | "click";
+  // payment: "cash" | "click";
+  payed?: boolean;                    // optional, defaults to true
+  status?: "pending" | "preparing" | "delivered" | "cancelled";  // optional, defaults to "preparing"
+  idempotency_key?: string | null;
+  notes?: string | null;
+  products: CheckoutProduct[];
 }
 
 export function useCheckout() {
@@ -27,8 +31,17 @@ export function useCheckout() {
 
   return useMutation({
     mutationFn: async (payload: CheckoutPayload) => {
-      const { data } = await $api.post("/orders/checkout", payload);
-      return data;
+      // 🔍 LOG THE PAYLOAD
+      console.log("📤 Checkout payload:", JSON.stringify(payload, null, 2));
+      
+      try {
+        const { data } = await $api.post("/orders/checkout", payload);
+        return data;
+      } catch (error: any) {
+        // 🔍 LOG THE SERVER ERROR
+        console.error("❌ Server error response:", error.response?.data);
+        throw error;
+      }
     },
     onSuccess: () => {
       clearCart();

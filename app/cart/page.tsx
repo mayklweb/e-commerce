@@ -46,12 +46,9 @@ function Cart() {
 
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
-  // ✅ Fix 1: showMarketModal now actually controls MarketRegisterModal visibility
   const [showMarketModal, setShowMarketModal] = useState(false);
   const [pendingMarketId, setPendingMarketId] = useState<number | null>(null);
 
-  console.log(user);
-  
   useEffect(() => {
     getMe();
     if (addresses && !selectedAddressId) {
@@ -108,28 +105,37 @@ function Cart() {
       return;
     }
 
-    // 3️⃣ Map selected items to products
+    // 3️⃣ Map selected items to checkout products
     const products = selectedItems().map((item) => ({
-      ...item,
+      id: item.id,
+      name: item.name,
+      price: item.price,
       qty: item.count ?? 1,
     }));
 
-    // 4️⃣ Call checkout with fully type-safe payload
+    // 4️⃣ Calculate total amount
+    const totalAmount = selectedItems().reduce(
+      (sum, item) => sum + item.price * item.count,
+      0,
+    );
+
+    // 5️⃣ Call checkout with fully type-safe payload
     checkout({
-      user_id: String(user.id), // must be number, no String() or toString()
+      user_id: parseInt(user.id),
+      total_amount: totalAmount,
       address_id: selectedAddressId,
       market_id: marketId,
-      payment: paymentMethod,
       payment_method: paymentMethod,
       payed: false,
-      products,
-      notes: "",
+      // payment: paymentMethod,
+      status: "preparing",
+      products: products,
     });
-    // 5️⃣ Close modal
+
+    // 6️⃣ Close modal
     setIsModalOpen(false);
   };
 
-  // ✅ Fix 2: canCheckout now also requires an address to be selected
   const canCheckout =
     selectedItems().length > 0 && !!selectedAddressId && !isPending;
 
@@ -267,7 +273,7 @@ function Cart() {
 
               {/* ── Desktop sidebar ── */}
               <div className="w-full lg:w-3/10 bg-white border border-gray-100 rounded-2xl shadow-sm p-4 hidden lg:flex flex-col gap-3">
-                {/* ✅ User info in sidebar */}
+                {/* User info in sidebar */}
                 {user && (
                   <>
                     <div className="flex items-center gap-3">
@@ -403,7 +409,7 @@ function Cart() {
                       Buyurtmani tasdiqlash
                     </h2>
 
-                    {/* ✅ User info in mobile modal */}
+                    {/* User info in mobile modal */}
                     {user && (
                       <div className="flex items-center gap-3 bg-gray-50 px-4 py-3 rounded-xl">
                         <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
