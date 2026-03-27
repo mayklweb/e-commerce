@@ -208,11 +208,11 @@ export function Orders() {
                       {item.product?.name ?? "Mahsulot"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
-                      {item.qty} dona × {item.unit_price.toLocaleString()} so'm
+                      {item.qty} dona × {item.unit_price?.toLocaleString()} so'm
                     </p>
                   </div>
                   <p className="text-sm font-bold text-gray-900 shrink-0">
-                    {(item.unit_price * item.qty).toLocaleString()} so'm
+                    {(item.unit_price * item.qty)?.toLocaleString()} so'm
                   </p>
                 </div>
               ))}
@@ -222,7 +222,7 @@ export function Orders() {
             <div className="px-5 py-4 border-t border-gray-100 flex items-center justify-between">
               <p className="text-sm text-gray-500">Jami summa</p>
               <p className="text-lg font-bold text-gray-900">
-                {getTotal(selectedOrder).toLocaleString()} so'm
+                {getTotal(selectedOrder)?.toLocaleString()} so'm
               </p>
             </div>
 
@@ -306,7 +306,7 @@ function OrderCard({
               <p className="text-xs text-gray-400 mt-0.5">{item.qty} dona</p>
             </div>
             <p className="text-sm font-semibold text-gray-800 shrink-0">
-              {(item.unit_price * item.qty).toLocaleString()} so'm
+              {(item.unit_price * item.qty)?.toLocaleString()} so'm
             </p>
           </div>
         ))}
@@ -320,7 +320,7 @@ function OrderCard({
         <div>
           <p className="text-xs text-gray-400">Jami</p>
           <p className="text-base font-bold text-gray-900">
-            {getTotal(order).toLocaleString()} so'm
+            {getTotal(order)?.toLocaleString()} so'm
           </p>
         </div>
         <div className="flex items-center gap-2">
