@@ -94,11 +94,6 @@ function KatalogDropdown() {
                 onClick={() => setOpen(false)} // Close dropdown on click
               >
                 <button className="group w-full flex items-center gap-3 px-4 py-2.5 hover:bg-gray-50 transition-colors">
-                  {/* ✅ Category Icon */}
-                  <span className="w-8 h-8 rounded-lg bg-gray-100 group-hover:bg-primary/10 flex items-center justify-center text-base shrink-0 transition-colors">
-                    {cat.icon}
-                  </span>
-
                   {/* ✅ Category Name */}
                   <span className="flex-1 text-left">
                     <span className="block text-sm font-medium text-gray-800 group-hover:text-primary transition-colors">

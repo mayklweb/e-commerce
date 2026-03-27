@@ -169,8 +169,8 @@ export default function CategoryProductsPage() {
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-                      {filtered.map((product: ProductsType) => (
-                        <Link href={`/product/${product.id}`}>
+                      {filtered.map((product: ProductsType, i) => (
+                        <Link key={i} href={`/product/${product.id}`}>
                       <ProductCard key={product.id} product={product} />
                         </Link>
                       ))}
