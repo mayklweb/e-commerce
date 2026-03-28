@@ -52,7 +52,7 @@ const STATUS: Record<
 };
 
 function getTotal(order: Order) {
-  return order.products.reduce((sum, p) => sum + p.unit_price * p.qty, 0);
+  return order.products.reduce((sum, p) => sum + p.price * p.qty, 0);
 }
 
 // ── Skeleton ──────────────────────────────────────────────────────────────────
@@ -94,6 +94,9 @@ export function Orders() {
   const { data: orders, isLoading, isError, refetch } = useOrders();
   const { mutate: cancelOrder, isPending: isCancelling } = useCancelOrder();
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+
+  console.log(orders);
+  
 
   return (
     <div className="w-full h-full">
@@ -205,14 +208,22 @@ export function Orders() {
                 <div key={i} className="flex items-center gap-3">
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-800 truncate">
-                      {item.product?.name ?? "Mahsulot"}
+                      {item.name ?? "Mahsulot"}
                     </p>
                     <p className="text-xs text-gray-400 mt-0.5">
+<<<<<<< HEAD
                       {item.qty} dona × {item.unit_price?.toLocaleString()} so'm
                     </p>
                   </div>
                   <p className="text-sm font-bold text-gray-900 shrink-0">
                     {(item.unit_price * item.qty)?.toLocaleString()} so'm
+=======
+                      {item.qty} dona × {item.price.toLocaleString()} so'm
+                    </p>
+                  </div>
+                  <p className="text-sm font-bold text-gray-900 shrink-0">
+                    {(item.price * item.qty).toLocaleString()} so'm
+>>>>>>> c86de51 (m)
                   </p>
                 </div>
               ))}
@@ -267,8 +278,11 @@ function OrderCard({
   isCancelling: boolean;
 }) {
   const status = STATUS[order.status];
-  const previewProducts = order.products.slice(0, 3);
+  const previewProducts = order.products
   const remaining = order.products.length - 3;
+
+  console.log(previewProducts);
+  
 
   return (
     <div className="bg-white border border-gray-100 rounded-xl shadow-sm overflow-hidden">
@@ -281,7 +295,7 @@ function OrderCard({
           {order.address && (
             <>
               <span className="text-gray-300">·</span>
-              <span className="text-xs text-gray-400 truncate max-w-[160px]">
+              <span className="text-xs text-gray-400 truncate max-w-40">
                 {order.address.district}
               </span>
             </>
@@ -301,12 +315,16 @@ function OrderCard({
           <div key={i} className="flex items-center gap-3">
             <div className="flex-1 min-w-0">
               <p className="text-sm font-medium text-gray-800 truncate">
-                {item.product?.name ?? "Mahsulot"}
+                {item.name ?? "Mahsulot"}
               </p>
               <p className="text-xs text-gray-400 mt-0.5">{item.qty} dona</p>
             </div>
             <p className="text-sm font-semibold text-gray-800 shrink-0">
+<<<<<<< HEAD
               {(item.unit_price * item.qty)?.toLocaleString()} so'm
+=======
+              {(item.price * item.qty).toLocaleString()} so'm
+>>>>>>> c86de51 (m)
             </p>
           </div>
         ))}

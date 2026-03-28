@@ -38,11 +38,23 @@ export interface OrderProduct {
   product_id: number;
   qty: number;
   unit_price: number;
-  product: {
-    id: number;
-    name: string;
-    images?: { url: string }[];
-  } | null;
+  id: number;
+  category_id: number;
+  name: string;
+  slug: string;
+  price: number;
+  kg_price: number;
+  piece_price: number;
+  kg: number;
+  piece: number;
+  stock_qty: number;
+  description: string;
+  status: string;
+  created_at: string;
+  updated_at: string;
+  brand_id: number;
+  // images: Array<string | { url: string }>;
+  images: { url: string }[];
 }
 
 export interface OrderAddress {
