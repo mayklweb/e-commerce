@@ -62,15 +62,25 @@ function SignupForm() {
           onSubmit={handleSubmit(onSubmit)}
           className="rounded-2xl p-8 flex flex-col gap-5"
         >
-          {isError && (
-            <div className="flex items-center gap-2 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">
-              <span>⚠️</span>
-              <span>
-                {(error as any)?.message ?? "Ro'yxatdan o'tishda xatolik"}
-              </span>
-            </div>
-          )}
-
+      {isError && (
+  <div className="flex items-center gap-2 border border-red-200 text-red-600 text-sm px-4 py-3 rounded-lg">
+    <span>⚠️</span>
+    <span>
+      {(error as any)?.status === 409 
+        ? "Bu telefon raqam allaqachon ro'yxatdan o'tgan. " 
+        : (error as any)?.message ?? "Ro'yxatdan o'tishda xatolik"}
+    </span>
+    {(error as any)?.status === 409 && (
+      <button
+        type="button"
+        onClick={() => router.push("/login")}
+        className="ml-2 underline font-semibold"
+      >
+        Kirish
+      </button>
+    )}
+  </div>
+)}
           {/* Name */}
           <div className="">
             <label className="block text-sm font-medium text-gray-700">
