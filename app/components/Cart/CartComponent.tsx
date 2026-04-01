@@ -139,7 +139,6 @@ function CartComponent() {
           clearCart();
 
           // ✅ Optional: Show success message
-          alert("✅ Buyurtma muvaffaqiyatli yuborildi!");
 
           // ✅ Redirect to account page
           router.push("/profile");
