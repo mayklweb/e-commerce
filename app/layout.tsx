@@ -4,6 +4,7 @@ import "./globals.css";
 import { QueryProvider } from "./Providers";
 import { AppHeader } from "./widgets/AppHeader";
 import { AppFooter } from "./widgets/AppFooter";
+import AuthProvider from "./context/AuthContext";
 
 const instrumentSans = Instrument_Sans({
   variable: "--font-Instrument-sans",
@@ -30,16 +31,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${instrumentSans.variable} antialiased`}>
-        <QueryProvider>
-          <div className="w-full h-full flex flex-col">
-            <AppHeader />
-            <main className="w-full h-full flex flex-col flex-auto">
-              <div className="w-full h-full">{children}</div>
-            </main>
-            <AppFooter />
-          </div>
-        </QueryProvider>
-        {/* <SpeedInsights /> */}
+        <AuthProvider>
+          <QueryProvider>
+            <div className="w-full h-full flex flex-col">
+              <AppHeader />
+              <main className="w-full h-full flex flex-col flex-auto">
+                <div className="w-full h-full">{children}</div>
+              </main>
+              <AppFooter />
+            </div>
+          </QueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

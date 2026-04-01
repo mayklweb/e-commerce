@@ -24,6 +24,7 @@ import {
   Tick02Icon,
   User,
   ViewIcon,
+  WalletCardsIcon,
 } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 
@@ -295,7 +296,7 @@ export const KatalogIcon = ({ className }: IconProps) => {
   return (
     <HugeiconsIcon
       className={className}
-      icon={BarCode01Icon}
+      icon={WalletCardsIcon}
       size={24}
       strokeWidth={1.5}
     />

@@ -13,8 +13,10 @@ import { NAV_ITEMS } from "./model/constants/constants";
 import { Sidebar } from "./ui/components/Sidebar/Sidebar";
 import { BottomSheet } from "./ui/components/bottomsheet";
 
-import { useGetMe, useLogout, useUser } from "../shared/lib/useAuth";
 import { useRequireAuth } from "../shared/lib/hooks/useRequireAuth";
+import useIsAuth from "../context/useIsAuth";
+
+import { useGetMe, useLogout } from "../shared/lib/useAuth";
 
 const SECTION_MAP: Record<NavKey, React.ReactNode> = {
   personal: <PersonalInfo />,
@@ -26,27 +28,20 @@ const SECTION_MAP: Record<NavKey, React.ReactNode> = {
 
 function Account() {
   const router = useRouter();
-
   const [activeNav, setActiveNav] = useState<NavKey>("personal");
   const [sheetNav, setSheetNav] = useState<NavKey | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const { mutate: getMe } = useGetMe();
-  const { mutate: logout, isPending: loggingOut } = useLogout(); // ✅
-  const { user, isLoading } = useRequireAuth();
 
-  useEffect(() => {
-    getMe();
-  }, []);
+  const { mutate: logout, isPending: loggingOut } = useLogout();
+  const { user, isLoading } = useRequireAuth(); // ✅ This handles redirect now
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    // Only redirect if no token AND no user
-    if (!token && !user) {
-      router.replace("/login");
-    }
-  }, [user, isLoading, router]);
+  // ❌ REMOVE THIS - useRequireAuth handles it
+  // useEffect(() => {
+  //   if (!isAuth) {
+  //     router.replace("/login");
+  //   }
+  // }, [isAuth, router]);
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -71,15 +66,20 @@ function Account() {
     setTimeout(() => setSheetNav(null), 400);
   };
 
-  // ✅ logout handler
   const handleLogout = () => logout();
 
   const sheetTitle = sheetNav
     ? (NAV_ITEMS.find((n) => n.key === sheetNav)?.label ?? "")
     : "";
 
-  // Don't render anything until auth is resolved
-  if (isLoading || !user) return null;
+  // ✅ Show loading state
+  if (isLoading) {
+    return (
+      <div className="container mt-24 flex justify-center">
+        <div className="animate-pulse text-lg">Yuklanmoqda...</div>
+      </div>
+    );
+  }
 
   return (
     <section>

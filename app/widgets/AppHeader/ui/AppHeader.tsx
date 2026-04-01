@@ -1,6 +1,11 @@
 "use client";
 import Link from "next/link.js";
-import { SearchIcon, UserIcon, CartIcon, KatalogIcon } from "@/app/shared/icons";
+import {
+  SearchIcon,
+  UserIcon,
+  CartIcon,
+  KatalogIcon,
+} from "@/app/shared/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
@@ -8,10 +13,9 @@ import { useCartStore } from "@/app/store/CartStore";
 import { useGetMe, useUser } from "@/app/shared/lib/useAuth";
 import { useCategories } from "@/app/shared/lib/hooks/useCategories";
 import { CategoriesType } from "@/app/types";
-import { GridIcon } from "lucide-react";
+import useIsAuth from "@/app/context/useIsAuth";
 
 // --- Katalog Dropdown ---
-
 
 function KatalogDropdown() {
   const [open, setOpen] = useState(false);
@@ -53,12 +57,7 @@ function KatalogDropdown() {
             : "bg-primary hover:bg-secondary border-primary/10"
         }`}
       >
-        {/* 🎨 Change icon here - Options:
-            <KatalogIcon className="text-white w-5 h-5" />
-            <MenuIcon className="text-white w-5 h-5" />
-            <GridIcon className="text-white w-5 h-5" />
-        */}
-        <GridIcon className="text-white w-5 h-5" />
+        <KatalogIcon />
         Katalog
         <svg
           className={`w-4 h-4 transition-transform duration-200 ${
@@ -139,6 +138,7 @@ function AppHeader() {
   const [query, setQuery] = useState<string>("");
   const { data: user } = useUser();
   const { mutate: getMe } = useGetMe();
+    const isAuth = useIsAuth();
 
   useEffect(() => {
     getMe();
@@ -217,7 +217,7 @@ function AppHeader() {
                   >
                     <UserIcon className="text-primary w-6 h-6" />
                     <span className="text-[16px] text-primary font-semibold capitalize">
-                      {user?.name ? user.name : "Kirish"}
+                      {isAuth ? user?.name : "Kirish"}
                     </span>
                   </Link>
                   <div className="relative">

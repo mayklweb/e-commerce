@@ -3,6 +3,7 @@ import { authApi } from "./authApi";
 import { queryKeys } from "./query-keys";
 import type { UserType } from "../../types";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/app/context/AuthContext";
 
 // ─── READ: replaces isAuth, user, initialized ───────────────────────────────
 
@@ -20,24 +21,32 @@ export function useGetMe() {
 }
 
 export function useUser() {
+  // Read user from localStorage on mount
+  const initialUser =
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem("user") || "null")
+      : null;
+
   return useQuery<UserType | null>({
     queryKey: queryKeys.user,
     queryFn: () => null,
     staleTime: Infinity,
-    retry: true,
+    retry: false, // Changed from true
     enabled: false,
-    initialData: null,
+    initialData: initialUser, // ✅ Initialize from localStorage
   });
 }
 
 export function useSignup() {
   const queryClient = useQueryClient();
+  const { addToken } = useAuth(); // ✅ Import from context
 
   return useMutation({
     mutationFn: authApi.signup,
     onSuccess: ({ user, token }) => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+      addToken(token); // ✅ Sync with context
       queryClient.setQueryData(queryKeys.user, user);
     },
   });
@@ -47,6 +56,7 @@ export function useSignup() {
 
 export function useLogin() {
   const queryClient = useQueryClient();
+  const { addToken } = useAuth(); // ✅ Import from context
 
   return useMutation<
     { user: UserType; token: string },
@@ -54,10 +64,11 @@ export function useLogin() {
     { phone: string; password: string }
   >({
     mutationFn: authApi.login,
-    onSuccess: ({ user, token }) => {
+    onSuccess: ({ user, token }: { user: UserType; token: string }) => {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
-      queryClient.setQueryData(queryKeys.user, user); // instantly update cache
+      addToken(token); // ✅ Sync with context
+      queryClient.setQueryData(queryKeys.user, user);
     },
   });
 }
@@ -66,14 +77,16 @@ export function useLogin() {
 export function useLogout() {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const { removeToken } = useAuth(); // ✅ Get removeToken from context
 
   return useMutation({
-    mutationFn: async () => {}, // ✅ required — no API call needed
+    mutationFn: async () => {},
     onSuccess: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      removeToken(); // ✅ Clear context token
       queryClient.setQueryData(queryKeys.user, null);
-      router.replace("/login"); // ✅ moved here
+      router.replace("/login");
     },
   });
 }
