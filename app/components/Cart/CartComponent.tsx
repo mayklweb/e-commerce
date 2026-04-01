@@ -159,80 +159,78 @@ function CartComponent() {
     selectedItems().length > 0 && !!selectedAddressId && !isPending;
 
   return (
-    <section>
-      <div className="container">
-        <div className="w-full h-full flex flex-col mt-24">
-          <CartHeader />
+    <>
+      <div className="w-full h-full flex flex-col mt-24">
+        <CartHeader />
 
-          {cart.length === 0 ? (
-            <EmptyCart />
-          ) : (
-            <div className="flex flex-col lg:flex-row items-start gap-5">
-              {/* Cart items section */}
-              <div className="w-full lg:w-7/10 flex flex-col gap-5">
-                <SelectAllToggle
-                  isAllSelected={allSelected()}
-                  selectedCount={selectedItems().length}
-                  onToggle={toggleAll}
-                />
-
-                <div className="flex flex-col gap-3">
-                  {cart.map((item) => (
-                    <CartItemCard
-                      key={item.id}
-                      item={item}
-                      isSelected={selectedIds.includes(item.id)}
-                      onToggle={toggleItem}
-                      onChangeQty={changeQty}
-                      onRemove={remove}
-                    />
-                  ))}
-                </div>
-              </div>
-
-              {/* Desktop summary sidebar */}
-              <CartSummary
-                user={user}
-                addresses={addresses ?? []}
-                selectedAddressId={selectedAddressId}
-                onSelectAddress={setSelectedAddressId}
-                paymentMethod={paymentMethod}
-                onPaymentMethodChange={setPaymentMethod}
-                totalCount={totalCount()}
-                total={total()}
-                selectedItemsCount={selectedItems().length}
-                canCheckout={canCheckout}
-                isPending={isPending}
-                onCheckout={handleCheckout}
-              />
-
-              {/* Mobile bottom bar */}
-              <MobileBottomBar
-                totalCount={totalCount()}
-                total={total()}
+        {cart.length === 0 ? (
+          <EmptyCart />
+        ) : (
+          <div className="flex flex-col lg:flex-row items-start gap-5">
+            {/* Cart items section */}
+            <div className="w-full lg:w-7/10 flex flex-col gap-5">
+              <SelectAllToggle
+                isAllSelected={allSelected()}
                 selectedCount={selectedItems().length}
-                onCheckout={() => setIsModalOpen(true)}
+                onToggle={toggleAll}
               />
 
-              {/* Mobile checkout modal */}
-              <CheckoutModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                user={user}
-                addresses={addresses ?? []}
-                selectedAddressId={selectedAddressId}
-                onSelectAddress={setSelectedAddressId}
-                paymentMethod={paymentMethod}
-                onPaymentMethodChange={setPaymentMethod}
-                totalCount={totalCount()}
-                total={total()}
-                canCheckout={canCheckout}
-                isPending={isPending}
-                onCheckout={handleCheckout}
-              />
+              <div className="flex flex-col gap-3">
+                {cart.map((item) => (
+                  <CartItemCard
+                    key={item.id}
+                    item={item}
+                    isSelected={selectedIds.includes(item.id)}
+                    onToggle={toggleItem}
+                    onChangeQty={changeQty}
+                    onRemove={remove}
+                  />
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+
+            {/* Desktop summary sidebar */}
+            <CartSummary
+              user={user}
+              addresses={addresses ?? []}
+              selectedAddressId={selectedAddressId}
+              onSelectAddress={setSelectedAddressId}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              totalCount={totalCount()}
+              total={total()}
+              selectedItemsCount={selectedItems().length}
+              canCheckout={canCheckout}
+              isPending={isPending}
+              onCheckout={handleCheckout}
+            />
+
+            {/* Mobile bottom bar */}
+            <MobileBottomBar
+              totalCount={totalCount()}
+              total={total()}
+              selectedCount={selectedItems().length}
+              onCheckout={() => setIsModalOpen(true)}
+            />
+
+            {/* Mobile checkout modal */}
+            <CheckoutModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              user={user}
+              addresses={addresses ?? []}
+              selectedAddressId={selectedAddressId}
+              onSelectAddress={setSelectedAddressId}
+              paymentMethod={paymentMethod}
+              onPaymentMethodChange={setPaymentMethod}
+              totalCount={totalCount()}
+              total={total()}
+              canCheckout={canCheckout}
+              isPending={isPending}
+              onCheckout={handleCheckout}
+            />
+          </div>
+        )}
       </div>
 
       {showMarketModal && (
@@ -241,7 +239,7 @@ function CartComponent() {
           onClose={() => setShowMarketModal(false)}
         />
       )}
-    </section>
+    </>
   );
 }
 
