@@ -31,7 +31,7 @@ function SignupForm() {
   };
 
   const inputClass = (hasError: boolean) =>
-    `w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-200
+    `w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200
     focus:ring-2 focus:ring-primary/30 focus:border-primary
     ${
       hasError

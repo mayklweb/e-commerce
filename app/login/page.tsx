@@ -76,7 +76,7 @@ function LoginForm() {
                   placeholder="+998 90 123 45 67"
                   value={value}
                   onValueChange={(values) => onChange(values.value)}
-                  className={`w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-200
+                  className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200
                     focus:ring-2 focus:ring-primary/30 focus:border-primary
                     ${
                       errors.phone
@@ -101,7 +101,7 @@ function LoginForm() {
             <input
               type="password"
               placeholder="••••••••"
-              className={`w-full px-4 py-3 rounded-xl border text-sm outline-none transition-all duration-200
+              className={`w-full px-4 py-3 rounded-xl border outline-none transition-all duration-200
                 focus:ring-2 focus:ring-primary/30 focus:border-primary
                 ${
                   errors.password
