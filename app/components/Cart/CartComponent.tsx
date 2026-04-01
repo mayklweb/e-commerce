@@ -34,8 +34,11 @@ function CartComponent() {
     clearCart,
   } = useCartStore();
 
-  const { setActiveSection } = useUIStore();
+  const { setActiveSection, activeSection } = useUIStore();
   const router = useRouter();
+
+  console.log(activeSection);
+  
 
   const { data: user } = useUser();
   const { mutate: getMe } = useGetMe();

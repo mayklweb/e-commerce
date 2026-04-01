@@ -72,6 +72,7 @@ function Account() {
   const handleClose = (): void => {
     setSheetOpen(false);
     setTimeout(() => setSheetNav(null), 400);
+    setActiveSection("personal"); // ✅ Reset to default on close
   };
 
   const handleLogout = () => logout();
