@@ -15,6 +15,7 @@ import { CartSummary } from "./CartSummary";
 import { CheckoutModal } from "./CheckoutModal";
 import { MarketRegisterModal } from "../MarketRegisterModal/MarketRegisterModal";
 import { MobileBottomBar } from "./MobileBottomBar";
+import { useUIStore } from "@/app/store/useUIStore";
 
 type PaymentMethod = "cash" | "click";
 
@@ -30,7 +31,11 @@ function CartComponent() {
     total,
     totalCount,
     selectedIds,
+    clearCart,
   } = useCartStore();
+
+  const { setActiveSection } = useUIStore();
+  const router = useRouter();
 
   const { data: user } = useUser();
   const { mutate: getMe } = useGetMe();
@@ -38,7 +43,9 @@ function CartComponent() {
   const { mutate: checkout, isPending } = useCheckout();
   const { hasMarket, myMarket, isLoading } = useMarketCheck();
 
-  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
+  const [selectedAddressId, setSelectedAddressId] = useState<number | null>(
+    null,
+  );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showMarketModal, setShowMarketModal] = useState(false);
@@ -82,7 +89,9 @@ function CartComponent() {
 
   const proceedToCheckout = (marketId: number | null) => {
     if (!user) {
-      alert("Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.");
+      alert(
+        "Пожалуйста, войдите в систему, чтобы продолжить оформление заказа.",
+      );
       return;
     }
 
@@ -105,19 +114,44 @@ function CartComponent() {
 
     const totalAmount = selectedItems().reduce(
       (sum, item) => sum + item.price * item.count,
-      0
+      0,
     );
 
-    checkout({
-      user_id: parseInt(user.id),
-      total_amount: totalAmount,
-      address_id: selectedAddressId,
-      market_id: marketId,
-      payment_method: paymentMethod,
-      payed: false,
-      status: "preparing",
-      products: products,
-    });
+    checkout(
+      {
+        user_id: parseInt(user.id),
+        total_amount: totalAmount,
+        address_id: selectedAddressId,
+        market_id: marketId,
+        payment_method: paymentMethod,
+        payed: false,
+        status: "preparing",
+        products: products,
+      },
+      {
+        onSuccess: () => {
+          setIsModalOpen(false);
+
+          // ✅ Set active section to orders in the store
+          setActiveSection("orders");
+
+          // ✅ Optional: Clear cart after successful checkout
+          clearCart();
+
+          // ✅ Optional: Show success message
+          alert("✅ Buyurtma muvaffaqiyatli yuborildi!");
+
+          // ✅ Redirect to account page
+          router.push("/profile");
+        },
+        onError: (error) => {
+          console.error("Checkout failed:", error);
+          alert(
+            "Buyurtma yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
+          );
+        },
+      },
+    );
 
     setIsModalOpen(false);
   };

@@ -14,9 +14,10 @@ import { Sidebar } from "./ui/components/Sidebar/Sidebar";
 import { BottomSheet } from "./ui/components/bottomsheet";
 
 import { useRequireAuth } from "../shared/lib/hooks/useRequireAuth";
-import useIsAuth from "../context/useIsAuth";
 
-import { useGetMe, useLogout } from "../shared/lib/useAuth";
+import { useLogout } from "../shared/lib/useAuth";
+
+import { useUIStore } from "../store/useUIStore";
 
 const SECTION_MAP: Record<NavKey, React.ReactNode> = {
   personal: <PersonalInfo />,
@@ -33,15 +34,11 @@ function Account() {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const { mutate: logout, isPending: loggingOut } = useLogout();
-  const { user, isLoading } = useRequireAuth(); // ✅ This handles redirect now
+  // ✅ Get active section from store
+  const { activeSection, setActiveSection } = useUIStore();
 
-  // ❌ REMOVE THIS - useRequireAuth handles it
-  // useEffect(() => {
-  //   if (!isAuth) {
-  //     router.replace("/login");
-  //   }
-  // }, [isAuth, router]);
+  const { mutate: logout, isPending: loggingOut } = useLogout();
+  const { isLoading } = useRequireAuth(); // ✅ This handles redirect now
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 1024);
@@ -50,7 +47,18 @@ function Account() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  // ✅ Handle mobile sheet when activeSection changes
+  useEffect(() => {
+    if (isMobile && activeSection !== "personal") {
+      setSheetNav(activeSection);
+      requestAnimationFrame(() =>
+        requestAnimationFrame(() => setSheetOpen(true)),
+      );
+    }
+  }, [activeSection, isMobile]);
+
   const handleNavClick = (key: NavKey): void => {
+    setActiveSection(key); // ✅ Update store instead of local state
     if (isMobile) {
       setSheetNav(key);
       requestAnimationFrame(() =>
@@ -86,9 +94,12 @@ function Account() {
       <div className="container">
         <div className="w-full h-full flex flex-col gap-5 mt-24">
           <div className="w-full flex gap-5">
-            <Sidebar activeNav={activeNav} onNavClick={handleNavClick} />
+            <Sidebar
+              activeNav={activeSection} // ✅ Use store value
+              onNavClick={handleNavClick}
+            />
 
-            {!isMobile && <div className="w-5/7">{SECTION_MAP[activeNav]}</div>}
+            {!isMobile && <div className="w-5/7">{SECTION_MAP[activeSection]}</div>}
           </div>
           <button
             onClick={handleLogout}

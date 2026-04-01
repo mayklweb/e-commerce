@@ -4,6 +4,7 @@ import { queryKeys } from "./query-keys";
 import type { UserType } from "../../types";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/app/context/AuthContext";
+import { useUIStore } from "@/app/store/useUIStore"; // ✅ Import
 
 // ─── READ: replaces isAuth, user, initialized ───────────────────────────────
 
@@ -78,13 +79,14 @@ export function useLogout() {
   const queryClient = useQueryClient();
   const router = useRouter();
   const { removeToken } = useAuth(); // ✅ Get removeToken from context
-
+  const { resetSection } = useUIStore(); // ✅ Import from UI store
   return useMutation({
     mutationFn: async () => {},
     onSuccess: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       removeToken(); // ✅ Clear context token
+      resetSection(); // ✅ Reset to "personal" on logout
       queryClient.setQueryData(queryKeys.user, null);
       router.replace("/login");
     },

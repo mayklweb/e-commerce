@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 type Modal = "addAddress" | "editAddress" | "orderDetail" | "checkout" | null;
+export type NavKey = "personal" | "shop" | "orders" | "addresses" | "favorites";
 
 interface UIStore {
   // Modals
@@ -18,13 +19,19 @@ interface UIStore {
   // Global loading
   isPageLoading: boolean;
   setPageLoading: (loading: boolean) => void;
+
+  // Profile sections
+  activeSection: NavKey;
+  setActiveSection: (section: NavKey) => void;
+  resetSection: () => void;
 }
 
 export const useUIStore = create<UIStore>((set) => ({
   // Modals
   activeModal: null,
   modalData: null,
-  openModal: (modal, data = null) => set({ activeModal: modal, modalData: data }),
+  openModal: (modal, data = null) =>
+    set({ activeModal: modal, modalData: data }),
   closeModal: () => set({ activeModal: null, modalData: null }),
 
   // Sidebar
@@ -36,4 +43,9 @@ export const useUIStore = create<UIStore>((set) => ({
   // Loading
   isPageLoading: false,
   setPageLoading: (loading) => set({ isPageLoading: loading }),
+
+  // Profile sections
+  activeSection: "personal",
+  setActiveSection: (section) => set({ activeSection: section }),
+  resetSection: () => set({ activeSection: "personal" }),
 }));
