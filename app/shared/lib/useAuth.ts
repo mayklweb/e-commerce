@@ -25,7 +25,18 @@ export function useUser() {
   // Read user from localStorage on mount
   const initialUser =
     typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("user") || "null")
+      ? (() => {
+          const stored = localStorage.getItem("user");
+          // Handle null, "undefined", "null", or invalid JSON
+          if (!stored || stored === "undefined" || stored === "null") {
+            return null;
+          }
+          try {
+            return JSON.parse(stored);
+          } catch {
+            return null;
+          }
+        })()
       : null;
 
   return useQuery<UserType | null>({
