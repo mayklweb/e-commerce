@@ -48,6 +48,8 @@ export function Addresses() {
   const { mutate: editAddress, isPending: editing } = useEditAddress();
   const { mutate: deleteAddress } = useDeleteAddress();
 
+  console.log(addresses);
+
   const { selectedId, setSelected, initFromAddresses } = useAddressStore();
 
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -133,7 +135,7 @@ export function Addresses() {
                 <p className="text-xs text-gray-400 mt-0.5 truncate">
                   {address.address}
                 </p>
-              </div>  
+              </div>
             </div>
 
             <div className="w-full h-px bg-gray-200/60" />
